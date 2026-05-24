@@ -8,7 +8,7 @@ import LegalRepresentativeFields from "../molecules/LegalRepresentativeFields";
 import LocationFields from "../molecules/LocationFields";
 import ParentsFields from "../molecules/ParentsFields";
 import PersonalDataFields from "../molecules/PersonalDataFields";
-import EnrolelmentSuccessPage from "@/app/(auth)/enrolelment/success/page";
+import EnrolelmentSuccessPage from "@/app/(auth)/enrollment/success/page";
 import { StepIndicator } from "@/components/molecules/StepIndicator";
 import {
   faLeftLong,
