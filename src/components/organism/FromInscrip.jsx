@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import EnrollmentSchool from "../molecules/EnrollmentSchool";
+import EnrolelmentSchool from "../molecules/EnrolelmentSchool";
 import Terms from "@/components/atom/Terms";
 
 const GENDER_TO_DB = { F: "femenino", M: "masculino" };
@@ -52,8 +52,8 @@ function buildConditionDescription(formData) {
 }
 
 /** Arma el cuerpo del POST alineado con users, students y legal_representatives. */
-/** IDs devueltos por POST /create_enrollment/ */
-function pickEnrollmentIds(response) {
+/** IDs devueltos por POST /create_enrolelment/ */
+function pickEnrolelmentIds(response) {
   if (!response || typeof response !== "object") return {};
   const userId = response.user_id ?? response.userId;
   const studentId = response.student_id ?? response.studentId;
@@ -65,7 +65,7 @@ function pickEnrollmentIds(response) {
   };
 }
 
-function buildEnrollmentPayload(formData) {
+function buildEnrolelmentPayload(formData) {
   const repDni = buildFullDni(formData.repdniType, formData.repdni);
   const relationship =
     RELATIONSHIP_TO_DB[formData.relationship] || formData.relationship;
@@ -124,7 +124,7 @@ export default function FormInscrip() {
 
   /**
    * Objeto data de estudiantes para la inscripcion de estudiantes.
-   * @typedef {Object} dataEnrollment - Objeto de datos para la inscripcion de estudiante.
+   * @typedef {Object} dataEnrolelment - Objeto de datos para la inscripcion de estudiante.
    * @property {string} dniType - Tipo de documento de identidad del estudiante.
    * @property {string} dni - Numero de documento de identidad del estudiante.
    * @property {string} name - Nombre del estudiante.
@@ -171,7 +171,7 @@ export default function FormInscrip() {
    * @property {string} repEmail - Correo electronico del representante legal del estudiante.
    * @property {string} sig - Codigo unico dado por el sistema que identifica a la institucion.
    * @property {boolean} accepted - Indica si el estudiante acepta los términos y condiciones de uso del sistema.
-   * @property {string} role - Rol del usuario (teacher, student, administrator). por defecto es teacher. En este registro solo se puede registrar un usuario de tipo teacher.
+   * @property {string} role - role del usuario (teacher, student, administrator). por defecto es teacher. En este registro solo se puede registrar un usuario de tipo teacher.
    * @property {string} birthdate - Fecha de nacimiento del estudiante.
    * @property {string} section - Seccion del estudiante.
    * @property {string} state - Estado del estudiante.
@@ -203,7 +203,7 @@ export default function FormInscrip() {
    * @property {string} repEmail - Correo electronico del representante legal del estudiante.
    * @property {string} sig - Codigo unico dado por el sistema que identifica a la institucion.
    * @property {boolean} accepted - Indica si el estudiante acepta los términos y condiciones de uso del sistema.
-   * @property {string} role - Rol del usuario (teacher, student, administrator). por defecto es teacher. En este registro solo se puede registrar un usuario de tipo teacher.
+   * @property {string} role - role del usuario (teacher, student, administrator). por defecto es teacher. En este registro solo se puede registrar un usuario de tipo teacher.
    * @property {string} birthdate - Fecha de nacimiento del estudiante.
    * @property {string} section - Seccion del estudiante.
    * @property {string} state - Estado del estudiante.
@@ -338,11 +338,11 @@ export default function FormInscrip() {
 
     setLoading(true);
 
-    const payload = buildEnrollmentPayload(data);
+    const payload = buildEnrolelmentPayload(data);
 
     try {
       const result = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/create_enrollment/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/create_enrolelment/`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -355,10 +355,10 @@ export default function FormInscrip() {
       const responseData = await result.json().catch(() => ({}));
 
       if (result.ok) {
-        const ids = pickEnrollmentIds(responseData);
+        const ids = pickEnrolelmentIds(responseData);
         if (!ids.user_id) {
           console.warn(
-            "create_enrollment sin user_id/student_id:",
+            "create_enrolelment sin user_id/student_id:",
             responseData,
           );
         }
@@ -412,7 +412,7 @@ export default function FormInscrip() {
             />
           )}
           {passed === 6 && (
-            <EnrollmentSchool data={data} manejarCambio={handleChange} />
+            <EnrolelmentSchool data={data} manejarCambio={handleChange} />
           )}
           {passed === 7 && (
             <>

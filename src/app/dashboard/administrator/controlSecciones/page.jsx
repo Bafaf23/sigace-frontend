@@ -11,7 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCallback } from "react";
 import Loading from "./loading";
 
-export default function controlSecciones() {
+export default function controleSecciones() {
   const { user } = useAuth();
   const [secciones, setSecciones] = useState([]);
   const [isOpen, setIsopen] = useState(false);
@@ -37,7 +37,7 @@ export default function controlSecciones() {
   return (
     <div className="p-4">
       <div className="flex flex-col md:flex-row md:justify-between">
-        <HeaderDashbord titelPage={"Control de Secciones"} />
+        <HeaderDashbord titelPage={"Controle de Secciones"} />
         <div className="p-3">
           <Button
             onClick={() => setIsopen(!isOpen)}

@@ -1,6 +1,6 @@
 "use client";
 import AccessDenied from "@/components/molecules/AccessDenied";
-import AccionesRapidas from "@/components/molecules/QuickActions";
+import QuickActions from "@/components/molecules/QuickActions";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import { useAuth } from "@/context/AuthContext";
 import Loading from "../loading";
@@ -16,7 +16,7 @@ export default function AdminPage() {
     <div className="animate-in fade-in duration-500">
       <HeaderDashbord user={user} />
       <main className="space-y-6 p-4">
-        <AccionesRapidas />
+        <QuickActions />
       </main>
     </div>
   );

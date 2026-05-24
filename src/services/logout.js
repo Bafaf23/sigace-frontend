@@ -1,12 +1,13 @@
-"server client";
+"server action";
 export async function logout() {
   try {
-    const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+      {
+        method: "POST",
+        credentials: "include",
       },
-    });
+    );
 
     if (result.ok) {
       sessionStorage.clear();

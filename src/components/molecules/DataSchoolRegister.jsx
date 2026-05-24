@@ -26,7 +26,7 @@ export default function DataSchoolRegister({ data, manejoCambio }) {
             la clave única de tu liceo en la plataforma. Es obligatorio para
             completar tu registro. Si lo desconoces, solicítalo en el
             departamento de
-            <span className="font-semibold"> Control de Estudios</span> de tu
+            <span className="font-semibold"> Controle de Estudios</span> de tu
             institución.
           </p>
         </div>

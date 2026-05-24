@@ -62,7 +62,7 @@ const HealthPhysicalFields = ({ datos, manejarCambio }) => {
         <div className="col-span-2 md:col-span-3">
           <Input
             name="neurodevelopmentConditions"
-            label="Condiciones de Neurodesarrollo"
+            label="Condiciones de Neurodesarrolelo"
             placeholder="Ej: Autismo"
             onChange={manejarCambio}
             value={datos.neurodevelopmentConditions}

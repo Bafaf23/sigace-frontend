@@ -19,7 +19,7 @@ export default function InfoCard({
   value,
   icon,
   colorClass,
-  description,
+  description = "No hay información que mostrar",
 }) {
   return (
     <div className="flex flex-col gap-2 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md dark:border-slate-700 dark:bg-slate-900">
@@ -27,7 +27,7 @@ export default function InfoCard({
         <div className={`rounded-lg p-2 ${colorClass} bg-opacity-10`}>
           <Icon
             icon={icon}
-            className={`${colorClass.replace("bg-", "text-")}`}
+            className={`text-xl ${colorClass.replace("bg-", "text-")}`}
           />
         </div>
         <span className="text-2xl font-bold text-slate-500 dark:text-slate-300">

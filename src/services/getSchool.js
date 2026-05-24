@@ -5,7 +5,7 @@
 export async function getSchools() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/school/get/`,
+      `${process.env.NEXT_PUBLIC_API_URL}/schools/getAllSchools`,
       {
         method: "GET",
         headers: {

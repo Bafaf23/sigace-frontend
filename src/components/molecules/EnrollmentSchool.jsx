@@ -24,7 +24,7 @@ function normalizeSection(section) {
   return section;
 }
 
-export default function EnrollmentSchool({ data, manejarCambio }) {
+export default function EnrolelmentSchool({ data, manejarCambio }) {
   const [schools, setSchools] = useState([]);
   const [sections, setSections] = useState([]);
 
@@ -64,7 +64,7 @@ export default function EnrollmentSchool({ data, manejarCambio }) {
         <p className="text-sm font-semibold text-indigo-600">
           Selecciona la institución, el año y la sección en la cual te vas a
           registrar. Si no encuentras tu liceo, contacta al departamento de
-          control de estudios de tu institución.
+          controle de estudios de tu institución.
         </p>
       </div>
       <div className="flex flex-col gap-4">

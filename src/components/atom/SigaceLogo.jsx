@@ -20,7 +20,7 @@ export default function SigaceLogo({ className = "text-slate-100" }) {
           SIGA<span className={`text-cyan-500`}>CE</span>
         </h1>
         <p className="text-[10px] font-medium tracking-[0.2em] text-slate-400 uppercase">
-          Control de Estudios
+          Controle de Estudios
         </p>
       </div>
     </div>

@@ -20,7 +20,7 @@ export default function FormRegister() {
   const [loading, setLoading] = useState(false);
 
   /**
-   * Objeto data de usuarios par el registro de usuarios para el sistema con rol por defecto teacher.
+   * Objeto data de usuarios par el registro de usuarios para el sistema con role por defecto teacher.
    *
    * @typedef {Object} dataUser
    * @property {string} typeDocuement
@@ -33,7 +33,7 @@ export default function FormRegister() {
    * @property {string} password
    * @property {string} passwordConfir
    * @property {string} sig - Codigo unico dado por el sistema que identifica a la institucion.
-   * @property {string} role - Rol del usuario (teacher, student, administrator). por defecto es teacher. En este registro solo se puede registrar un usuario de tipo teacher.
+   * @property {string} role - role del usuario (teacher, student, administrator). por defecto es teacher. En este registro solo se puede registrar un usuario de tipo teacher.
    */
   const [data, setData] = useState({
     typeDocuement: "",
@@ -146,7 +146,7 @@ export default function FormRegister() {
             SIGACE<span className="text-cyan-500">.</span>
           </h1>
           <p className="font-medium text-slate-500">
-            Control de Estudios Inteligente
+            Controle de Estudios Inteligente
           </p>
         </div>
         <StepIndicator currentStep={passed} totalSteps={2} mode={"user"} />

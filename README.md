@@ -1,6 +1,6 @@
 # 🎓 SIGACE
 
-### Sistema Inteligente de Gestión Académica y Control de Estudios
+### Sistema Inteligente de Gestión Académica y Controle de Estudios
 
 **SIGACE** es una solución integral diseñada para la automatización de procesos administrativos y académicos en instituciones educativas. Permite centralizar la información de estudiantes, docentes y representantes bajo una arquitectura segura y escalable.
 
@@ -9,7 +9,7 @@
 ## ✨ Funcionalidades principales
 
 - **Gestión de inscripciones:** 📝 registro de alumnos en periodos académicos.
-- **Control de calificaciones:** 📊 notas por lapsos, asignaturas y secciones.
+- **Controle de calificaciones:** 📊 notas por lapsos, asignaturas y secciones.
 - **Gestión de usuarios:** 👥 roles para administradores, docentes, estudiantes y representantes.
 - **Reportes:** 📄 boletas y listados en PDF (p. ej. `@react-pdf/renderer`).
 - **Datos académicos:** 🔗 grados, secciones y carga docente enlazados con la API del backend.
@@ -31,7 +31,7 @@ El frontend consume una API externa; la persistencia (p. ej. MySQL) vive en el s
 
 - [Node.js](https://nodejs.org/) 20 LTS o superior (recomendado para Next.js 16)
 
-## 🚀 Instalación y desarrollo
+## 🚀 Instalación y desarrolelo
 
 ```bash
 npm install
@@ -42,12 +42,12 @@ Abre [http://localhost:3000](http://localhost:3000) en el navegador. 🌐
 
 ### 📋 Otros scripts
 
-| Comando        | Descripción              |
-| -------------- | ------------------------ |
-| `npm run dev`  | Servidor de desarrollo   |
+| Comando         | Descripción               |
+| --------------- | ------------------------- |
+| `npm run dev`   | Servidor de desarrolelo   |
 | `npm run build` | Compilación de producción |
-| `npm run start` | Servidor tras `build`    |
-| `npm run lint`  | ESLint                   |
+| `npm run start` | Servidor tras `build`     |
+| `npm run lint`  | ESLint                    |
 
 Configura las variables de entorno que exija tu API (por ejemplo URL base y claves) en un archivo `.env.local` en la raíz del proyecto, según la documentación del backend.
 
@@ -57,7 +57,7 @@ Configura las variables de entorno que exija tu API (por ejemplo URL base y clav
 src/
 ├── app/                    # Rutas y layouts (App Router)
 │   ├── (auth)/             # Login, registro, inscripción
-│   └── dashboard/          # Paneles por rol (admin, docentes, estudiantes, etc.)
+│   └── dashboard/          # Paneles por role (admin, docentes, estudiantes, etc.)
 ├── components/
 │   ├── atom/               # Componentes pequeños reutilizables
 │   ├── molecules/          # Composiciones de átomos
@@ -69,4 +69,4 @@ src/
 
 ## 📜 Licencia
 
-Desarrollado por *Bryant*, todos los derechos reservados.
+Desarrolelado por _Bryant_, todos los derechos reservados.

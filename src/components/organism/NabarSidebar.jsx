@@ -15,6 +15,8 @@ import {
   faCalendarCheck,
   faBowlRice,
   faClipboardList,
+  faBuilding,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 import ItemProfile from "../atom/ItemProfile";
@@ -82,9 +84,9 @@ export default function NavbarSidebar() {
       },
       {
         icon: faSitemap,
-        label: "Control de Secciones",
-        active: patthename === `/dashboard/administrator/controlSecciones`,
-        direccion: "/dashboard/administrator/controlSecciones",
+        label: "Controle de Secciones",
+        active: patthename === `/dashboard/administrator/controleSecciones`,
+        direccion: "/dashboard/administrator/controleSecciones",
       },
       {
         icon: faBowlRice,
@@ -116,6 +118,26 @@ export default function NavbarSidebar() {
         label: "Configuración de Lapsos",
         active: patthename === `/dashboard/administrators/lapsos`,
         direccion: "/dashboard/administrators/lapsos",
+      },
+    ],
+    SuperAdmin: [
+      {
+        icon: faHome,
+        label: "Mi Inicio",
+        direccion: "/dashboard/SuperAdmin",
+        active: patthename === `/dashboard/SuperAdmin`,
+      },
+      {
+        icon: faUsers,
+        label: "Gestión de Usuarios",
+        direccion: "/dashboard/SuperAdmin/gestionUsuarios",
+        active: patthename === `/dashboard/SuperAdmin/gestionUsuarios`,
+      },
+      {
+        icon: faBuilding,
+        label: "Instituciones",
+        direccion: "/dashboard/SuperAdmin/instituciones",
+        active: patthename === `/dashboard/SuperAdmin/instituciones`,
       },
     ],
   };
@@ -154,7 +176,7 @@ export default function NavbarSidebar() {
       <div className="mt-auto border-t border-slate-400/30 pt-4 dark:border-slate-700">
         <Button
           icon={faSignOutAlt}
-          onClick={handleLogout}
+          onClick={() => handleLogout()}
           classNameBtn={`flex items-center gap-3 w-full text-gray-600/70 p-2 hover:bg-red-500/50 hover:text-red-900 rounded-lg transition-all text-md dark:text-slate-500 dark:hover:bg-red-300/50 dark:hover:text-red-600`}
           children={"Cerrar Sesion"}
         ></Button>

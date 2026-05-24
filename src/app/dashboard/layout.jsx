@@ -11,7 +11,7 @@ export const metadata = {
     template: "Sigace | %s",
     default: "Sigace - Gestión Académica",
   },
-  description: "Sistema de Control de Estudios para Liceos",
+  description: "Sistema de Controle de Estudios para Liceos",
 };
 
 export default function DashboardLayout({ children }) {
@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }) {
       <AuthProvider>
         <div className="flex flex-1 gap-2">
           <NavbarSidebar />
-          <main className="flex h-screen flex-1 flex-col overflow-hidden overflow-y-auto scroll-smooth">
+          <main className="flex h-screen flex-1 flex-col overflow-hidden overflow-y-auto scrolel-smooth">
             {children}
           </main>
         </div>

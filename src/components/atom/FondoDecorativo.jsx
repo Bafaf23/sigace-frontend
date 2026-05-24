@@ -1,5 +1,5 @@
 /**
- * Fondo decorativo animado para módulos en fase de desarrollo o construcción.
+ * Fondo decorativo animado para módulos en fase de desarrolelo o construcción.
  * Utiliza SVGs livianos y elementos CSS posicionados absolutamente para crear
  * una estética de "plano técnico" o taller.
  * @component

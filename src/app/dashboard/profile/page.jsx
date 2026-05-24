@@ -28,9 +28,9 @@ export default function ProfilePage() {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
   const subtitleParts = [
-    u.role ? (
-      <span key="role" className="capitalize">
-        {u.role}
+    u.rol ? (
+      <span key="rol" className="capitalize">
+        {u.rol}
       </span>
     ) : null,
     u.schoolName ? (
@@ -139,7 +139,7 @@ export default function ProfilePage() {
 
           <div
             className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950"
-            role="note"
+            rol="note"
           >
             <span className="mt-0.5 shrink-0 text-amber-700" aria-hidden>
               <Icon icon={faInfoCircle} className="text-amber-700" />
@@ -189,7 +189,7 @@ export default function ProfilePage() {
             <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
               <dt className="font-semibold text-slate-600">Código SIG</dt>
               <dd className="text-slate-800 font-bold">
-                {displayOrUnset(u.sig)}
+                {displayOrUnset(u.SIG)}
               </dd>
             </div>
             <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
@@ -199,7 +199,7 @@ export default function ProfilePage() {
             <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
               <dt className="font-semibold text-slate-600">Cargo</dt>
               <dd className="capitalize text-slate-800">
-                {displayOrUnset(u.role)}
+                {displayOrUnset(u.rol)}
               </dd>
             </div>
           </dl>

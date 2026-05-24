@@ -5,8 +5,9 @@
  */
 export async function login(formData) {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/login/`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

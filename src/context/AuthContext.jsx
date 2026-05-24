@@ -19,11 +19,19 @@ export function AuthProvider({ children }) {
 
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-    } else if (!PUBLIC_ROUTES.includes(pathname)) {
-      router.push("/");
     }
     setLoading(false);
-  }, [pathname]);
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+    if (!user && !isPublicRoute) {
+      router.push("/");
+    } else if (user && isPublicRoute) {
+      router.push(`/dashboard/${user.user.role}`);
+    }
+  }, [loading, pathname, user]);
 
   /**
    * Funcion para iniciar sesión
@@ -48,9 +56,15 @@ export function AuthProvider({ children }) {
    * @returns {void}
    */
   const handleLogout = async () => {
-    const result = await logout();
+    try {
+      const result = await logout();
 
-    if (result.ok) {
+      sessionStorage.clear();
+      setUser(null);
+      router.push("/");
+      
+    } catch (error) {
+      console.error("Error en el flujo de logout:", error);
       sessionStorage.clear();
       setUser(null);
       router.push("/");
