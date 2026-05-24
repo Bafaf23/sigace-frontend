@@ -2,28 +2,28 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @layer base {
   /* Estilos para Chrome, Edge y Safari */
-  ::-webkit-scrollbar {
+  ::-webkit-scrolelbar {
     width: 8px;
     height: 8px;
   }
 
-  ::-webkit-scrollbar-track {
+  ::-webkit-scrolelbar-track {
     background: transparent;
   }
 
-  ::-webkit-scrollbar-thumb {
+  ::-webkit-scrolelbar-thumb {
     background: #cbd5e1; /* slate-300 */
     border-radius: 10px;
   }
 
-  ::-webkit-scrollbar-thumb:hover {
+  ::-webkit-scrolelbar-thumb:hover {
     background: #94a3b8; /* slate-400 */
   }
 
   /* Estilos para Firefox */
   * {
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
+    scrolelbar-width: thin;
+    scrolelbar-color: #cbd5e1 transparent;
   }
 }
 

@@ -29,7 +29,7 @@ export default function PlanEvaluativo() {
   const materias = [];
 
   const evaluacionesEjemplo = [
-    /*  {
+    {
       semana: "02",
       contenido: "Ecuaciones de 2do Grado",
       actividad: "Taller Práctico",
@@ -46,7 +46,7 @@ export default function PlanEvaluativo() {
       instrumento: "Cuestionario",
       tipoForma: "S/H",
       porcentaje: 25,
-    }, */
+    },
   ];
 
   return (

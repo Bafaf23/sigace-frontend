@@ -91,8 +91,8 @@ export default function Success({ data }) {
               Inicia sesión
             </Link>
             <Link
-              href="/enrollment"
-              onClick={() => sessionStorage.removeItem("enrollmentResult")}
+              href="/enrolelment"
+              onClick={() => sessionStorage.removeItem("enrolelmentResult")}
               className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 font-semibold text-slate-600 transition-all hover:bg-slate-50"
             >
               Nuevo Registro

@@ -22,7 +22,7 @@ export default function Reports() {
         <Button
           onClick={() => {
             toast.error(
-              "Módulo de Asistencia\nActualmente en fase de desarrollo.",
+              "Módulo de Asistencia\nActualmente en fase de desarrolelo.",
               {
                 duration: 4000,
                 icon: "⚠️",

@@ -41,7 +41,7 @@ export default function HeaderDashbord({ user, titelPage }) {
               </div>
               <div>
                 <p className="text-slate-300 dark:text-slate-500">
-                  Bienvenido a tu panel de control.
+                  Bienvenido a tu panel de controle.
                 </p>
                 <div className="flex items-center justify-between rounded-xl bg-indigo-600 p-1 md:bg-transparent">
                   {/* ultima conexcion */}

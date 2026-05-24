@@ -1,6 +1,6 @@
 # Cumplimiento legal y operativo — SIGACE (liceo, Venezuela)
 
-> **Aviso:** esto no es asesoría legal. Valídalo con un abogado del sector educativo y con la Coordinación de Control de Estudios y Evaluación de tu Zona Educativa. El marco incluye LOE, reglamentos, circulares del MPPE, LOPNNA, Ley de Mensajes de Datos y Firmas Electrónicas, y el uso obligatorio del sistema oficial de gestión escolar (Güaicaipuro) según lo oriente el MPPE.
+> **Aviso:** esto no es asesoría legal. Valídalo con un abogado del sector educativo y con la Coordinación de Controle de Estudios y Evaluación de tu Zona Educativa. El marco incluye LOE, reglamentos, circulares del MPPE, LOPNNA, Ley de Mensajes de Datos y Firmas Electrónicas, y el uso obligatorio del sistema oficial de gestión escolar (Güaicaipuro) según lo oriente el MPPE.
 
 ---
 
@@ -9,7 +9,7 @@
 ### Obligaciones del plantel (no las cubre solo el software)
 
 1. Usar el sistema oficial del MPPE (**Güaicaipuro**) para matrícula, notas y cierres según la Zona Educativa y circulares vigentes.
-2. Responsables designados (director/a, coordinador/a de control de estudios y evaluación) y procedimientos internos escritos.
+2. Responsables designados (director/a, coordinador/a de controle de estudios y evaluación) y procedimientos internos escritos.
 3. Documentos con validez institucional: boletas, certificaciones y cierres con **sello del plantel y firmas** según normativa aplicable.
 4. Alineación con la Zona Educativa: formatos, plazos y reportes (p. ej. resumen final de evaluación).
 
@@ -21,10 +21,10 @@
 8. **Asistencia** operativa (docente + consulta estudiante).
 9. **Boletas / certificaciones PDF** con datos del liceo y flujo de emisión; distinguir consulta web vs documento sellado y firmado.
 10. **Retiros, traslados y modificaciones de matrícula** con historial y permisos.
-11. **Rol coordinador de control de estudios** (cierres, emisión/revisión de documentos, irregularidades).
+11. **role coordinador de controle de estudios** (cierres, emisión/revisión de documentos, irregularidades).
 12. **Portal estudiante** (y representante si se ofrece): notas y asistencia en solo lectura.
 13. **Carga académica** enlazada al backend (docente–materia–sección).
-14. **Coherencia legal–técnica** con lo prometido en `/legal` (cifrado, confidencialidad): HTTPS, backups, acceso por rol, logs.
+14. **Coherencia legal–técnica** con lo prometido en `/legal` (cifrado, confidencialidad): HTTPS, backups, acceso por role, logs.
 15. **Política de privacidad / tratamiento de datos** alineada con LOPNNA (y normativa de datos personales si aplica).
 16. **Rutas y auth** sin 404, rutas públicas correctas (inscripción), sin `localhost` en producción.
 17. **Revisión jurídica** con abogado venezolano del sector educativo.
@@ -53,7 +53,7 @@
 
 ### Lapsos y evaluación
 
-- [ ] Lapsos con fechas y estados (abierto/cerrado); cierre autorizado por rol.
+- [ ] Lapsos con fechas y estados (abierto/cerrado); cierre autorizado por role.
 - [ ] Plan evaluativo por materia; exportación/PDF si lo exige el plantel.
 - [ ] Notas por lapso coherente con el régimen del liceo; recuperación/mesas si aplica.
 
@@ -72,12 +72,12 @@
 
 ### Seguridad y datos
 
-- [ ] Permisos por rol; logs de acceso a datos sensibles; backups.
+- [ ] Permisos por role; logs de acceso a datos sensibles; backups.
 - [ ] Política de retención y rectificación de datos personales.
 
-### Roles
+### roles
 
-- [ ] Admin, docente, estudiante; **coordinador de control de estudios** recomendado; superusuario/soporte si aplica.
+- [ ] Admin, docente, estudiante; **coordinador de controle de estudios** recomendado; superusuario/soporte si aplica.
 
 ---
 
@@ -87,7 +87,7 @@
 
 1. LOPNNA y datos de menores: política de tratamiento, acceso mínimo, no filtrar notas/asistencia.
 2. Auditoría de calificaciones (creación/cambio, usuario, fecha, valor anterior).
-3. Autenticación y permisos reales por rol.
+3. Autenticación y permisos reales por role.
 4. Alinear textos legales con la capacidad técnica real del sistema.
 
 ### Prioridad 2 — Riesgo medio
@@ -104,7 +104,7 @@
 11. Carga académica en API.
 12. Lapsos en UI + backend; rutas consistentes en el sidebar.
 13. Infra: HTTPS, env, sin localhost en producción, backups.
-14. Abogado + validación con Coordinación de Control de Estudios.
+14. Abogado + validación con Coordinación de Controle de Estudios.
 
 **Orden sugerido de trabajo:** ítems P1 (1→4), luego P2 (5→8) en paralelo con backend, después P3 (9→14).
 
@@ -113,10 +113,10 @@
 ## 4. Referencia rápida de rutas en el frontend (revisar typos)
 
 - Docente: `planEvaluativo`, `cargarNotas`, `asistencia`.
-- Admin: `controlSecciones`, `gestionAsignaturas`, `cargaAcademica`; lapsos enlazados a `/dashboard/administrators/lapsos` en el sidebar — verificar que la ruta exista y coincida con `administrator` si aplica.
+- Admin: `controleSecciones`, `gestionAsignaturas`, `cargaAcademica`; lapsos enlazados a `/dashboard/administrators/lapsos` en el sidebar — verificar que la ruta exista y coincida con `administrator` si aplica.
 - Estudiante: `notas`, `asistencia` (confirmar que las páginas existan).
 - Legal: `/legal`.
 
 ---
 
-*Documento generado a partir de conversaciones de diseño del proyecto SIGACE; actualízalo cuando la Zona Educativa o el MPPE cambien requisitos o formatos.*
+_Documento generado a partir de conversaciones de diseño del proyecto SIGACE; actualízalo cuando la Zona Educativa o el MPPE cambien requisitos o formatos._

@@ -65,7 +65,7 @@ export default function FromRestablecerPass() {
             SIGACE<span className="text-cyan-500">.</span>
           </h1>
           <p className="font-medium text-slate-500 dark:text-slate-300">
-            Control de Estudios Inteligente
+            Controle de Estudios Inteligente
           </p>
         </div>
 

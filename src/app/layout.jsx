@@ -10,12 +10,12 @@ export const metadata = {
     template: "Sigace | %s",
     default: "Sigace - Gestión Escolar",
   },
-  description: "Sistema de Control de Estudios para Liceos",
+  description: "Sistema de Controle de Estudios para Liceos",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className="scroll-smooth">
+    <html lang="es" className="scrolel-smooth">
       <body className="bg-gray-100 transition dark:bg-slate-800">
         <main className="flex min-h-screen items-center justify-center">
           {children}

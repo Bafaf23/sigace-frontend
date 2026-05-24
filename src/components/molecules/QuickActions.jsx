@@ -12,13 +12,15 @@ import {
   faSitemap,
   faCalendarCheck,
   faUser,
+  faUsers,
+  faBuilding,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 /**
  * Acciones rapidas para el usuario, en vista moviles, con soprte al component Icon
- * Con opciones dependiendo al rol del Usuario [TEACHER, STUDENT, ADMIN]
+ * Con opciones dependiendo al role del Usuario [TEACHER, STUDENT, ADMIN]
  *
  * @component
  * @returns {JSX.Element}
@@ -77,9 +79,9 @@ export default function QuickActions() {
       },
       {
         icon: faSitemap,
-        name: "Control de Secciones",
-        active: pathname === `/dashboard/administrator/controlSecciones`,
-        src: "/dashboard/administrator/controlSecciones",
+        name: "Controle de Secciones",
+        active: pathname === `/dashboard/administrator/controleSecciones`,
+        src: "/dashboard/administrator/controleSecciones",
       },
       {
         icon: faUserCheck,
@@ -110,6 +112,34 @@ export default function QuickActions() {
         name: "Configuración de Lapsos",
         active: pathname === `/dashboard/administrator/configuracionLapsos`,
         src: "/dashboard/administrator/configuracionLapsos",
+      },
+    ],
+    SuperAdmin: [
+      {
+        icon: faHome,
+        name: "Mi Inicio",
+        src: "/dashboard/SuperAdmin",
+        active: pathname === `/dashboard/SuperAdmin` ? "hidden" : "",
+      },
+      {
+        icon: faUsers,
+        name: "Gestión de Usuarios",
+        src: "/dashboard/SuperAdmin/gestionUsuarios",
+        active:
+          pathname === `/dashboard/SuperAdmin/gestionUsuarios` ? "hidden" : "",
+      },
+      {
+        icon: faBuilding,
+        name: "Instituciones",
+        src: "/dashboard/SuperAdmin/instituciones",
+        active:
+          pathname === `/dashboard/SuperAdmin/instituciones` ? "hidden" : "",
+      },
+      {
+        icon: faUser,
+        name: "Mi Perfil",
+        src: "/dashboard/profile",
+        active: pathname === `/dashboard/profile` ? "hidden" : "",
       },
     ],
   };

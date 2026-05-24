@@ -26,7 +26,7 @@ export default function FromLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (!formData.email || !formData.password) {
+    if (!formData.email) {
       toast.error("Los campos no pueden estar vacios");
       setLoading(false);
       return;
@@ -40,7 +40,7 @@ export default function FromLogin() {
       return;
     } else {
       sessionStorage.setItem("user", JSON.stringify(data));
-      const role = data.user?.role || data.role;
+      const role = data?.user?.role;
 
       toast.success("Inicio de sesión exitoso");
       router.push(`/dashboard/${role}`);
@@ -64,7 +64,7 @@ export default function FromLogin() {
             SIGACE<span className="text-cyan-500">.</span>
           </h1>
           <p className="font-medium text-slate-500 dark:text-slate-300">
-            Control de Estudios Inteligente
+            Controle de Estudios Inteligente
           </p>
         </div>
 
@@ -87,21 +87,13 @@ export default function FromLogin() {
             onChange={handleChange}
           />
 
-          <div className="flex items-center justify-between gap-2 flex-col md:flex-row md:justify-between">
+          <div className="flex justify-end">
             <Links
               icon={faKey}
               direction="/resetpass"
               className="text-sm font-semibold text-cyan-600 hover:text-cyan-700 text-center md:text-left gap-2"
               label={"¿Olvidaste tu contraseña?"}
             ></Links>
-            <Links
-              direction="/register"
-              icon={faUserPlus}
-              className="flex items-center gap-2 text-sm font-semibold text-cyan-600 hover:text-cyan-700 text-center md:text-left"
-              label={"Registrate"}
-            >
-              Registrate
-            </Links>
           </div>
 
           <Button
