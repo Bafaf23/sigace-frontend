@@ -375,7 +375,7 @@ export default function FormInscrip() {
     }
   };
 
-  if (success && resulData) return <EnrolelmentSuccessPage data={resulData} />;
+  if (success && resulData) return <EnrollmentSuccessPage data={resulData} />;
 
   return (
     <div className="w-full max-w-2xl p-3 md:p-0">
