@@ -22,7 +22,7 @@ function parseInstitutionName(data) {
   return parts.length > 1 ? parts.slice(1).join(" - ").trim() : "";
 }
 
-export default function EnrolelmentSuccessPage({ data }) {
+export default function EnrollmentSuccessPage({ data }) {
   if (!data) return <Loading />;
 
   const dataSuccess = {
