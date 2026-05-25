@@ -11,8 +11,9 @@ export default function FormInstitucion() {
     nombre: "",
     direccion: "",
     telefono: "",
+    razon_social: "",
     correo: "",
-    tipo: "publico",
+    tipo: "pública",
     rif: "",
     codigo_DEA: "",
   });
@@ -26,8 +27,8 @@ export default function FormInstitucion() {
       !formData.telefono ||
       !formData.correo ||
       !formData.tipo ||
-      (formData.tipo === "publico" && !formData.codigo_DEA) ||
-      (formData.tipo === "privado" && !formData.rif)
+      (formData.tipo === "pública" && !formData.codigo_DEA) ||
+      (formData.tipo === "privada" && (!formData.rif || !formData.razon_social))
     ) {
       setLoading(false);
       toast.error("Todos los campos son obligatorios");
@@ -46,14 +47,49 @@ export default function FormInstitucion() {
   };
   return (
     <form className="space-y-6 p-2" onSubmit={handleSubmit}>
+      <Selector
+        name="tipo"
+        label="Seleccione el tipo de institución"
+        value={formData.tipo}
+        onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+        options={[
+          { value: "pública", label: "Pública" },
+          { value: "privada", label: "Privada" },
+        ]}
+      />
       <div className="grid grid-cols-1 gap-2">
-        <Input
-          name="nombre"
-          label="Nombre de la institucion"
-          placeholder="Institucion de Educacion"
-          value={formData.nombre}
-          onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-        />
+        {formData.tipo === "pública" ? (
+          <Input
+            name="nombre"
+            label="Nombre de la institucion"
+            placeholder="Institucion de Educacion"
+            value={formData.nombre}
+            onChange={(e) =>
+              setFormData({ ...formData, nombre: e.target.value })
+            }
+          />
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              name="nombre"
+              label="Nombre de la institucion"
+              placeholder="Institucion de Educacion"
+              value={formData.nombre}
+              onChange={(e) =>
+                setFormData({ ...formData, nombre: e.target.value })
+              }
+            />
+            <Input
+              name="razon_social"
+              label="Razon social"
+              placeholder="Ej: La Paloma. S.A"
+              value={formData.razon_social}
+              onChange={(e) =>
+                setFormData({ ...formData, razon_social: e.target.value })
+              }
+            />
+          </div>
+        )}
       </div>
       <div className="grid grid-cols-1 gap-2">
         <Input
@@ -84,18 +120,8 @@ export default function FormInstitucion() {
           onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
         />
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <Selector
-          name="tipo"
-          label="Tipo"
-          value={formData.tipo}
-          onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
-          options={[
-            { value: "publico", label: "Público" },
-            { value: "privado", label: "Privado" },
-          ]}
-        />
-        {formData.tipo === "publico" ? (
+      <div className="grid grid-cols-1 gap-2">
+        {formData.tipo === "pública" ? (
           <div className="grid grid-cols-1 gap-2">
             <Input
               name="dea"

@@ -23,7 +23,7 @@ export default function InstitucionesPage() {
             Crear Institucion
           </Button>
           <Modal
-            title="Crear Institucion"
+            title="Agregar nueva institución"
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
           >
