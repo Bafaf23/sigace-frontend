@@ -4,17 +4,24 @@ import Button from "../atom/Button";
 import { useState } from "react";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { createSchool } from "@/services/createSchool";
+import { updateSchool } from "@/services/updateSchool";
 import toast from "react-hot-toast";
-export default function FormInstitucion() {
+export default function FormInstitucion({
+  institucion,
+  onSuccess,
+  isEdit = false,
+}) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    nombre: "",
-    direccion: "",
-    telefono: "",
-    correo: "",
-    tipo: "publico",
-    rif: "",
-    codigo_DEA: "",
+    SIG: institucion?.SIG || "",
+    nombre: institucion?.nombre || "",
+    direccion: institucion?.direccion || "",
+    telefono: institucion?.telefono || "",
+    razon_social: institucion?.razon_social || "",
+    correo: institucion?.email || "",
+    tipo: institucion?.tipo || "pública",
+    rif: institucion?.rif || "",
+    codigo_DEA: institucion?.codigo_DEA || "",
   });
 
   const handleSubmit = async (e) => {
@@ -26,34 +33,80 @@ export default function FormInstitucion() {
       !formData.telefono ||
       !formData.correo ||
       !formData.tipo ||
-      (formData.tipo === "publico" && !formData.codigo_DEA) ||
-      (formData.tipo === "privado" && !formData.rif)
+      (formData.tipo === "pública" && !formData.codigo_DEA) ||
+      (formData.tipo === "privada" && (!formData.rif || !formData.razon_social))
     ) {
       setLoading(false);
       toast.error("Todos los campos son obligatorios");
       return;
     }
-    const result = await createSchool(formData);
+    const result = isEdit
+      ? await updateSchool(formData)
+      : await createSchool(formData);
     if (result.error) {
       setLoading(false);
       toast.error(result.error);
       return;
     }
     if (result.success) {
-      toast.success("Institucion creada exitosamente");
+      toast.success(
+        isEdit
+          ? "Institucion actualizada exitosamente"
+          : "Institucion creada exitosamente",
+      );
       setLoading(false);
+      onSuccess?.();
+    } else {
+      setLoading(false);
+      toast.error(result.error);
+      return;
     }
   };
   return (
     <form className="space-y-6 p-2" onSubmit={handleSubmit}>
+      <Selector
+        name="tipo"
+        label="Seleccione el tipo de institución"
+        value={formData.tipo}
+        onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+        options={[
+          { value: "pública", label: "Pública" },
+          { value: "privada", label: "Privada" },
+        ]}
+      />
       <div className="grid grid-cols-1 gap-2">
-        <Input
-          name="nombre"
-          label="Nombre de la institucion"
-          placeholder="Institucion de Educacion"
-          value={formData.nombre}
-          onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-        />
+        {formData.tipo === "pública" ? (
+          <Input
+            name="nombre"
+            label="Nombre de la institucion"
+            placeholder="Institucion de Educacion"
+            value={formData.nombre}
+            onChange={(e) =>
+              setFormData({ ...formData, nombre: e.target.value })
+            }
+          />
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              name="nombre"
+              label="Nombre de la institucion"
+              placeholder="Institucion de Educacion"
+              value={formData.nombre}
+              onChange={(e) =>
+                setFormData({ ...formData, nombre: e.target.value })
+              }
+            />
+            <Input
+              name="razon_social"
+              label="Razon social"
+              placeholder="Ej: La Paloma. S.A"
+              value={formData.razon_social}
+              onChange={(e) =>
+                setFormData({ ...formData, razon_social: e.target.value })
+              }
+            />
+          </div>
+        )}
       </div>
       <div className="grid grid-cols-1 gap-2">
         <Input
@@ -84,18 +137,8 @@ export default function FormInstitucion() {
           onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
         />
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <Selector
-          name="tipo"
-          label="Tipo"
-          value={formData.tipo}
-          onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
-          options={[
-            { value: "publico", label: "Público" },
-            { value: "privado", label: "Privado" },
-          ]}
-        />
-        {formData.tipo === "publico" ? (
+      <div className="grid grid-cols-1 gap-2">
+        {formData.tipo === "pública" ? (
           <div className="grid grid-cols-1 gap-2">
             <Input
               name="dea"
@@ -129,7 +172,11 @@ export default function FormInstitucion() {
           icon={faSave}
           classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
         >
-          Crear Institucion
+          {loading
+            ? "Guardando..."
+            : isEdit
+              ? "Guardar Cambios"
+              : "Crear Institucion"}
         </Button>
       </div>
     </form>

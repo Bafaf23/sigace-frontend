@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import EnrolelmentSchool from "../molecules/EnrolelmentSchool";
+import EnrollmentSchool from "../molecules/EnrollmentSchool";
 import Terms from "@/components/atom/Terms";
 
 const GENDER_TO_DB = { F: "femenino", M: "masculino" };
@@ -412,7 +412,7 @@ export default function FormInscrip() {
             />
           )}
           {passed === 6 && (
-            <EnrolelmentSchool data={data} manejarCambio={handleChange} />
+            <EnrollmentSchool data={data} manejarCambio={handleChange} />
           )}
           {passed === 7 && (
             <>
