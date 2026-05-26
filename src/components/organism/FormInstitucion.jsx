@@ -4,18 +4,24 @@ import Button from "../atom/Button";
 import { useState } from "react";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { createSchool } from "@/services/createSchool";
+import { updateSchool } from "@/services/updateSchool";
 import toast from "react-hot-toast";
-export default function FormInstitucion() {
+export default function FormInstitucion({
+  institucion,
+  onSuccess,
+  isEdit = false,
+}) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    nombre: "",
-    direccion: "",
-    telefono: "",
-    razon_social: "",
-    correo: "",
-    tipo: "pública",
-    rif: "",
-    codigo_DEA: "",
+    SIG: institucion?.SIG || "",
+    nombre: institucion?.nombre || "",
+    direccion: institucion?.direccion || "",
+    telefono: institucion?.telefono || "",
+    razon_social: institucion?.razon_social || "",
+    correo: institucion?.email || "",
+    tipo: institucion?.tipo || "pública",
+    rif: institucion?.rif || "",
+    codigo_DEA: institucion?.codigo_DEA || "",
   });
 
   const handleSubmit = async (e) => {
@@ -34,15 +40,26 @@ export default function FormInstitucion() {
       toast.error("Todos los campos son obligatorios");
       return;
     }
-    const result = await createSchool(formData);
+    const result = isEdit
+      ? await updateSchool(formData)
+      : await createSchool(formData);
     if (result.error) {
       setLoading(false);
       toast.error(result.error);
       return;
     }
     if (result.success) {
-      toast.success("Institucion creada exitosamente");
+      toast.success(
+        isEdit
+          ? "Institucion actualizada exitosamente"
+          : "Institucion creada exitosamente",
+      );
       setLoading(false);
+      onSuccess?.();
+    } else {
+      setLoading(false);
+      toast.error(result.error);
+      return;
     }
   };
   return (
@@ -155,7 +172,11 @@ export default function FormInstitucion() {
           icon={faSave}
           classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
         >
-          Crear Institucion
+          {loading
+            ? "Guardando..."
+            : isEdit
+              ? "Guardar Cambios"
+              : "Crear Institucion"}
         </Button>
       </div>
     </form>
