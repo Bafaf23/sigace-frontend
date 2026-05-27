@@ -11,9 +11,9 @@ export async function createUser(data) {
       data,
     );
 
-    return response;
+    return response.json();
   } catch (error) {
     console.error("Error al crear el usuario:", error);
-    return error.response.data;
+    return error.response.json();
   }
 }

@@ -3,6 +3,7 @@ import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
 import Icon from "@/components/atom/Icon";
+import { deleteUser } from "@/services/user/deleteUser";
 import Modal from "@/components/organism/Modal";
 import {
   faUser,
@@ -18,12 +19,14 @@ import {
 import Button from "@/components/atom/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { getUsers } from "@/services/user/getUser";
+import { getUsers } from "@/services/user/getUsers";
 
 import FormRegister from "@/components/organism/FormRegister";
 
 export default function UsuariosPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -49,7 +52,7 @@ export default function UsuariosPage() {
             onClose={() => setIsOpen(false)}
             title="Crear Usuario"
           >
-            <FormRegister />
+            <FormRegister mode="create" />
           </Modal>
         </div>
       </div>
@@ -78,7 +81,10 @@ export default function UsuariosPage() {
         ]}
         data={users}
         renderTableRows={(user) => (
-          <tr className="transition-colors hover:bg-slate-50/50 group">
+          <tr
+            key={user.id}
+            className="transition-colors hover:bg-slate-50/50 group"
+          >
             <td className="px-6 py-4">
               <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
                 <span className="font-medium">{user.id}</span>
@@ -106,6 +112,7 @@ export default function UsuariosPage() {
             <td className="px-6 py-4">
               <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
                 <span className="font-medium">{user.SIG}</span>
+                <span className="text-slate-500">{user.school}</span>
               </div>
             </td>
             <td className="px-6 py-4">
@@ -113,16 +120,36 @@ export default function UsuariosPage() {
                 <Button
                   icon={faEdit}
                   classNameBtn="p-2 text-slate-400 transition-colors hover:text-indigo-600"
+                  onClick={() => {
+                    setIsOpenEdit(true);
+                    setEditingUser(user);
+                  }}
                 />
                 <Button
                   icon={faTrash}
                   classNameBtn="p-2 text-slate-400 transition-colors hover:text-red-600"
+                  onClick={() =>
+                    deleteUser(user.id).then((data) => {
+                      if (data.error) {
+                        toast.error(data.error);
+                      } else {
+                        setUsers(users.filter((u) => u.id !== user.id));
+                      }
+                    })
+                  }
                 />
               </div>
             </td>
           </tr>
         )}
       />
+      <Modal
+        isOpen={isOpenEdit}
+        onClose={() => setIsOpenEdit(false)}
+        title="Editar Usuario"
+      >
+        <FormRegister user={editingUser} mode="edit" />
+      </Modal>
     </div>
   );
 }

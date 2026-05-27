@@ -7,6 +7,7 @@ import QuickActions from "@/components/molecules/QuickActions";
 import InfoCard from "@/components/atom/InfoCard";
 import { faBuilding, faUser } from "@fortawesome/free-solid-svg-icons";
 import { getSchools } from "@/services/school/getSchool";
+import { getUsers } from "@/services/user/getUsers";
 import { useState, useEffect } from "react";
 
 export default function SuperAdminPage() {
@@ -15,8 +16,10 @@ export default function SuperAdminPage() {
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
+    getUsers().then((data) => setUsuarios(data));
     getSchools().then((data) => setInstituciones(data));
   }, []);
+
   if (loading) return <Loading />;
 
   const role = user?.user?.role;
@@ -36,7 +39,7 @@ export default function SuperAdminPage() {
           />
           <InfoCard
             label="Usuarios"
-            value={0}
+            value={usuarios.length}
             icon={faUser}
             colorClass="bg-green-500/40 text-green-500"
           />

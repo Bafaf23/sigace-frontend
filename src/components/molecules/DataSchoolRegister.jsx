@@ -1,19 +1,20 @@
-import Icon from "../atom/Icon";
 import Selector from "../atom/Selector";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { getSchools } from "@/services/school/getSchool";
+import { getSchools, getRoles } from "@/services/school/getSchool";
 import { useState, useEffect } from "react";
 
 export default function DataSchoolRegister({ data, manejoCambio }) {
   const [schools, setSchools] = useState([]);
+  const [roles, setRoles] = useState([]);
   useEffect(() => {
     getSchools().then((data) => {
       setSchools(data);
+      getRoles().then((data) => {
+        setRoles(data);
+      });
     });
   }, []);
   return (
     <div className="animate-fade-in space-y-4">
-      <hr className="border border-slate-100" />
       <div className="flex flex-col gap-4">
         <Selector
           label={"Elija una institucion"}
@@ -24,6 +25,20 @@ export default function DataSchoolRegister({ data, manejoCambio }) {
           name={"SIG"}
           onChange={manejoCambio}
           value={data.SIG}
+        />
+      </div>
+      <div>
+        <Selector
+          label={"Cargo del nuevo usuario"}
+          options={
+            roles?.map((role) => ({
+              label: role.name,
+              value: role.id,
+            })) || []
+          }
+          name={"role_id"}
+          onChange={manejoCambio}
+          value={data.role_id}
         />
       </div>
     </div>

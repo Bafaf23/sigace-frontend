@@ -11,8 +11,9 @@ import {
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { createUser } from "@/services/user/createUser";
+import { updateUser } from "@/services/user/updateUser";
 
-export default function FormRegister() {
+export default function FormRegister({ user, mode }) {
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -29,14 +30,15 @@ export default function FormRegister() {
    * @property {string} sig - Codigo unico dado por el sistema que identifica a la institucion.
    */
   const [data, setData] = useState({
-    typeDocuement: "",
-    document: "",
-    name: "",
-    last_name: "",
-    email: "",
-    phone: "",
-    SIG: "",
-    role_id: 3,
+    id: user?.id || "",
+    typeDocuement: user?.typeDocuement || "V-",
+    document: user?.document || "",
+    name: user?.name || "",
+    last_name: user?.last_name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    SIG: user?.SIG || "",
+    role_id: user?.role_id || "",
   });
 
   const handleChange = (e) => {
@@ -62,10 +64,12 @@ export default function FormRegister() {
       return;
     }
 
-    if (!validate(patterns.dni, data.document)) {
-      setLoading(false);
-      toast.error("El número de documento no es válido");
-      return;
+    if (mode !== "edit") {
+      if (!validate(patterns.dni, data.document)) {
+        setLoading(false);
+        toast.error("El número de documento no es válido");
+        return;
+      }
     }
     if (!validate(patterns.phone, data.phone)) {
       setLoading(false);
@@ -78,21 +82,29 @@ export default function FormRegister() {
       toast.error("El código SIG no es válido, debe tener el formato SIG0000");
       return;
     }
-    const response = await createUser(data);
+    if (mode !== "edit") {
+      const response = await createUser(data);
+    } else {
+      const response = await updateUser(data);
+    }
 
     if (response.error) {
       setLoading(false);
       toast.error(response.error);
       return;
     } else {
-      toast.success(response.message);
+      toast.success("Usuario creado correctamente");
     }
   }
   return (
     <div className="space-y-4">
       <form onSubmit={handleSubmit}>
         {passed == 1 && (
-          <DataUserRegister data={data} manejoCambio={handleChange} />
+          <DataUserRegister
+            data={data}
+            manejoCambio={handleChange}
+            mode={mode}
+          />
         )}
 
         {passed == 2 && (
