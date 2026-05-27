@@ -1,7 +1,7 @@
 import Selector from "../atom/Selector";
 import Icon from "../atom/Icon";
 import { faHandPointer } from "@fortawesome/free-solid-svg-icons";
-import { getSchools } from "../../services/getSchool";
+import { getSchools } from "../../services/school/getSchool";
 import { getSection } from "../../services/getSection";
 import { useEffect, useState } from "react";
 

@@ -1,5 +1,5 @@
 import Input from "../atom/Input";
-import InputPass from "../atom/InputPass";
+
 import SelectorInput from "./SelectorInput";
 
 /**
@@ -17,11 +17,6 @@ import SelectorInput from "./SelectorInput";
  * @returns {JSX.Element} Fragmento de UI con campos validados y estilizados con Tailwind CSS.
  */
 export default function DataUserRegister({ data, manejoCambio }) {
-  const handleLocalChange = (e) => {
-    if (manejoCambio) {
-      manejoCambio(e);
-    }
-  };
   const options = [
     {
       label: "Venezolano",
@@ -34,49 +29,35 @@ export default function DataUserRegister({ data, manejoCambio }) {
   ];
   return (
     <div className="space-y-3">
-      <hr className="border border-slate-100" />
-      <div className="grid grid-cols-2 md:grid-cols-3 items-center gap-2">
-        <div className="col-span-2">
-          <SelectorInput
-            label={"Tipo de Identidad"}
-            name={"typeDocuement"}
-            nameInput={"document"}
-            options={options}
-            id={"optionId"}
-            placeholder={"3242343"}
-            valueSel={data.typeDocuement}
-            valueInput={data.document}
-            onChange={manejoCambio}
-          />
-        </div>
-
-        <div className="col-span-2 md:col-span-1">
-          <Input
-            label={"Fecha de Nacimiento"}
-            type={"date"}
-            placeholder={"23-09-2003"}
-            value={data.birthdate}
-            name={"birthdate"}
-            onChange={manejoCambio}
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-2">
-        <Input
-          label={"Nombre"}
-          type={"text"}
-          placeholder={"Mario"}
-          value={data.name}
-          name={"name"}
+      <div className="grid grid-cols-1 md:grid-cols-1 items-center gap-2">
+        <SelectorInput
+          label={"Tipo de Identidad"}
+          name={"typeDocuement"}
+          nameInput={"document"}
+          options={options}
+          id={"optionId"}
+          placeholder={"3242343"}
+          valueSel={data.typeDocuement}
+          valueInput={data.document}
           onChange={manejoCambio}
         />
+      </div>
+      <Input
+        label={"Nombre"}
+        type={"text"}
+        placeholder={"Mario"}
+        value={data.name}
+        name={"name"}
+        onChange={manejoCambio}
+      />
+
+      <div className="flex gap-2">
         <Input
           label={"Apellido"}
           type={"text"}
           placeholder={"Sanchez"}
-          value={data.lastName}
-          name={"lastName"}
+          value={data.last_name}
+          name={"last_name"}
           onChange={manejoCambio}
         />
       </div>
@@ -96,22 +77,6 @@ export default function DataUserRegister({ data, manejoCambio }) {
           placeholder={"0424..."}
           value={data.phone}
           name={"phone"}
-          onChange={manejoCambio}
-        />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <InputPass
-          label={"Contrasena"}
-          placeholder={"******"}
-          value={data.password}
-          name={"password"}
-          onChange={manejoCambio}
-        />
-        <InputPass
-          label={"Confrirma la contrasena"}
-          placeholder={"******"}
-          value={data.passwordConfir}
-          name={"passwordConfir"}
           onChange={manejoCambio}
         />
       </div>

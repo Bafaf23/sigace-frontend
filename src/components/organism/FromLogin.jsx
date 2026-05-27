@@ -1,5 +1,5 @@
 "use client";
-import { login } from "@/services/login";
+import { login } from "@/services/auth/login";
 import Button from "@/components/atom/Button";
 import Input from "@/components/atom/Input";
 import InputPass from "@/components/atom/InputPass";
@@ -38,6 +38,15 @@ export default function FromLogin() {
       toast.error(data.error);
       setLoading(false);
       return;
+    } else if (
+      data.mustChangePassword === true ||
+      data.mustChangePassword === 1
+    ) {
+      sessionStorage.setItem("user", JSON.stringify(data));
+      toast.loading("La contraseña debe ser cambiada");
+      router.push("/force-password-change");
+      toast.dismiss();
+      toast.success("Por favor, cambie su contraseña");
     } else {
       sessionStorage.setItem("user", JSON.stringify(data));
       const role = data?.user?.role;

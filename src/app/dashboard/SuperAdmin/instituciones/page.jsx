@@ -1,13 +1,13 @@
 "use client";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Button from "@/components/atom/Button";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
 import Modal from "@/components/organism/Modal";
-import { deleteSchool } from "@/services/deleteSchool";
+import { deleteSchool } from "@/services/school/deleteSchool";
 import { useState, useEffect } from "react";
-import { getSchools } from "@/services/getSchool";
+import { getSchools } from "@/services/school/getSchool";
 import Icon from "@/components/atom/Icon";
 import FormInstitucion from "@/components/organism/FormInstitucion";
 import {
@@ -24,13 +24,13 @@ import {
 
 export default function InstitucionesPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [instituciones, setInstituciones] = useState([]);
-  const [editingInstitucion, setEditingInstitucion] = useState(null);
+  const [institutions, setInstitutions] = useState([]);
+  const [editingInstitution, setEditingInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   useEffect(() => {
-    getSchools().then((data) => setInstituciones(data));
+    getSchools().then((data) => setInstitutions(data));
     setLoading(false);
   }, []);
 
@@ -84,20 +84,100 @@ export default function InstitucionesPage() {
           { name: "RIF/DEA", icon: faIdCard },
           { name: "Acciones", icon: faEllipsis },
         ]}
-        handleDeleteSchool={(SIG) =>
-          deleteSchool(SIG).then((data) => {
-            if (data.ok) {
-              setInstituciones(
-                instituciones.filter((institucion) => institucion.SIG !== SIG),
-              );
-            }
-          })
-        }
-        handleEditSchool={(institucion) => {
-          setIsOpenEdit(true);
-          setEditingInstitucion(institucion);
-        }}
-        data={instituciones}
+        renderTableRows={(institution) => (
+          <tr
+            key={institution.SIG}
+            className="transition-colors hover:bg-slate-50/50 group"
+          >
+            <td className="px-6 py-4">
+              <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
+                <span className="font-medium">{institution.SIG}</span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.name}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.type === "Pública"
+                    ? "---"
+                    : institution.company_name}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.address}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.phone}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span
+                  className={`font-medium uppercase ${institution.type === "Pública" ? "text-green-500" : "text-orange-500"}`}
+                >
+                  {institution.type}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.type === "Pública"
+                    ? institution.DEA_CODE
+                    : institution.RIF}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  icon={faEdit}
+                  classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-indigo-50 hover:text-indigo-600"
+                  onClick={() => {
+                    setIsOpenEdit(true);
+                    setEditingInstitution(institution).then((data) => {
+                      if (data.ok) {
+                        setIsOpenEdit(true);
+                        setEditingInstitution(institution);
+                      }
+                    });
+                  }}
+                />
+                <Button
+                  icon={faTrash}
+                  classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-red-50 hover:text-red-600"
+                  onClick={() => {
+                    deleteSchool(institution.SIG).then((data) => {
+                      if (data.ok) {
+                        setInstitutions(
+                          institutions.filter(
+                            (institution) =>
+                              institution.SIG !== institution.SIG,
+                          ),
+                        );
+                      }
+                    });
+                  }}
+                />
+              </div>
+            </td>
+          </tr>
+        )}
+        data={institutions}
       />
 
       <Modal
@@ -107,7 +187,7 @@ export default function InstitucionesPage() {
       >
         <FormInstitucion
           isEdit={true}
-          institucion={editingInstitucion}
+          institution={editingInstitution}
           onSuccess={() => setIsOpenEdit(false)}
         />
       </Modal>

@@ -1,6 +1,6 @@
 "use client";
-import { login } from "@/services/login";
-import { logout } from "@/services/logout";
+import { login } from "@/services/auth/login";
+import { logout } from "@/services/auth/logout";
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -62,7 +62,6 @@ export function AuthProvider({ children }) {
       sessionStorage.clear();
       setUser(null);
       router.push("/");
-      
     } catch (error) {
       console.error("Error en el flujo de logout:", error);
       sessionStorage.clear();

@@ -6,7 +6,7 @@ import AccessDenied from "@/components/molecules/AccessDenied";
 import QuickActions from "@/components/molecules/QuickActions";
 import InfoCard from "@/components/atom/InfoCard";
 import { faBuilding, faUser } from "@fortawesome/free-solid-svg-icons";
-import { getSchools } from "@/services/getSchool";
+import { getSchools } from "@/services/school/getSchool";
 import { useState, useEffect } from "react";
 
 export default function SuperAdminPage() {
