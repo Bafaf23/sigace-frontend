@@ -15,7 +15,7 @@ export default function TeachersPage() {
   if (loading) return <Loading />;
 
   const role = user?.user?.role ?? user?.role;
-  if (!user || role !== "teacher") {
+  if (!user || role !== "Profesor") {
     router.push("/");
     return <AccessDenied />;
   }

@@ -2,6 +2,12 @@ import Icon from "../atom/Icon";
 import SubjectActions from "./SubjectActions";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 
+const getSubjectKey = (subject, index) =>
+  subject.id ??
+  subject._id ??
+  subject.code_subject ??
+  `${subject.name ?? "subject"}-${subject.year_academic ?? "year"}-${index}`;
+
 /**
  * Lista de materias del plantel.
  * Este componente llama a la tabla Subject de la BD
@@ -30,9 +36,6 @@ export default function ListSubjects({ dataSubjects, onSubjectDeleted }) {
 
   return (
     <>
-      <h2 className="p-3 text-2xl font-bold text-gray-500 uppercase dark:text-slate-400">
-        Lista de materias
-      </h2>
       <div className="p-4">
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <table className="w-full table-auto border-collapse text-left">
@@ -54,9 +57,9 @@ export default function ListSubjects({ dataSubjects, onSubjectDeleted }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {dataSubjects?.map((subject) => (
+              {dataSubjects?.map((subject, index) => (
                 <tr
-                  key={subject.id}
+                  key={getSubjectKey(subject, index)}
                   className="group transition-all hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
                 >
                   <td className="px-6 py-4">
@@ -73,7 +76,7 @@ export default function ListSubjects({ dataSubjects, onSubjectDeleted }) {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
-                    {subject.year_subject}
+                    {subject.year_academic}
                   </td>
 
                   <td className="px-6 py-4">

@@ -7,12 +7,21 @@ import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Modal from "@/components/organism/Modal";
 import TablaNotas from "@/components/organism/TablaNotas";
 import Icon from "@/components/atom/Icon";
+import AccessDenied from "@/components/molecules/AccessDenied";
+import Loading from "@/app/dashboard/loading";
 import Selector from "@/components/atom/Selector";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function cargarNotas() {
+  const { user, loading } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  if (loading) return <Loading />;
+  const role = user?.user?.role ?? user?.role;
+  if (!user || role !== "Profesor") {
+    return <AccessDenied />;
+  }
   const alumnosDisponibles = [];
   const data = [];
   const materias = [];

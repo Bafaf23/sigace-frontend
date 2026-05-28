@@ -1,6 +1,7 @@
 import Button from "../atom/Button";
 import Input from "../atom/Input";
 import Selector from "../atom/Selector";
+import { createSubject } from "@/services/subject/createSubject";
 import { faSpinner, faSave } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -10,10 +11,9 @@ export default function FormSubject({ schoolId, onSuccess }) {
 
   const [formData, setFormData] = useState({
     name: "",
-    code: "",
-    schoolId: schoolId,
-    grade: "",
-    area: "Formación General",
+    code_subject: "",
+    SIG: schoolId,
+    year_academic: "",
   });
 
   const gradeOptions = [
@@ -32,32 +32,22 @@ export default function FormSubject({ schoolId, onSuccess }) {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const result = await fetch("http://127.0.0.1:5000/subject/create/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (result.ok) {
-        toast.success("Asignatura creada exitosamente");
-        setFormData({
-          name: "",
-          code: "",
-          schoolId: schoolId,
-          grade: "",
-          area: "Formación General",
-        });
-        onSuccess?.();
-      } else {
-        toast.error("Error al crear la asignatura");
-        console.error("Error al crear la asignatura:", result.error);
-      }
-    } catch (error) {
-      toast.error("Error al crear la asignatura");
-      console.error("Error al crear la asignatura:", error);
+    console.log(formData);
+
+    const result = await createSubject(formData);
+    if (result.error) {
+      toast.error(result.error);
+      setLoading(false);
+      return;
     }
+    toast.success("Asignatura creada exitosamente");
+    setFormData({
+      name: "",
+      code_subject: "",
+      schoolId: schoolId,
+      year: "",
+    });
+    onSuccess?.();
     setLoading(false);
   };
 
@@ -74,27 +64,19 @@ export default function FormSubject({ schoolId, onSuccess }) {
         />
         <Input
           label="Código de la Asignatura"
-          name="code"
+          name="code_subject"
           placeholder="Ej: MAT-01"
-          value={formData.code}
-          onChange={(e) => handleUpdate("code", e.target.value)}
+          value={formData.code_subject}
+          onChange={(e) => handleUpdate("code_subject", e.target.value)}
         />
       </div>
 
       <Selector
         label="Año Escolar de la Asignatura"
         options={gradeOptions}
-        value={formData.grade}
-        onChange={(e) => handleUpdate("grade", e.target.value)}
+        value={formData.year_academic}
+        onChange={(e) => handleUpdate("year_academic", e.target.value)}
         required
-      />
-
-      <Input
-        label="Área de Formación de la Asignatura"
-        name="area"
-        placeholder="Ej: Ciencias Naturales"
-        value={formData.area}
-        onChange={(e) => handleUpdate("area", e.target.value)}
       />
 
       <div className="flex justify-end pt-4">

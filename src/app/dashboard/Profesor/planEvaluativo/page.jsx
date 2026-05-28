@@ -22,7 +22,7 @@ export default function PlanEvaluativo() {
   if (loading) return <Loading />;
 
   const role = user?.user?.role ?? user?.role;
-  if (!user || role !== "teacher") {
+  if (!user || role !== "Profesor") {
     return <AccessDenied />;
   }
 

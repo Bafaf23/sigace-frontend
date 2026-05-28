@@ -12,6 +12,7 @@ export default function TableInsti({
   titelTable = [],
   data = [],
   loading = false,
+  renderMovilCard = () => {},
   renderTableRows = () => {},
 }) {
   if (loading) {
@@ -31,82 +32,9 @@ export default function TableInsti({
             No hay instituciones cargadas.
           </div>
         ) : (
-          data.map((institucion) => (
-            <div
-              key={`card-${institucion.SIG}`}
-              className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-            >
-              {/* Encabezado de la Card */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3 dark:border-slate-800">
-                <div>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
-                    SIG: {institucion.SIG}
-                  </span>
-                  <h3 className="text-lg font-bold text-slate-800 dark:text-white">
-                    {institucion.nombre}
-                  </h3>
-                </div>
-                <span
-                  className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${institucion.tipo === "pública" ? "bg-green-50 text-green-600 dark:bg-green-950/30" : "bg-orange-50 text-orange-600 dark:bg-orange-950/30"}`}
-                >
-                  {institucion.tipo}
-                </span>
-              </div>
-
-              {/* Detalles en filas */}
-              <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                <div className="flex items-start gap-2">
-                  <Icon icon={faBuilding} className="mt-0.5 text-slate-400" />
-                  <div>
-                    <span className="font-medium block text-xs text-slate-400">
-                      Razón Social
-                    </span>
-                    {institucion.razon_social}
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2">
-                  <Icon
-                    icon={faLocationDot}
-                    className="mt-0.5 text-slate-400"
-                  />
-                  <div>
-                    <span className="font-medium block text-xs text-slate-400">
-                      Dirección
-                    </span>
-                    {institucion.direccion}
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2">
-                  <Icon icon={faPhone} className="mt-0.5 text-slate-400" />
-                  <div>
-                    <span className="font-medium block text-xs text-slate-400">
-                      Contacto
-                    </span>
-                    <p>{institucion.telefono}</p>
-                    <p className="text-xs text-slate-400">
-                      {institucion.email}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2 border-t border-slate-50 pt-2 dark:border-slate-800/50">
-                  <Icon icon={faIdCard} className="mt-0.5 text-slate-400" />
-                  <div>
-                    <span className="font-medium block text-xs text-slate-400">
-                      {institucion.tipo === "pública" ? "Código DEA" : "RIF"}
-                    </span>
-                    <span className="font-mono font-semibold">
-                      {institucion.tipo === "pública"
-                        ? institucion.codigo_DEA
-                        : institucion.rif}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
+          data.map((institucion) => {
+            return renderMovilCard(institucion);
+          })
         )}
       </div>
 

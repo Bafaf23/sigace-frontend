@@ -10,7 +10,7 @@ export default function AdminPage() {
 
   if (loading) return <Loading />;
 
-  if (!user || user.user.role !== "administrator") return <AccessDenied />;
+  if (!user || user.user.role !== "Administrador") return <AccessDenied />;
 
   return (
     <div className="animate-in fade-in duration-500">

@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "../atom/Button";
+import ItemProfile from "../atom/ItemProfile";
 import SigaceLogo from "../atom/SigaceLogo";
 import VersionTag from "../atom/VersionTag";
 import NavLink from "../molecules/NavLink";
@@ -15,134 +16,123 @@ import {
   faCalendarCheck,
   faBowlRice,
   faClipboardList,
+  faUserPlus,
+  faUserGraduate,
   faBuilding,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
-import ItemProfile from "../atom/ItemProfile";
+
+export const menuLink = {
+  Profesor: [
+    {
+      icon: faHome,
+      label: "Inicio",
+
+      href: `/dashboard/Profesor`,
+    },
+    {
+      icon: faListCheck,
+      label: "Plan Evaluativo",
+      href: `/dashboard/Profesor/planEvaluativo`,
+    },
+    {
+      icon: faPenToSquare,
+      label: "Cargas de Notas",
+      href: `/dashboard/Profesor/cargarNotas`,
+    },
+    {
+      icon: faUserCheck,
+      label: "Asistencias",
+      href: `/dashboard/Profesor/asistencia`,
+    },
+  ],
+  Estudiante: [
+    {
+      icon: faHome,
+      label: "Mi Inicio",
+      href: "/dashboard/student",
+    },
+    {
+      icon: faListCheck,
+      label: "Mis Notas",
+      href: "/dashboard/student/notas",
+    },
+    {
+      icon: faUserCheck,
+      label: "Mi Asistencia",
+      href: "/dashboard/student/asistencia",
+    },
+  ],
+  Administrador: [
+    {
+      icon: faHome,
+      label: "Mi Inicio",
+      href: "/dashboard/Administrador",
+    },
+    {
+      icon: faSitemap,
+      label: "Controle de Secciones",
+      href: "/dashboard/Administrador/controlSecciones",
+    },
+    {
+      icon: faBowlRice,
+      label: "Asignaturas",
+      href: "/dashboard/Administrador/gestionAsignaturas",
+    },
+    {
+      icon: faClipboardList,
+      label: "Carga Academica",
+      href: "/dashboard/Administrador/cargaAcademica",
+    },
+    /* {
+      icon: faUserMinus,
+      label: "Retiros y Traslados",
+      href: "/dashboard/administrators/materias",
+    }, */
+
+    {
+      icon: faUserPlus,
+      label: "Gestion de Docentes",
+      href: "/dashboard/Administrador/gestionDocentes",
+    },
+    {
+      icon: faUserGraduate,
+      label: "Gestion de Estudiantes",
+      href: "/dashboard/Administrador/gestionEstudiantes",
+    },
+    {
+      icon: faCalendarCheck,
+      label: "Configuración de Lapsos",
+      href: "/dashboard/Administrador/lapsos",
+    },
+  ],
+  SuperAdmin: [
+    {
+      icon: faHome,
+      label: "Mi Inicio",
+      href: "/dashboard/SuperAdmin",
+    },
+    {
+      icon: faUsers,
+      label: "Gestión de Usuarios",
+      href: "/dashboard/SuperAdmin/gestionUsuarios",
+    },
+    {
+      icon: faBuilding,
+      label: "Instituciones",
+      href: "/dashboard/SuperAdmin/instituciones",
+    },
+  ],
+};
 
 export default function NavbarSidebar() {
-  const patthename = usePathname();
   const { user, loading, handleLogout } = useAuth();
-
+  const pathname = usePathname();
   if (loading) return;
   if (!user) return;
 
-  const menuLink = {
-    teacher: [
-      {
-        icon: faHome,
-        label: "Inicio",
-        active: patthename === `/dashboard/teacher`,
-        direccion: `/dashboard/teacher`,
-      },
-      {
-        icon: faListCheck,
-        label: "Plan Evaluativo",
-        active: patthename === `/dashboard/teacher/planEvaluativo`,
-        direccion: `/dashboard/teacher/planEvaluativo`,
-      },
-      {
-        icon: faPenToSquare,
-        label: "Cargas de Notas",
-        active: patthename === `/dashboard/teacher/cargarNotas`,
-        direccion: `/dashboard/teacher/cargarNotas`,
-      },
-      {
-        icon: faUserCheck,
-        label: "Asistencias",
-        active: patthename === `/dashboard/teacher/asistencia`,
-        direccion: `/dashboard/teacher/asistencia`,
-      },
-    ],
-    student: [
-      {
-        icon: faHome,
-        label: "Mi Inicio",
-        direccion: "/dashboard/student",
-        active: patthename === `/dashboard/student`,
-      },
-      {
-        icon: faListCheck,
-        label: "Mis Notas",
-        active: patthename === `/dashboard/student/notas`,
-        direccion: "/dashboard/student/notas",
-      },
-      {
-        icon: faUserCheck,
-        label: "Mi Asistencia",
-        active: patthename === `/dashboard/student/asistencia`,
-        direccion: "/dashboard/student/asistencia",
-      },
-    ],
-    administrator: [
-      {
-        icon: faHome,
-        label: "Mi Inicio",
-        direccion: "/dashboard/administrator",
-        active: patthename === `/dashboard/administrator`,
-      },
-      {
-        icon: faSitemap,
-        label: "Controle de Secciones",
-        active: patthename === `/dashboard/administrator/controleSecciones`,
-        direccion: "/dashboard/administrator/controleSecciones",
-      },
-      {
-        icon: faBowlRice,
-        label: "Asignaturas",
-        active: patthename === `/dashboard/administrator/gestionAsignaturas`,
-        direccion: "/dashboard/administrator/gestionAsignaturas",
-      },
-      {
-        icon: faClipboardList,
-        label: "Carga Academica",
-        active: patthename === `/dashboard/administrator/cargaAcademica`,
-        direccion: "/dashboard/administrator/cargaAcademica",
-      },
-      /* {
-        icon: faUserMinus,
-        label: "Retiros y Traslados",
-        active: patthename === `/dashboard/administrators/materias`,
-        direccion: "/dashboard/administrators/materias",
-      }, */
-
-      /*  {
-        icon: faBook,
-        label: "Gestión de Materias",
-        active: patthename === `/dashboard/administrators/materias`,
-        direccion: "/dashboard/administrators/materias",
-      }, */
-      {
-        icon: faCalendarCheck,
-        label: "Configuración de Lapsos",
-        active: patthename === `/dashboard/administrators/lapsos`,
-        direccion: "/dashboard/administrators/lapsos",
-      },
-    ],
-    SuperAdmin: [
-      {
-        icon: faHome,
-        label: "Mi Inicio",
-        direccion: "/dashboard/SuperAdmin",
-        active: patthename === `/dashboard/SuperAdmin`,
-      },
-      {
-        icon: faUsers,
-        label: "Gestión de Usuarios",
-        direccion: "/dashboard/SuperAdmin/gestionUsuarios",
-        active: patthename === `/dashboard/SuperAdmin/gestionUsuarios`,
-      },
-      {
-        icon: faBuilding,
-        label: "Instituciones",
-        direccion: "/dashboard/SuperAdmin/instituciones",
-        active: patthename === `/dashboard/SuperAdmin/instituciones`,
-      },
-    ],
-  };
-
-  const currentLinks = menuLink[user?.user?.role || "student"] || [];
+  const currentLinks = menuLink[user?.user?.role || "Estudiante"] || [];
 
   return (
     <aside
@@ -160,10 +150,10 @@ export default function NavbarSidebar() {
         {currentLinks.map((link, index) => (
           <NavLink
             key={index}
+            href={link.href}
             label={link.label}
             icon={link.icon}
-            direcction={link.direccion}
-            active={link.active}
+            active={pathname === link.href}
             classNameIcon={link.active ? "text-cyan-600" : ""}
           />
         ))}

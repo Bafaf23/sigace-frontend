@@ -11,6 +11,7 @@ import {
   faUserTag,
   faEllipsis,
   faPhone,
+  faLocationDot,
   faBuilding,
   faInfoCircle,
   faTrash,
@@ -141,6 +142,55 @@ export default function UsuariosPage() {
               </div>
             </td>
           </tr>
+        )}
+        renderMovilCard={(user) => (
+          <div
+            key={`card-${user.id}`}
+            className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            {/* Encabezado de la Card */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3 dark:border-slate-800">
+              <div>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                  {user.document}
+                </span>
+                <h3 className="text-lg font-bold text-slate-800 dark:text-white">
+                  {user.name} {user.last_name}
+                </h3>
+              </div>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${user.role === "SuperAdmin" ? "bg-green-50 text-green-600 dark:bg-green-950/30" : "bg-orange-50 text-orange-600 dark:bg-orange-950/30"}`}
+              >
+                {user.role}
+              </span>
+            </div>
+
+            {/* Detalles en filas */}
+            <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-start gap-2">
+                <Icon icon={faBuilding} className="mt-0.5 text-slate-400" />
+                <div>
+                  <span className="font-medium block text-xs text-slate-400">
+                    Institución
+                  </span>
+                  <span className="font-mono font-semibold text-slate-700">
+                    {user.SIG}-{user.school}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Icon icon={faPhone} className="mt-0.5 text-slate-400" />
+                <div>
+                  <span className="font-medium block text-xs text-slate-400">
+                    Contacto
+                  </span>
+                  <p>{user.phone}</p>
+                  <p className="text-xs text-slate-400">{user.email}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       />
       <Modal
