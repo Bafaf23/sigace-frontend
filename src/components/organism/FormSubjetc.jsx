@@ -2,8 +2,9 @@ import Button from "../atom/Button";
 import Input from "../atom/Input";
 import Selector from "../atom/Selector";
 import { createSubject } from "@/services/subject/createSubject";
+import { getYears } from "@/services/subject/getYears";
 import { faSpinner, faSave } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function FormSubject({ schoolId, onSuccess }) {
@@ -11,18 +12,17 @@ export default function FormSubject({ schoolId, onSuccess }) {
 
   const [formData, setFormData] = useState({
     name: "",
-    code_subject: "",
     SIG: schoolId,
-    year_academic: "",
+    year_id: "",
   });
 
-  const gradeOptions = [
-    { value: "1ero", label: "1er Año" },
-    { value: "2do", label: "2do Año" },
-    { value: "3ero", label: "3er Año" },
-    { value: "4to", label: "4to Año" },
-    { value: "5to", label: "5to Año" },
-  ];
+  const [years, setYears] = useState([]);
+
+  useEffect(() => {
+    getYears(schoolId).then((data) => {
+      setYears(data.map((year) => ({ value: year.id, label: year.name })));
+    });
+  }, []);
 
   const handleUpdate = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -43,9 +43,8 @@ export default function FormSubject({ schoolId, onSuccess }) {
     toast.success("Asignatura creada exitosamente");
     setFormData({
       name: "",
-      code_subject: "",
       schoolId: schoolId,
-      year: "",
+      year_id: "",
     });
     onSuccess?.();
     setLoading(false);
@@ -53,7 +52,7 @@ export default function FormSubject({ schoolId, onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
         <Input
           label="Nombre de la Asignatura"
           name="name"
@@ -62,20 +61,13 @@ export default function FormSubject({ schoolId, onSuccess }) {
           onChange={(e) => handleUpdate("name", e.target.value)}
           required
         />
-        <Input
-          label="Código de la Asignatura"
-          name="code_subject"
-          placeholder="Ej: MAT-01"
-          value={formData.code_subject}
-          onChange={(e) => handleUpdate("code_subject", e.target.value)}
-        />
       </div>
 
       <Selector
         label="Año Escolar de la Asignatura"
-        options={gradeOptions}
-        value={formData.year_academic}
-        onChange={(e) => handleUpdate("year_academic", e.target.value)}
+        options={years}
+        value={formData.year_id}
+        onChange={(e) => handleUpdate("year_id", e.target.value)}
         required
       />
 

@@ -3,10 +3,20 @@ import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-import FormDocente from "@/components/organism/FormDocente";
+import TableInsti from "@/components/molecules/TableInsti";
+import FormRegister from "@/components/organism/FormRegister";
 import Modal from "@/components/organism/Modal";
 import { useAuth } from "@/context/AuthContext";
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faIdCard,
+  faUser,
+  faPhone,
+  faTrash,
+  faEllipsisV,
+  faInfoCircle,
+  faBuilding,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 export default function GestionDocentesPage() {
@@ -33,8 +43,19 @@ export default function GestionDocentesPage() {
         isOpen={isOpent}
         onClose={() => setIsOpent(false)}
       >
-        <FormDocente />
+        <FormRegister mode="create" />
       </Modal>
+
+      <TableInsti
+        titelTable={[
+          { name: "Cédula", icon: faIdCard },
+          { name: "Docente", icon: faUser },
+          { name: "Asignación Académica (Materias)", icon: faBuilding },
+          { name: "Contacto", icon: faPhone },
+          { name: "Estatus", icon: faInfoCircle },
+          { name: "Acciones", icon: faEllipsisV },
+        ]}
+      />
     </>
   );
 }

@@ -1,10 +1,13 @@
 "use client";
+import Button from "@/components/atom/Button";
+import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
-import Icon from "@/components/atom/Icon";
-import { deleteUser } from "@/services/user/deleteUser";
+import FormRegister from "@/components/organism/FormRegister";
 import Modal from "@/components/organism/Modal";
+import { deleteUser } from "@/services/user/deleteUser";
+import { getUsers } from "@/services/user/getUsers";
 import {
   faUser,
   faIdCard,
@@ -17,19 +20,15 @@ import {
   faTrash,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "@/components/atom/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { getUsers } from "@/services/user/getUsers";
-
-import FormRegister from "@/components/organism/FormRegister";
 
 export default function UsuariosPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [users, setUsers] = useState([]);
-
+  console.log(users);
   useEffect(() => {
     getUsers().then((data) => {
       setUsers(data);
@@ -112,8 +111,20 @@ export default function UsuariosPage() {
 
             <td className="px-6 py-4">
               <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
-                <span className="font-medium">{user.SIG}</span>
-                <span className="text-slate-500">{user.school}</span>
+                {user.school ? (
+                  <>
+                    <span className="font-medium uppercase text-slate-700">
+                      {user.school.name}
+                    </span>
+                    <span className="text-slate-500 group-hover:text-cyan-600 transition-colors">
+                      {user.school.SIG}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-slate-500 font-medium group-hover:text-cyan-600 transition-colors">
+                    SIGACE
+                  </span>
+                )}
               </div>
             </td>
             <td className="px-6 py-4">
@@ -130,7 +141,7 @@ export default function UsuariosPage() {
                   icon={faTrash}
                   classNameBtn="p-2 text-slate-400 transition-colors hover:text-red-600"
                   onClick={() =>
-                    deleteUser(user.id).then((data) => {
+                    deleteUser(user.id, user.role_id).then((data) => {
                       if (data.error) {
                         toast.error(data.error);
                       } else {
@@ -173,9 +184,20 @@ export default function UsuariosPage() {
                   <span className="font-medium block text-xs text-slate-400">
                     Institución
                   </span>
-                  <span className="font-mono font-semibold text-slate-700">
-                    {user.SIG}-{user.school}
-                  </span>
+                  {user.school ? (
+                    <>
+                      <span className="font-mono font-semibold text-slate-700">
+                        {user.school.name}
+                      </span>
+                      <span className="text-slate-500 group-hover:text-cyan-600 transition-colors">
+                        {user.school.SIG}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="font-mono font-semibold text-slate-700">
+                      SIGACE
+                    </span>
+                  )}
                 </div>
               </div>
 

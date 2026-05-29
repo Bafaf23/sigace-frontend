@@ -1,8 +1,10 @@
 "use client";
 import DataSchoolRegister from "../molecules/DataSchoolRegister";
 import DataUserRegister from "../molecules/DataUserRegister";
-import { patterns, validate } from "@/services/regex/regex";
 import Button from "@/components/atom/Button";
+import { patterns, validate } from "@/services/regex/regex";
+import { createUser } from "@/services/user/createUser";
+import { updateUser } from "@/services/user/updateUser";
 import {
   faRightLong,
   faLeftLong,
@@ -10,25 +12,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { createUser } from "@/services/user/createUser";
-import { updateUser } from "@/services/user/updateUser";
 
 export default function FormRegister({ user, mode }) {
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
-
-  /**
-   * Objeto data de usuarios par el registro de usuarios para el sistema con role por defecto teacher.
-   *
-   * @typedef {Object} dataUser
-   * @property {string} typeDocuement
-   * @property {string} document
-   * @property {string} name
-   * @property {string} lastName
-   * @property {string} email
-   * @property {string} phone
-   * @property {string} sig - Codigo unico dado por el sistema que identifica a la institucion.
-   */
+  // data de usuario para el registro de usuarios para el sistema con role por defecto teacher.
   const [data, setData] = useState({
     id: user?.id || "",
     typeDocuement: user?.typeDocuement || "V-",

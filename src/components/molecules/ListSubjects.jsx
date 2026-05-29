@@ -76,7 +76,7 @@ export default function ListSubjects({ dataSubjects, onSubjectDeleted }) {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
-                    {subject.year_academic}
+                    {subject.year_name}
                   </td>
 
                   <td className="px-6 py-4">
