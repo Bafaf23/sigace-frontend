@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import Icon from "@/components/atom/Icon";
 import ListSubjects from "@/components/molecules/ListSubjects";
 import HeaderGestionMaterias from "@/components/organism/HeaderGestionMaterias";
@@ -32,7 +33,7 @@ export default function MateriasPage() {
     loadSubjects();
   }, [loadSubjects]);
 
-  if (loading) return <p>Cargando materias</p>;
+  if (loading) return <Loading />;
   return (
     <div className="">
       <HeaderGestionMaterias

@@ -1,16 +1,16 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
+import Loading from "@/app/loading";
+import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
+import QuickActions from "@/components/molecules/QuickActions";
+import { useAuth } from "@/context/AuthContext";
 import {
   faEdit,
   faInfoCircle,
   faBell,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import Loading from "@/app/dashboard/loading";
-import QuickActions from "@/components/molecules/QuickActions";
-import Button from "@/components/atom/Button";
 
 function displayOrUnset(value) {
   if (value == null || value === "") return "No asignado";

@@ -1,7 +1,7 @@
 "use client";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import { useAuth } from "@/context/AuthContext";
-import Loading from "@/app/dashboard/loading";
+import Loading from "@/app/loading";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import QuickActions from "@/components/molecules/QuickActions";
 import InfoCard from "@/components/atom/InfoCard";

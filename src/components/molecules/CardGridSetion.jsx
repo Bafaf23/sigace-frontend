@@ -1,6 +1,7 @@
 import CardSecction from "../atom/CardSection";
 import Icon from "../atom/Icon";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
+
 /**
  * Grilla de secciones cargadas en el sistema.
  *
@@ -12,7 +13,11 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
  * @returns {JSX.Element}
  */
 
-export default function CardGridSetion({ dataSet = [], availableStudents }) {
+export default function CardGridSetion({
+  dataSet = [],
+  availableStudents,
+  period,
+}) {
   if (!dataSet || dataSet.length === 0)
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-12 text-center dark:border-slate-500 dark:bg-slate-700">
@@ -29,24 +34,22 @@ export default function CardGridSetion({ dataSet = [], availableStudents }) {
       </div>
     );
 
-  console.log(dataSet);
-
   return (
     <div className="grid gap-5 p-3 md:grid-cols-1 lg:grid-cols-2">
       {dataSet.map((section) => {
-        const teacherName = section.teachers_id?.user
-          ? `${section.teachers_id.user.name} ${section.teachers_id.user.lastName}`
-          : "Sin docente asignado";
+        const teacherName = `${section.teacher_name} ${section.teacher_last_name}`;
         return (
           <CardSecction
             id={section.id}
             key={section.id}
-            grade={section.name}
-            identifier={section.code_section}
+            grade={section.year_name}
+            identifier={section.name}
             teacher={teacherName}
-            current={section._count?.students || 0}
-            max={section.max_cup}
+            current={section.total_students || 0}
+            max={section.capacity}
             availableStudents={availableStudents}
+            period={period}
+            id_section={section.id}
           />
         );
       })}

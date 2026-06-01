@@ -1,6 +1,6 @@
 "use client";
 import Button from "../atom/Button";
-import { deleteSubject } from "@/services/deleteSubject";
+import { deleteSubject } from "@/services/subject/deleteSubject";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 /**

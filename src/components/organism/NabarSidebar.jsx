@@ -101,11 +101,11 @@ export const menuLink = {
       label: "Gestion de Estudiantes",
       href: "/dashboard/Administrador/gestionEstudiantes",
     },
-    {
+    /*  {
       icon: faCalendarCheck,
       label: "Configuración de Lapsos",
       href: "/dashboard/Administrador/lapsos",
-    },
+    }, */
   ],
   SuperAdmin: [
     {
