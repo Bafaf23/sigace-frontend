@@ -12,7 +12,7 @@ import Icon from "@/components/atom/Icon";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { faPrint, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import Loading from "@/app/dashboard/loading";
+import Loading from "@/app/loading";
 
 export default function PlanEvaluativo() {
   const { user, loading } = useAuth();

@@ -1,18 +1,18 @@
 "use client";
 
+import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
-import AccionesRapidas from "@/components/molecules/QuickActions";
+import Icon from "@/components/atom/Icon";
+import Selector from "@/components/atom/Selector";
+import AccessDenied from "@/components/molecules/AccessDenied";
 import FormCargaNotas from "@/components/molecules/FromCargaNotas";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import AccionesRapidas from "@/components/molecules/QuickActions";
 import Modal from "@/components/organism/Modal";
 import TablaNotas from "@/components/organism/TablaNotas";
-import Icon from "@/components/atom/Icon";
-import AccessDenied from "@/components/molecules/AccessDenied";
-import Loading from "@/app/dashboard/loading";
-import Selector from "@/components/atom/Selector";
+import { useAuth } from "@/context/AuthContext";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
 
 export default function cargarNotas() {
   const { user, loading } = useAuth();
