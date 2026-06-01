@@ -3,13 +3,17 @@
 import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
-import QuickActions from "@/components/molecules/QuickActions";
 import { useAuth } from "@/context/AuthContext";
 import {
   faEdit,
   faInfoCircle,
   faBell,
   faRightFromBracket,
+  faIdCard,
+  faEnvelope,
+  faPhone,
+  faSchool,
+  faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 function displayOrUnset(value) {
@@ -27,199 +31,187 @@ export default function ProfilePage() {
   const u = user.user;
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
-  const subtitleParts = [
-    u.rol ? (
-      <span key="rol" className="capitalize">
-        {u.rol}
-      </span>
-    ) : null,
-    u.schoolName ? (
-      <span key="school" className="text-slate-600">
-        {u.schoolName}
-      </span>
-    ) : null,
-    u.email ? (
-      <span key="email" className="break-all text-slate-600">
-        {u.email}
-      </span>
-    ) : null,
-  ].filter(Boolean);
-
   return (
-    <div className="mx-auto w-full max-w-5xl p-3">
-      <header className="mb-6 px-1 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="flex h-13 w-13 items-center justify-center rounded-full bg-indigo-600">
-            <span className="text-3xl font-bold tracking-tighter text-white uppercase">
+    <div className="mx-auto w-full max-w-5xl p-4 md:p-6 animate-fade-in">
+      {/* HEADER PRINCIPAL - ESTILO DASHBOARD */}
+      <header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-800/60">
+        <div className="flex items-center gap-4">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-linear-to-tr from-indigo-500 to-indigo-700 shadow-md shadow-indigo-500/20">
+            <span className="text-2xl font-extrabold tracking-tight text-white uppercase">
               {u.name.charAt(0)}
               {u.lastName.charAt(0)}
             </span>
           </div>
           <div className="flex flex-col">
-            <h1 className="text-3xl font-bold capitalize text-slate-600">
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-slate-100 capitalize">
               {u.name} {u.lastName}
             </h1>
-            {subtitleParts.length > 0 && (
-              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500">
-                {subtitleParts.map((part, i) => (
-                  <span
-                    key={part.key ?? i}
-                    className="inline-flex items-center gap-x-2"
-                  >
-                    {i > 0 && (
-                      <span className="select-none text-slate-300" aria-hidden>
-                        ·
-                      </span>
-                    )}
-                    {part}
-                  </span>
-                ))}
-              </p>
-            )}
+            <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mt-0.5 flex items-center gap-2">
+              <span className="bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-0.5 rounded-full capitalize text-xs">
+                {u.role || "Usuario"}
+              </span>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <span className="text-slate-500 text-xs">{u.email}</span>
+            </p>
           </div>
         </div>
-        <div>
-          <Icon icon={faBell} className="text-slate-500 text-2xl" />
+        <div className="flex items-center gap-2 self-end sm:self-center">
+          <button className="p-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/50 shadow-sm">
+            <Icon icon={faBell} className="text-xl" />
+          </button>
         </div>
       </header>
-      <QuickActions />
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mt-6">
-        {/* Datos personales */}
-        <section
-          className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
-          aria-labelledby="personal-heading"
-        >
-          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-3">
-            <h2
-              id="personal-heading"
-              className="text-2xl font-bold text-indigo-600"
-            >
-              Datos personales
+      {/* CUERPO CENTRAL ASIMÉTRICO */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    
+        <section className="lg:col-span-2 space-y-6 rounded-3xl border border-slate-200/60 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <Icon icon={faIdCard} className="text-indigo-500 text-base" />
+              Información Personal
             </h2>
             <button
               type="button"
               disabled
-              title="Próximamente podrás editar tu perfil desde aquí."
-              className="inline-flex cursor-not-allowed items-center gap-2 rounded-md border border-transparent px-2 py-1 text-sm font-medium text-slate-400"
+              title="Próximamente podrás editar tu perfil."
+              className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-xl bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-400 dark:bg-slate-800/50"
             >
-              <Icon icon={faEdit} className="text-base text-slate-400" />
+              <Icon icon={faEdit} />
               Editar
             </button>
           </div>
 
-          <dl className="space-y-3 text-sm sm:text-base grid grid-cols-2  md:grid-cols-none gap-4">
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Cédula</dt>
-              <dd className="text-slate-800">{displayOrUnset(u.dni)}</dd>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-1">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Cédula o ID
+              </span>
+              <p className="text-base font-medium text-slate-800 dark:text-slate-200">
+                {displayOrUnset(u.dni)}
+              </p>
             </div>
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Nombre</dt>
-              <dd className="capitalize text-slate-800">
-                {displayOrUnset(u.name)}
-              </dd>
-            </div>
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Apellido</dt>
-              <dd className="text-slate-800">{displayOrUnset(u.lastName)}</dd>
-            </div>
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Email</dt>
-              <dd className="break-all text-slate-800">
+            <div className="space-y-1">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Correo Electrónico
+              </span>
+              <p className="text-base font-medium text-slate-800 dark:text-slate-200 break-all">
                 {displayOrUnset(u.email)}
-              </dd>
+              </p>
             </div>
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Teléfono</dt>
-              <dd className="text-slate-800">
+            <div className="space-y-1">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Nombres
+              </span>
+              <p className="text-base font-medium text-slate-800 dark:text-slate-200 capitalize">
+                {displayOrUnset(u.name)}
+              </p>
+            </div>
+            <div className="space-y-1">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Apellidos
+              </span>
+              <p className="text-base font-medium text-slate-800 dark:text-slate-200 capitalize">
+                {displayOrUnset(u.lastName)}
+              </p>
+            </div>
+            <div className="space-y-1 sm:col-span-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Teléfono de Contacto
+              </span>
+              <p className="text-base font-medium text-slate-800 dark:text-slate-200">
                 {u.phone ? u.phone : "Sin teléfono registrado"}
-              </dd>
+              </p>
             </div>
-          </dl>
+          </div>
 
-          <div
-            className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950"
-            rol="note"
-          >
-            <span className="mt-0.5 shrink-0 text-amber-700" aria-hidden>
-              <Icon icon={faInfoCircle} className="text-amber-700" />
-            </span>
-            <p>
-              Si hay un error en tu cédula u otros datos oficiales,{" "}
+          {/* MENSAJE DE INFORMATIVO ATENUADO */}
+          <div className="flex gap-3 rounded-2xl bg-amber-50/60 p-4 text-xs text-amber-900/90 dark:bg-amber-950/20 dark:text-amber-300">
+            <Icon
+              icon={faInfoCircle}
+              className="text-amber-600 shrink-0 text-sm mt-0.5"
+            />
+            <p className="leading-relaxed">
+              Si detectas inconsistencias en tus datos de identidad oficiales,
+              por favor{" "}
               {supportEmail ? (
                 <a
                   href={`mailto:${supportEmail}`}
-                  className="font-medium text-amber-900 underline decoration-amber-700/60 underline-offset-2 hover:text-amber-950"
+                  className="font-bold underline text-amber-800 dark:text-amber-400 hover:text-amber-950"
                 >
-                  escribe a soporte
+                  escribe a soporte técnico
                 </a>
               ) : (
-                <span className="font-medium">
-                  contacta al administrador de tu plantel
+                <span className="font-bold">
+                  contacta a la dirección del plantel
                 </span>
               )}
               .
             </p>
           </div>
-
-          <div className="border-t border-slate-100 pt-3">
-            <p className="text-xs text-slate-500">
-              ID de usuario (útil para soporte):{" "}
-              <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-slate-700">
-                {u.id}
-              </code>
-            </p>
-          </div>
         </section>
-        {/* Datos del plantel */}
-        <section
-          className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm flex flex-col justify-between"
-          aria-labelledby="school-heading"
-        >
-          <div className="border-b border-slate-100 pb-3">
-            <h2
-              id="school-heading"
-              className="text-2xl font-bold text-cyan-600"
-            >
-              Datos del plantel
-            </h2>
+
+        {/* PANEL DERECHO: DATOS INSTITUCIONALES (TOMA 1 COLUMNA) */}
+        <section className="space-y-6 rounded-3xl border border-slate-200/60 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 flex flex-col justify-between">
+          <div className="space-y-6">
+            <div className="border-b border-slate-100 pb-4 dark:border-slate-800">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <Icon icon={faSchool} className="text-cyan-500 text-base" />
+                Institución
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800/40">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                  Código SIG Institucional
+                </span>
+                <span className="text-xl font-black text-cyan-600 dark:text-cyan-400 tracking-tight font-mono block">
+                  {displayOrUnset(u.SIG)}
+                </span>
+              </div>
+
+              <div className="space-y-1 px-1">
+                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+                  Centro Educativo
+                </span>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  {displayOrUnset(u.schoolName)}
+                </p>
+              </div>
+
+              <div className="space-y-1 px-1">
+                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+                  Cargo Asignado
+                </span>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">
+                  {displayOrUnset(u.role)}
+                </p>
+              </div>
+            </div>
           </div>
 
-          <dl className="space-y-3 text-sm sm:text-base">
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Código SIG</dt>
-              <dd className="text-slate-800 font-bold">
-                {displayOrUnset(u.SIG)}
-              </dd>
-            </div>
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Plantel</dt>
-              <dd className="text-slate-800">{displayOrUnset(u.schoolName)}</dd>
-            </div>
-            <div className="grid gap-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr] sm:gap-x-4">
-              <dt className="font-semibold text-slate-600">Cargo</dt>
-              <dd className="capitalize text-slate-800">
-                {displayOrUnset(u.rol)}
-              </dd>
-            </div>
-          </dl>
-
-          <div className="border-t border-slate-100 pt-3">
-            <p className="text-xs leading-relaxed text-slate-500">
-              El código SIG identifica a tu institución en el sistema. Los
-              cambios de plantel o cargo los gestiona la administración central.
+          {/* NOTA DE PRIVACIDAD INTEGRADA AL FINAL */}
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 space-y-2">
+            <p className="flex items-center gap-1.5 text-slate-500 font-medium">
+              <Icon icon={faShieldAlt} className="text-slate-400" />{" "}
+              Confidencialidad SIGACE
             </p>
-            <hr className="border-slate-100 my-2" />
-            <p className="text-xs text-slate-500">
-              Recuerda, no compartas el código SIG con terceros.
+            <p className="leading-normal">
+              El código SIG es un identificador crítico. No lo compartas bajo
+              ninguna circunstancia.
+            </p>
+            <p className="font-mono text-[10px] text-slate-300 dark:text-slate-700 bg-slate-50 dark:bg-slate-950/30 p-1.5 rounded-md text-center break-all">
+              ID: {u.id}
             </p>
           </div>
         </section>
       </div>
+
       <div className="mt-6 lg:hidden">
         <Button
           icon={faRightFromBracket}
-          classNameBtn="w-full bg-red-500 text-white hover:bg-red-600 rounded-2xl p-3 flex items-center justify-center gap-2 shadow-lg shadow-red-500/30 transition-all duration-300 hover:shadow-red-700/50"
+          classNameBtn="w-full bg-slate-100 dark:bg-slate-800 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 font-semibold rounded-2xl p-3.5 flex items-center justify-center gap-2 border border-slate-200/50 dark:border-slate-700/30 transition-all duration-200"
           onClick={() => handleLogout()}
         >
           <span>Cerrar sesión</span>

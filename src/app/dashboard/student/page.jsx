@@ -1,6 +1,5 @@
 "use client";
 import AccessDenied from "@/components/molecules/AccessDenied";
-import AccionesRapidas from "@/components/molecules/QuickActions";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Resumenes from "@/components/molecules/SummaryCards";
 import { useAuth } from "@/context/AuthContext";
@@ -20,7 +19,6 @@ export default function dashboardStudiantPage() {
     <div className="animate-in fade-in duration-500">
       <HeaderDashbord user={user} />
       <Resumenes />
-      <AccionesRapidas />
     </div>
   );
 }

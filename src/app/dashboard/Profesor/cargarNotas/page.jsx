@@ -7,7 +7,6 @@ import Selector from "@/components/atom/Selector";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import FormCargaNotas from "@/components/molecules/FromCargaNotas";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-import AccionesRapidas from "@/components/molecules/QuickActions";
 import Modal from "@/components/organism/Modal";
 import TablaNotas from "@/components/organism/TablaNotas";
 import { useAuth } from "@/context/AuthContext";
@@ -57,8 +56,6 @@ export default function cargarNotas() {
           </Modal>
         </div>
       </div>
-
-      <AccionesRapidas />
 
       <div className="mt-6 flex flex-col gap-5 p-3 font-bold text-gray-500/60">
         <div className="flex flex-col justify-between md:flex-row md:items-center lg:flex-row">

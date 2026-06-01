@@ -3,7 +3,6 @@ import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import { useAuth } from "@/context/AuthContext";
 import Loading from "@/app/loading";
 import AccessDenied from "@/components/molecules/AccessDenied";
-import QuickActions from "@/components/molecules/QuickActions";
 import InfoCard from "@/components/atom/InfoCard";
 import { faBuilding, faUser } from "@fortawesome/free-solid-svg-icons";
 import { getSchools } from "@/services/school/getSchool";
@@ -44,7 +43,6 @@ export default function SuperAdminPage() {
             colorClass="bg-green-500/40 text-green-500"
           />
         </section>
-        <QuickActions />
       </main>
     </div>
   );

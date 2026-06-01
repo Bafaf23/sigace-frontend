@@ -3,7 +3,6 @@ import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormInscrip from "@/components/organism/FromInscrip";
 import Modal from "@/components/organism/Modal";
@@ -75,7 +74,6 @@ export default function GestionEstudiantesPage() {
           <FormInscrip SIG={SIG} authority={authority} id_period={id_period} />
         </Modal>
       </div>
-      <QuickActions />
       {/* Modal para ver información del estudiante */}
       <Modal
         title="Información del Estudiante"

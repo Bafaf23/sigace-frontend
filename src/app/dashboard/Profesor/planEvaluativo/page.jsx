@@ -2,7 +2,6 @@
 import AccessDenied from "@/components/molecules/AccessDenied";
 import Button from "@/components/atom/Button";
 import Selector from "@/components/atom/Selector";
-import AccionesRapidas from "@/components/molecules/QuickActions";
 import FormCargaPV from "@/components/molecules/FormCargaPV";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import { useAuth } from "@/context/AuthContext";
@@ -72,7 +71,6 @@ export default function PlanEvaluativo() {
           </Modal>
         </div>
       </div>
-      <AccionesRapidas />
 
       <section className="p-3">
         <h1 className="text-2xl font-bold text-gray-500/60 dark:text-slate-500">

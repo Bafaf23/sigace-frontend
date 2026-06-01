@@ -14,48 +14,51 @@ import {
  *
  * @component
  * @param {object} props
- * @param {object} props.load - Objeto de carga académica con relaciones 'subject', 'teacher' (con 'user') y 'section'.
+ * @param {object} props.load - Objeto de carga académica mapeado desde la base de datos.
  * @returns {JSX.Element} Una tarjeta con cabecera de materia, detalles de asignación y botones de acción.
  */
-export default function CardLoand({ load }) {
+export default function CardLoad({ load }) {
   return (
     <div className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
-      {/* Cabecera: Materia */}
+      {/* Cabecera: Código y Nombre de la Materia */}
       <div className="mb-4">
         <span className="text-xs font-semibold tracking-wider text-indigo-500 uppercase">
-          {load.subject.code}
+          Código: {load.id_subject}
         </span>
-        <h3 className="text-lg font-bold text-indigo-600 dark:text-slate-300">
-          {load.subject.name}
+        <h3 className="text-lg font-bold text-indigo-600 dark:text-slate-300 mt-0.5">
+          {load.name_subject}
         </h3>
       </div>
 
-      {/* Info: Profesor y Sección */}
+      {/* Info: Profesor, Sección y Período */}
       <div className="mb-6 space-y-3">
+        {/* Profesor */}
         <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-          <Icon icon={faUserTie} className="text-slate-400" />
+          <Icon icon={faUserTie} className="text-slate-400 w-4" />
           <span>
-            {load.teacher.user.name} {load.teacher.user.lastName}
+            {load.name_teacher} {load.last_name_teacher}
           </span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-          <Icon icon={faLayerGroup} className="text-slate-400" />
-          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-700">
-            {load.section.grade} "{load.section.identifier}"
-          </span>
-        </div>
-      </div>
 
-      {/* Acciones */}
-      <div className="mt-auto flex justify-end gap-2 border-t border-slate-300 pt-4 dark:border-slate-700">
-        <Button
-          icon={faEdit}
-          classNameBtn="p-2 text-slate-400 transition-colors hover:text-indigo-600"
-        ></Button>
-        <Button
-          icon={faTrash}
-          classNameBtn="p-2 text-slate-400 transition-colors hover:text-red-600"
-        ></Button>
+        {/* Sección y Período Académico */}
+        <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex items-center gap-2">
+            <Icon icon={faLayerGroup} className="text-slate-400 w-4" />
+            <p className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-700 text-slate-800 dark:text-slate-200">
+              Sección: <span className="font-bold">{load.name_section}</span>
+            </p>
+            <p className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-700 text-slate-800 dark:text-slate-200">
+              Año: <span className="font-bold">{load.name_year}</span>
+            </p>
+          </div>
+
+          {/* Badge extra para el Período que viene en tu SQL */}
+          {load.name_period && (
+            <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
+              {load.name_period}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

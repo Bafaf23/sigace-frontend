@@ -2,7 +2,6 @@
 import Loading from "@/app/loading";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-import AccionesRapidas from "@/components/molecules/QuickActions";
 import Reportes from "@/components/molecules/Reports";
 import Resumenes from "@/components/molecules/SummaryCards";
 import { useAuth } from "@/context/AuthContext";
@@ -26,8 +25,6 @@ export default function TeachersPage() {
     <div className="animate-in fade-in duration-500">
       <HeaderDashbord user={user} />
       <Resumenes teachersId={teacherId} />
-      {/* movil */}
-      <AccionesRapidas />
       <Reportes />
     </div>
   );
