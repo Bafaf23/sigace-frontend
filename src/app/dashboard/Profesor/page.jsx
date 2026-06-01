@@ -1,11 +1,11 @@
 "use client";
-import AccionesRapidas from "@/components/molecules/QuickActions";
+import Loading from "@/app/loading";
+import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import AccionesRapidas from "@/components/molecules/QuickActions";
 import Reportes from "@/components/molecules/Reports";
 import Resumenes from "@/components/molecules/SummaryCards";
 import { useAuth } from "@/context/AuthContext";
-import Loading from "@/app/dashboard/loading";
-import AccessDenied from "@/components/molecules/AccessDenied";
 import { useRouter } from "next/navigation";
 
 export default function TeachersPage() {
@@ -15,7 +15,7 @@ export default function TeachersPage() {
   if (loading) return <Loading />;
 
   const role = user?.user?.role ?? user?.role;
-  if (!user || role !== "teacher") {
+  if (!user || role !== "Profesor") {
     router.push("/");
     return <AccessDenied />;
   }

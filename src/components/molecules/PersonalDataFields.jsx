@@ -14,15 +14,22 @@ import SelectorInput from "./SelectorInput";
  * @returns {JSX.Element}
  */
 
-const PersonalDataFields = ({ datos, manejarCambio }) => {
+const PersonalDataFields = ({ datos, manejarCambio, mode }) => {
   const documentType = [
     { value: "V-", label: "Venezolano" },
     { value: "CE-", label: "Cedula Estudiantil" },
   ];
 
   const genderSel = [
-    { label: "Femenino", value: "F" },
-    { label: "Masculino", value: "M" },
+    { label: "Femenino", value: "Femenino" },
+    { label: "Masculino", value: "Masculino" },
+  ];
+
+  const statusOptions = [
+    { label: "Activo", value: "Activo" },
+    { label: "Retirado", value: "Retirado" },
+    { label: "Traslado", value: "Traslado" },
+    { label: "Reingreso", value: "Reingreso" },
   ];
 
   const handleToggle = (e) => {
@@ -36,28 +43,52 @@ const PersonalDataFields = ({ datos, manejarCambio }) => {
         Datos Personales
       </h4>
       <div>
-        <ToggleSimple
-          label={"¿Vienes de otra institución academica?"}
-          name={"isNewEntry"}
-          value={datos.isNewEntry}
-          onChange={handleToggle}
-        />
+        {mode !== "edit" && (
+          <ToggleSimple
+            label={"¿Vienes de otra institución academica?"}
+            name={"isNewEntry"}
+            value={datos.isNewEntry}
+            onChange={handleToggle}
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 items-end gap-4">
-        <div className="col-span-2">
-          <SelectorInput
-            id={"dni"}
-            name={"documentType"}
-            nameInput={"document"}
-            placeholder={"323233"}
-            label={"Selecciona tipo de documento"}
-            options={documentType}
-            onChange={manejarCambio}
-            valueSel={datos.documentType}
-            valueInput={datos.document}
-          />
-        </div>
-
+        {mode !== "edit" ? (
+          <div className="col-span-2">
+            <SelectorInput
+              id={"dni"}
+              name={"documentType"}
+              nameInput={"document"}
+              placeholder={"323233"}
+              label={"Selecciona tipo de documento"}
+              options={documentType}
+              onChange={manejarCambio}
+              valueSel={datos.documentType}
+              valueInput={datos.document}
+            />
+          </div>
+        ) : (
+          <>
+            <div className="col-span-3 md:col-span-2">
+              <Input
+                name={"document"}
+                label={"Numero de documento"}
+                placeholder={"323233"}
+                onChange={manejarCambio}
+                value={datos.document}
+              />
+            </div>
+            <div className="">
+              <Selector
+                name={"status"}
+                label={"Estatus"}
+                options={statusOptions}
+                onChange={manejarCambio}
+                value={datos.status}
+              />
+            </div>
+          </>
+        )}
         <div className="col-span-2 md:col-span-1">
           <Input
             name={"birthDate"}
@@ -70,7 +101,7 @@ const PersonalDataFields = ({ datos, manejarCambio }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 place-items-end gap-2 md:grid-cols-3">
+      <div className="grid grid-cols-2 place-items-end gap-2 md:grid-cols-2">
         <Input
           name={"name"}
           label={"Nombre"}
@@ -85,17 +116,17 @@ const PersonalDataFields = ({ datos, manejarCambio }) => {
           onChange={manejarCambio}
           value={datos?.lastName}
         />
-        <div>
-          <Selector
-            name={"gender"}
-            label={"Género / Sexo"}
-            options={genderSel}
-            onChange={manejarCambio}
-            value={datos?.gender}
-          />
-        </div>
       </div>
-      <div className="grid md:grid-cols-2 place-items-end gap-2">
+      <div>
+        <Selector
+          name={"gender"}
+          label={"Género / Sexo"}
+          options={genderSel}
+          onChange={manejarCambio}
+          value={datos?.gender}
+        />
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-2 place-items-end gap-2">
         <Input
           name={"email"}
           label={"Correo Electronico"}

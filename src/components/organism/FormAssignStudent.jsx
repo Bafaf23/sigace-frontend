@@ -1,30 +1,48 @@
 import Button from "../atom/Button";
 import Selector from "../atom/Selector";
+import { createEnrollment } from "@/services/enrollment/createEnrollment";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function FormAssignStudent({ students }) {
+export default function FormAssignStudent({
+  students,
+  period,
+  id_section,
+  onSuccess,
+}) {
   const [loading, setLoading] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState("");
+  const [dataForm, setDataForm] = useState({
+    id_student: "",
+    id_section: id_section,
+    id_period: period,
+    status: "Activo",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedStudent) {
+    if (!dataForm.id_student) {
       return toast.error("Por favor, selecciona un alumno");
     }
 
     setLoading(true);
 
-    const result = { success: true };
+    const result = await createEnrollment(dataForm);
 
-    if (result.success) {
-      toast.success("Alumno asignado con éxito");
-      setSelectedStudent("");
-    } else {
+    if (result.error) {
       toast.error(result.error);
+      setLoading(false);
+      return;
     }
+    toast.success("Alumno asignado con éxito");
+    setDataForm({
+      id_student: "",
+      id_section: id_section,
+      id_period: period,
+      status: "Activo",
+    });
+    onSuccess?.();
     setLoading(false);
   };
   return (
@@ -33,13 +51,15 @@ export default function FormAssignStudent({ students }) {
         label={"Seleciona un alumno"}
         options={students?.map((s) => ({
           value: s.id,
-          label: s.user ? `${s.user.name} ${s.user.lastName}` : `sin datos`,
+          label: `${s.document} - ${s.name} ${s.last_name}`,
         }))}
-        value={String(selectedStudent)}
-        onChange={(e) => setSelectedStudent(e.target.value)}
+        value={dataForm.id_student}
+        onChange={(e) =>
+          setDataForm({ ...dataForm, id_student: e.target.value })
+        }
       />
 
-      <div className="rounded-lg bg-blue-50 p-3 text-xs text-blue-600">
+      <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-600">
         Se inscribirá automáticamente en la sección actual.
       </div>
 

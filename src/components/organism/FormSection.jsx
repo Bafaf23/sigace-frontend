@@ -1,43 +1,41 @@
 import Button from "../atom/Button";
+import Icon from "../atom/Icon";
 import Input from "../atom/Input";
 import Selector from "../atom/Selector";
+import { useAuth } from "@/context/AuthContext";
+import { createSection } from "@/services/section/createSection";
+import { getYears } from "@/services/subject/getYears";
+import { getTeachersAll } from "@/services/teachers/getTeachersAll";
 import { faCheck, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { getTeachersAll } from "@/services/getTeachersAll";
-import { useAuth } from "@/context/AuthContext";
 
-export default function FormSection() {
+export default function FormSection({ onSuccess }) {
   const [loading, setLoading] = useState(false);
-  const [teachers, setTeachers] = useState([
-    {
-      value: "",
-      label: "",
-    },
-  ]);
-  const [formData, setFormData] = useState({
-    grade: "",
-    identifier: "",
-    teacherId: "",
-    capacity: 35,
-  });
+  const [teachers, setTeachers] = useState([]);
+  const [years, setYears] = useState([]);
 
   const { user } = useAuth();
 
-  const school_id = user.user.school_id;
+  const SIG = user.user.SIG;
+  const authority = user.user.token;
+  const id_period = user.user.id_period;
+  const [formData, setFormData] = useState({
+    name: "",
+    teacherId: "",
+    yearId: "",
+    capacity: 35,
+    period: "",
+    SIG: SIG,
+    id_period: id_period,
+  });
 
   const handleUpdate = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const gradeOptions = [
-    { value: "1ero", label: "1er Año" },
-    { value: "2do", label: "2do Año" },
-    { value: "3ero", label: "3er Año" },
-    { value: "4to", label: "4to Año" },
-    { value: "5to", label: "5to Año" },
-  ];
-  const identifierOptions = [
+  const sectionOptions = [
     { value: "A", label: "Sección A" },
     { value: "B", label: "Sección B" },
     { value: "C", label: "Sección C" },
@@ -45,20 +43,57 @@ export default function FormSection() {
   ];
 
   useEffect(() => {
-    getTeachersAll(school_id).then((data) => {
-      setTeachers(data);
+    getTeachersAll(SIG, authority).then((data) => {
+      setTeachers(
+        data.map((teacher) => ({
+          value: teacher.id,
+          label: `${teacher.document} - ${teacher.name} ${teacher.last_name}`,
+        })),
+      );
     });
-  }, []);
+    getYears(SIG).then((data) => setYears(data));
+  }, [SIG]);
 
-  console.log(teachers);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const result = { success: true };
-    if (result.success) {
-      toast.success("¡Sección creada con éxito!");
+    if (
+      !formData.name ||
+      !formData.yearId ||
+      !formData.teacherId ||
+      !formData.capacity
+    ) {
+      toast.error("Por favor, rellena todos los campos obligatorios.");
+      setLoading(false);
+      return;
     }
+
+    const result = await createSection(
+      { ...formData, capacity: Number(formData.capacity) },
+      authority,
+    );
+
+    if (!result.success) {
+      toast.error(
+        typeof result.error === "string"
+          ? result.error
+          : (result.message ?? "Error al crear la sección"),
+      );
+      setLoading(false);
+      return;
+    }
+
+    toast.success(result.message ?? "¡Sección creada con éxito!");
+    setFormData({
+      name: "",
+      teacherId: "",
+      yearId: "",
+      capacity: 35,
+      period: "",
+      SIG,
+    });
+    onSuccess?.();
     setLoading(false);
   };
 
@@ -66,18 +101,18 @@ export default function FormSection() {
     <form onSubmit={handleSubmit} className="space-y-6 p-2">
       <div className="grid grid-cols-2 gap-2">
         <Selector
-          options={gradeOptions}
-          name={"grade"}
+          options={years.map((year) => ({ value: year.id, label: year.name }))}
+          name={"yearId"}
           label={"Seleciona un año"}
-          onChange={(e) => handleUpdate("grade", e.target.value)}
-          value={formData.grade || ""}
+          onChange={(e) => handleUpdate("yearId", e.target.value)}
+          value={formData.yearId}
         />
         <Selector
-          options={identifierOptions}
-          name={"identifier"}
+          options={sectionOptions}
+          name={"name"}
           label={"Selecciona la sección"}
-          onChange={(e) => handleUpdate("identifier", e.target.value)}
-          value={formData.identifier}
+          onChange={(e) => handleUpdate("name", e.target.value)}
+          value={formData.name}
         />
         {/* Fila 2: Docente Guía (Ocupa todo el ancho) */}
         <div className="col-span-2">
@@ -89,6 +124,7 @@ export default function FormSection() {
             value={formData.teacherId}
           />
         </div>
+
         <div className="col-span-2">
           <Input
             type="number"
@@ -98,6 +134,15 @@ export default function FormSection() {
             value={formData.capacity}
             onChange={(e) => handleUpdate("capacity", e.target.value)}
           />
+        </div>
+        <div className="p-4 bg-gray-100 rounded-lg border border-gray-200 col-span-2">
+          <div className="flex items-center gap-2">
+            <Icon icon={faInfoCircle} className="text-gray-500 text-xl" />
+            <p className="text-sm text-gray-500">
+              Se recomienda que la capacidad máxima sea de 35 alumnos por
+              sección.
+            </p>
+          </div>
         </div>
       </div>
 

@@ -1,8 +1,8 @@
-import Selector from "../atom/Selector";
+import { getSchools } from "../../services/school/getSchool";
+import { getSection } from "../../services/section/getSection";
 import Icon from "../atom/Icon";
+import Selector from "../atom/Selector";
 import { faHandPointer } from "@fortawesome/free-solid-svg-icons";
-import { getSchools } from "../../services/getSchool";
-import { getSection } from "../../services/getSection";
 import { useEffect, useState } from "react";
 
 const yearOptions = [
@@ -46,7 +46,7 @@ export default function EnrolelmentSchool({ data, manejarCambio }) {
       return;
     }
 
-    getSection(data.sig)
+    getSection(data.SIG)
       .then((rawSections) =>
         setSections((rawSections || []).map(normalizeSection)),
       )
@@ -54,7 +54,7 @@ export default function EnrolelmentSchool({ data, manejarCambio }) {
         console.error("Error al obtener las secciones:", error);
         setSections([]);
       });
-  }, [data.sig]);
+  }, [data.SIG]);
 
   return (
     <div className="animate-fade-in space-y-4">
@@ -62,33 +62,11 @@ export default function EnrolelmentSchool({ data, manejarCambio }) {
       <div className="mb-4 flex items-center gap-4 rounded-xl border border-indigo-200 bg-indigo-50 p-5">
         <Icon icon={faHandPointer} className="text-2xl text-indigo-600" />
         <p className="text-sm font-semibold text-indigo-600">
-          Selecciona la institución, el año y la sección en la cual te vas a
-          registrar. Si no encuentras tu liceo, contacta al departamento de
-          controle de estudios de tu institución.
+          Selecciona el año y la sección en la cual vas a inscribir al
+          estudiante.
         </p>
       </div>
       <div className="flex flex-col gap-4">
-        <Selector
-          label="Selecciona el liceo en el cual te vas a registrar."
-          name="sig"
-          value={data.sig}
-          options={schools.map((school) => ({
-            value: school.code_sig,
-            label: school.name,
-          }))}
-          onChange={(e) => {
-            const selected = schools.find(
-              (school) => `${school.code_sig}` === e.target.value,
-            );
-            manejarCambio(e);
-            if (selected) {
-              manejarCambio({
-                target: { name: "nameInstitution", value: selected.name },
-              });
-            }
-          }}
-          id="sig"
-        />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Selector
             label="Año a cursar"

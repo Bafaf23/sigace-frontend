@@ -30,3 +30,20 @@ export async function getSchools() {
     return [];
   }
 }
+
+/**
+ * Obtener los roles del backend
+ * @returns {Promise<Array<Object>>}
+ */
+export async function getRoles() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/schools/getRoles`,
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error de conexión con el servidor Flask:", error);
+    return [];
+  }
+}

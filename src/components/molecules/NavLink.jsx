@@ -15,7 +15,7 @@ import Link from "next/link";
  */
 
 export default function NavLink({
-  direcction,
+  href,
   label,
   icon,
   classNameIcon,
@@ -24,7 +24,7 @@ export default function NavLink({
 }) {
   return (
     <Link
-      href={direcction}
+      href={href}
       className={`text-md flex w-full items-center gap-3 rounded-lg p-2 text-gray-600/60 transition-all ${classNameLink} ${
         active
           ? "bg-white font-bold text-indigo-700 dark:bg-slate-300"

@@ -1,13 +1,13 @@
 "use client";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Button from "@/components/atom/Button";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
 import Modal from "@/components/organism/Modal";
-import { deleteSchool } from "@/services/deleteSchool";
+import { deleteSchool } from "@/services/school/deleteSchool";
 import { useState, useEffect } from "react";
-import { getSchools } from "@/services/getSchool";
+import { getSchools } from "@/services/school/getSchool";
 import Icon from "@/components/atom/Icon";
 import FormInstitucion from "@/components/organism/FormInstitucion";
 import {
@@ -24,13 +24,13 @@ import {
 
 export default function InstitucionesPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [instituciones, setInstituciones] = useState([]);
-  const [editingInstitucion, setEditingInstitucion] = useState(null);
+  const [institutions, setInstitutions] = useState([]);
+  const [editingInstitution, setEditingInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   useEffect(() => {
-    getSchools().then((data) => setInstituciones(data));
+    getSchools().then((data) => setInstitutions(data));
     setLoading(false);
   }, []);
 
@@ -84,20 +84,171 @@ export default function InstitucionesPage() {
           { name: "RIF/DEA", icon: faIdCard },
           { name: "Acciones", icon: faEllipsis },
         ]}
-        handleDeleteSchool={(SIG) =>
-          deleteSchool(SIG).then((data) => {
-            if (data.ok) {
-              setInstituciones(
-                instituciones.filter((institucion) => institucion.SIG !== SIG),
-              );
-            }
-          })
-        }
-        handleEditSchool={(institucion) => {
-          setIsOpenEdit(true);
-          setEditingInstitucion(institucion);
-        }}
-        data={instituciones}
+        renderTableRows={(institution) => (
+          <tr
+            key={institution.SIG}
+            className="transition-colors hover:bg-slate-50/50 group"
+          >
+            <td className="px-6 py-4">
+              <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
+                <span className="font-medium">{institution.SIG}</span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.name}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.type === "Pública"
+                    ? "---"
+                    : institution.company_name}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.address}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.phone}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span
+                  className={`font-medium uppercase ${institution.type === "Pública" ? "text-green-500" : "text-orange-500"}`}
+                >
+                  {institution.type}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col">
+                <span className="font-medium text-slate-800">
+                  {institution.type === "Pública"
+                    ? institution.DEA_CODE
+                    : institution.RIF}
+                </span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  icon={faEdit}
+                  classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-indigo-50 hover:text-indigo-600"
+                  onClick={() => {
+                    setIsOpenEdit(true);
+                    setEditingInstitution(institution).then((data) => {
+                      if (data.ok) {
+                        setIsOpenEdit(true);
+                        setEditingInstitution(institution);
+                      }
+                    });
+                  }}
+                />
+                <Button
+                  icon={faTrash}
+                  classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-red-50 hover:text-red-600"
+                  onClick={() => {
+                    deleteSchool(institution.SIG).then((data) => {
+                      if (data.ok) {
+                        setInstitutions(
+                          institutions.filter(
+                            (institution) =>
+                              institution.SIG !== institution.SIG,
+                          ),
+                        );
+                      }
+                    });
+                  }}
+                />
+              </div>
+            </td>
+          </tr>
+        )}
+        renderMovilCard={(institution) => (
+          <div
+            key={`card-${institution.SIG}`}
+            className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            {/* Encabezado de la Card */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3 dark:border-slate-800">
+              <div>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                  SIG: {institution.SIG}
+                </span>
+                <h3 className="text-lg font-bold text-slate-800 dark:text-white">
+                  {institution.name}
+                </h3>
+              </div>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${institution.type === "Pública" ? "bg-green-50 text-green-600 dark:bg-green-950/30" : "bg-orange-50 text-orange-600 dark:bg-orange-950/30"}`}
+              >
+                {institution.type}
+              </span>
+            </div>
+
+            {/* Detalles en filas */}
+            <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-start gap-2">
+                <Icon icon={faBuilding} className="mt-0.5 text-slate-400" />
+                <div>
+                  <span className="font-medium block text-xs text-slate-400">
+                    Razón Social
+                  </span>
+                  {institution.company_name}
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Icon icon={faLocationDot} className="mt-0.5 text-slate-400" />
+                <div>
+                  <span className="font-medium block text-xs text-slate-400">
+                    Dirección
+                  </span>
+                  {institution.address}
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Icon icon={faPhone} className="mt-0.5 text-slate-400" />
+                <div>
+                  <span className="font-medium block text-xs text-slate-400">
+                    Contacto
+                  </span>
+                  <p>{institution.phone}</p>
+                  <p className="text-xs text-slate-400">{institution.email}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2 border-t border-slate-50 pt-2 dark:border-slate-800/50">
+                <Icon icon={faIdCard} className="mt-0.5 text-slate-400" />
+                <div>
+                  <span className="font-medium block text-xs text-slate-400">
+                    {institution.type === "Pública" ? "Código DEA" : "RIF"}
+                  </span>
+                  <span className="font-mono font-semibold">
+                    {institution.type === "Pública"
+                      ? institution.DEA_CODE
+                      : institution.RIF}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        data={institutions}
       />
 
       <Modal
@@ -107,7 +258,7 @@ export default function InstitucionesPage() {
       >
         <FormInstitucion
           isEdit={true}
-          institucion={editingInstitucion}
+          institution={editingInstitution}
           onSuccess={() => setIsOpenEdit(false)}
         />
       </Modal>

@@ -1,5 +1,5 @@
 import Input from "../atom/Input";
-import InputPass from "../atom/InputPass";
+
 import SelectorInput from "./SelectorInput";
 
 /**
@@ -16,12 +16,7 @@ import SelectorInput from "./SelectorInput";
  *
  * @returns {JSX.Element} Fragmento de UI con campos validados y estilizados con Tailwind CSS.
  */
-export default function DataUserRegister({ data, manejoCambio }) {
-  const handleLocalChange = (e) => {
-    if (manejoCambio) {
-      manejoCambio(e);
-    }
-  };
+export default function DataUserRegister({ data, manejoCambio, mode }) {
   const options = [
     {
       label: "Venezolano",
@@ -34,9 +29,8 @@ export default function DataUserRegister({ data, manejoCambio }) {
   ];
   return (
     <div className="space-y-3">
-      <hr className="border border-slate-100" />
-      <div className="grid grid-cols-2 md:grid-cols-3 items-center gap-2">
-        <div className="col-span-2">
+      {mode !== "edit" ? (
+        <div className="space-y-3">
           <SelectorInput
             label={"Tipo de Identidad"}
             name={"typeDocuement"}
@@ -48,73 +42,87 @@ export default function DataUserRegister({ data, manejoCambio }) {
             valueInput={data.document}
             onChange={manejoCambio}
           />
-        </div>
-
-        <div className="col-span-2 md:col-span-1">
           <Input
-            label={"Fecha de Nacimiento"}
-            type={"date"}
-            placeholder={"23-09-2003"}
-            value={data.birthdate}
-            name={"birthdate"}
+            label={"Nombre"}
+            type={"text"}
+            placeholder={"Mario"}
+            value={data.name}
+            name={"name"}
             onChange={manejoCambio}
           />
+
+          <div className="flex gap-2">
+            <Input
+              label={"Apellido"}
+              type={"text"}
+              placeholder={"Sanchez"}
+              value={data.last_name}
+              name={"last_name"}
+              onChange={manejoCambio}
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-2">
+            <Input
+              label={"Correo Electronico"}
+              type={"email"}
+              placeholder={"usuario@ejemplo.com"}
+              value={data.email}
+              name={"email"}
+              onChange={manejoCambio}
+            />
+            <Input
+              label={"Telefono"}
+              type={"text"}
+              placeholder={"0424..."}
+              value={data.phone}
+              name={"phone"}
+              onChange={manejoCambio}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <Input
+            label={"Nombre"}
+            type={"text"}
+            placeholder={"Mario"}
+            value={data.name}
+            name={"name"}
+            onChange={manejoCambio}
+          />
 
-      <div className="flex gap-2">
-        <Input
-          label={"Nombre"}
-          type={"text"}
-          placeholder={"Mario"}
-          value={data.name}
-          name={"name"}
-          onChange={manejoCambio}
-        />
-        <Input
-          label={"Apellido"}
-          type={"text"}
-          placeholder={"Sanchez"}
-          value={data.lastName}
-          name={"lastName"}
-          onChange={manejoCambio}
-        />
-      </div>
+          <div className="flex gap-2">
+            <Input
+              label={"Apellido"}
+              type={"text"}
+              placeholder={"Sanchez"}
+              value={data.last_name}
+              name={"last_name"}
+              onChange={manejoCambio}
+            />
+          </div>
 
-      <div className="grid md:grid-cols-2 gap-2">
-        <Input
-          label={"Correo Electronico"}
-          type={"email"}
-          placeholder={"usuario@ejemplo.com"}
-          value={data.email}
-          name={"email"}
-          onChange={manejoCambio}
-        />
-        <Input
-          label={"Telefono"}
-          type={"text"}
-          placeholder={"0424..."}
-          value={data.phone}
-          name={"phone"}
-          onChange={manejoCambio}
-        />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <InputPass
-          label={"Contrasena"}
-          placeholder={"******"}
-          value={data.password}
-          name={"password"}
-          onChange={manejoCambio}
-        />
-        <InputPass
-          label={"Confrirma la contrasena"}
-          placeholder={"******"}
-          value={data.passwordConfir}
-          name={"passwordConfir"}
-          onChange={manejoCambio}
-        />
-      </div>
+          <div className="grid md:grid-cols-2 gap-2">
+            <Input
+              label={"Correo Electronico"}
+              type={"email"}
+              placeholder={"usuario@ejemplo.com"}
+              value={data.email}
+              name={"email"}
+              onChange={manejoCambio}
+            />
+            <Input
+              label={"Telefono"}
+              type={"text"}
+              placeholder={"0424..."}
+              value={data.phone}
+              name={"phone"}
+              onChange={manejoCambio}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

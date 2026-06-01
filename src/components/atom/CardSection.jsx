@@ -34,11 +34,16 @@ export default function CardSecction({
   current,
   max,
   availableStudents,
+  period,
+  id_section,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const isFull = current >= max;
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-shadow hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
+    <div
+      className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-shadow hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+      key={id}
+    >
       {/* Encabezado: Año y Sección */}
       <div className="flex items-center justify-between bg-indigo-600 p-4 text-white">
         <h3 className="text-xl font-bold">
@@ -91,13 +96,16 @@ export default function CardSecction({
         >
           {"Ver lista de alumnos"}
         </Button>
-        <Button
-          onClick={() => setIsOpen(true)}
-          icon={faUserPlus}
-          classNameBtn="text-slate-500 transition-colors hover:text-green-600 truncate  dark:text-slate-200"
-        >
-          {"Inscribir en esta sección"}
-        </Button>
+        {availableStudents.length > 0 && (
+          <Button
+            onClick={() => setIsOpen(true)}
+            icon={faUserPlus}
+            classNameBtn="text-slate-500 transition-colors hover:text-green-600 truncate  dark:text-slate-200"
+          >
+            {"Inscribir en esta sección"}
+          </Button>
+        )}
+
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(!isOpen)}
@@ -105,16 +113,10 @@ export default function CardSecction({
         >
           <FormAssignStudent
             students={availableStudents}
-            id={id}
-            onSuccess={() => setIsOpen(false)}
+            period={period}
+            id_section={id_section}
           />
         </Modal>
-        <Button
-          icon={faPenToSquare}
-          classNameBtn="text-slate-500  dark:text-slate-200 transition-colors hover:text-orange-500 truncate"
-        >
-          {"Editar sección"}
-        </Button>
       </div>
     </div>
   );

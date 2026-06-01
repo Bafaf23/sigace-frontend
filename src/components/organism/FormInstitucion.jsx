@@ -3,38 +3,38 @@ import Selector from "../atom/Selector";
 import Button from "../atom/Button";
 import { useState } from "react";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
-import { createSchool } from "@/services/createSchool";
-import { updateSchool } from "@/services/updateSchool";
+import { createSchool } from "@/services/school/createSchool";
+import { updateSchool } from "@/services/school/updateSchool";
 import toast from "react-hot-toast";
 export default function FormInstitucion({
-  institucion,
+  institution,
   onSuccess,
   isEdit = false,
 }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    SIG: institucion?.SIG || "",
-    nombre: institucion?.nombre || "",
-    direccion: institucion?.direccion || "",
-    telefono: institucion?.telefono || "",
-    razon_social: institucion?.razon_social || "",
-    correo: institucion?.email || "",
-    tipo: institucion?.tipo || "pública",
-    rif: institucion?.rif || "",
-    codigo_DEA: institucion?.codigo_DEA || "",
+    SIG: institution?.SIG || "",
+    name: institution?.name || "",
+    address: institution?.address || "",
+    phone: institution?.phone || "",
+    company_name: institution?.company_name || "",
+    email: institution?.email || "",
+    type: institution?.type || "Pública",
+    RIF: institution?.RIF || "",
+    DEA_CODE: institution?.DEA_CODE || "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     if (
-      !formData.nombre ||
-      !formData.direccion ||
-      !formData.telefono ||
-      !formData.correo ||
-      !formData.tipo ||
-      (formData.tipo === "pública" && !formData.codigo_DEA) ||
-      (formData.tipo === "privada" && (!formData.rif || !formData.razon_social))
+      !formData.name ||
+      !formData.address ||
+      !formData.phone ||
+      !formData.email ||
+      !formData.type ||
+      (formData.type === "Pública" && !formData.DEA_CODE) ||
+      (formData.type === "Privada" && (!formData.RIF || !formData.company_name))
     ) {
       setLoading(false);
       toast.error("Todos los campos son obligatorios");
@@ -65,44 +65,42 @@ export default function FormInstitucion({
   return (
     <form className="space-y-6 p-2" onSubmit={handleSubmit}>
       <Selector
-        name="tipo"
+        name="type"
         label="Seleccione el tipo de institución"
-        value={formData.tipo}
-        onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+        value={formData.type}
+        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
         options={[
-          { value: "pública", label: "Pública" },
-          { value: "privada", label: "Privada" },
+          { value: "Pública", label: "Pública" },
+          { value: "Privada", label: "Privada" },
         ]}
       />
       <div className="grid grid-cols-1 gap-2">
-        {formData.tipo === "pública" ? (
+        {formData.type === "Pública" ? (
           <Input
-            name="nombre"
+            name="name"
             label="Nombre de la institucion"
             placeholder="Institucion de Educacion"
-            value={formData.nombre}
-            onChange={(e) =>
-              setFormData({ ...formData, nombre: e.target.value })
-            }
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
         ) : (
           <div className="grid grid-cols-2 gap-2">
             <Input
-              name="nombre"
+              name="name"
               label="Nombre de la institucion"
               placeholder="Institucion de Educacion"
-              value={formData.nombre}
+              value={formData.name}
               onChange={(e) =>
-                setFormData({ ...formData, nombre: e.target.value })
+                setFormData({ ...formData, name: e.target.value })
               }
             />
             <Input
-              name="razon_social"
+              name="company_name"
               label="Razon social"
               placeholder="Ej: La Paloma. S.A"
-              value={formData.razon_social}
+              value={formData.company_name}
               onChange={(e) =>
-                setFormData({ ...formData, razon_social: e.target.value })
+                setFormData({ ...formData, company_name: e.target.value })
               }
             />
           </div>
@@ -110,12 +108,12 @@ export default function FormInstitucion({
       </div>
       <div className="grid grid-cols-1 gap-2">
         <Input
-          name="direccion"
+          name="address"
           label="Dirección"
           placeholder="Calle 123, Barrio 456, Caracas 1010"
-          value={formData.direccion}
+          value={formData.address}
           onChange={(e) =>
-            setFormData({ ...formData, direccion: e.target.value })
+            setFormData({ ...formData, address: e.target.value })
           }
         />
       </div>
@@ -124,41 +122,39 @@ export default function FormInstitucion({
           name="phone"
           label="Teléfono"
           placeholder="04123456789"
-          value={formData.telefono}
-          onChange={(e) =>
-            setFormData({ ...formData, telefono: e.target.value })
-          }
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
         />
         <Input
           name="email"
           placeholder="ejemplo@institucion.com"
           label="Correo electrónico"
-          value={formData.correo}
-          onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         />
       </div>
       <div className="grid grid-cols-1 gap-2">
-        {formData.tipo === "pública" ? (
+        {formData.type === "Pública" ? (
           <div className="grid grid-cols-1 gap-2">
             <Input
-              name="dea"
+              name="DEA_CODE"
               label="Codigo DEA"
               placeholder="Ej: PD00001234"
-              value={formData.codigo_DEA}
+              value={formData.DEA_CODE}
               onChange={(e) =>
-                setFormData({ ...formData, codigo_DEA: e.target.value })
+                setFormData({ ...formData, DEA_CODE: e.target.value })
               }
             />
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-2">
             <Input
-              name="rif_institucion"
+              name="RIF"
               label="RIF"
               placeholder="Ej: J1234567890"
-              value={formData.rif}
+              value={formData.RIF}
               onChange={(e) =>
-                setFormData({ ...formData, rif: e.target.value })
+                setFormData({ ...formData, RIF: e.target.value })
               }
             />
           </div>

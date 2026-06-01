@@ -1,18 +1,27 @@
 "use client";
 
+import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
-import AccionesRapidas from "@/components/molecules/QuickActions";
-import FormCargaNotas from "@/components/molecules/FromCargaNotas";
-import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-import Modal from "@/components/organism/Modal";
-import TablaNotas from "@/components/organism/TablaNotas";
 import Icon from "@/components/atom/Icon";
 import Selector from "@/components/atom/Selector";
+import AccessDenied from "@/components/molecules/AccessDenied";
+import FormCargaNotas from "@/components/molecules/FromCargaNotas";
+import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import AccionesRapidas from "@/components/molecules/QuickActions";
+import Modal from "@/components/organism/Modal";
+import TablaNotas from "@/components/organism/TablaNotas";
+import { useAuth } from "@/context/AuthContext";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 export default function cargarNotas() {
+  const { user, loading } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  if (loading) return <Loading />;
+  const role = user?.user?.role ?? user?.role;
+  if (!user || role !== "Profesor") {
+    return <AccessDenied />;
+  }
   const alumnosDisponibles = [];
   const data = [];
   const materias = [];
