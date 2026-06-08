@@ -45,7 +45,7 @@ function medicalConditionText(user) {
   return "";
 }
 
-// 1. Estilos con ADN SIGACE (Minimalista y Moderno)
+// 1. Estilos con ADN SIGACE (Corregidos para el motor de react-pdf)
 const styles = StyleSheet.create({
   page: {
     paddingRight: 40,
@@ -66,14 +66,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: -1, // Se asegura de estar detrás del texto
+    zIndex: -1,
   },
 
   watermarkText: {
     fontSize: 60,
-    color: "#E2E8F0", // Un gris muy claro (Slate-200)
+    color: "#E2E8F0",
     opacity: 0.4,
-    transform: "rotate(-45deg)", // Rotación clásica diagonal
+    transform: "rotate(-45deg)",
     fontWeight: "bold",
     textTransform: "uppercase",
   },
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     opacity: 0.05,
   },
 
-  // Barra lateral decorativa o acento superior
   accentBar: {
     position: "absolute",
     top: 0,
@@ -110,14 +109,15 @@ const styles = StyleSheet.create({
   },
   badge: {
     backgroundColor: "#F1F5F9",
-    padding: "4 8",
+    // 🌟 CORREGIDO: Se cambiaron los shorthands de strings a propiedades numéricas nativas
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     borderRadius: 4,
     fontSize: 8,
     color: "#64748B",
     marginTop: 5,
     alignSelf: "flex-start",
   },
-  // Secciones Estilizadas
   section: {
     marginBottom: 10,
   },
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     textTransform: "uppercase",
   },
-  // Grid de Datos
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -166,12 +165,13 @@ const styles = StyleSheet.create({
   valueBox: {
     fontSize: 10,
     color: "#1E293B",
-    padding: "6 0",
+    // 🌟 CORREGIDO: Removido string padding "6 0"
+    paddingVertical: 6,
+    paddingHorizontal: 0,
     borderBottomWidth: 1,
     borderBottomColor: "#CBD5E1",
     minWidth: 100,
   },
-  // Footer / Firmas
   footer: {
     marginTop: "auto",
     flexDirection: "row",
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const PlanillaInscripsion = ({ data }) => {
+const PlanillaInscripsion = ({ data, institution }) => {
   return (
     <Document>
       <Page size="letter" style={styles.page} wrap>
@@ -209,9 +209,7 @@ const PlanillaInscripsion = ({ data }) => {
             <Text style={{ fontSize: 9, color: "#64748B" }}>
               Ministerio del Poder Popular para la Educación
             </Text>
-            <Text style={styles.mainTitle}>
-              {fmtUpper(data?.institution?.name)}
-            </Text>
+            <Text style={styles.mainTitle}>{fmtUpper(institution)}</Text>
             <View style={styles.badge}>
               <Text>
                 SIGACE • Fecha:{" "}
@@ -233,14 +231,13 @@ const PlanillaInscripsion = ({ data }) => {
             <Text
               style={{ fontSize: 14, fontWeight: "bold", color: "#1E293B" }}
             >
-              {data?.sig || "SIG4465"}-{data?.user?.dni || "02"}
+              {data?.SIG || "SIG4465"}-{data?.id || "02"}
             </Text>
           </View>
         </View>
 
         {/* SECCIÓN 1: ESTUDIANTE */}
         <View style={styles.section}>
-          {/* Datos Personales */}
           <View style={styles.sectionHeader}>
             <View style={styles.sectionNumber}>
               <Text>1</Text>
@@ -253,23 +250,20 @@ const PlanillaInscripsion = ({ data }) => {
               <Text style={styles.label}>Nombres y Apellidos</Text>
               <Text style={styles.valueBox}>
                 {fmtUpper(
-                  [data?.user?.name, data?.user?.lastName]
-                    .filter(Boolean)
-                    .join(" "),
+                  [data.name, data?.last_name].filter(Boolean).join(" "),
                 )}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "20%" }]}>
               <Text style={styles.label}>Identificación</Text>
               <Text style={styles.valueBox}>
-                {data?.user.dni || "V-00000000"}
+                {/* 🌟 CORREGIDO: Agregado el ? a user */}
+                {data?.document || "V-00000000"}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "25%" }]}>
               <Text style={styles.label}>Sexo</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.gender)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.gender)}</Text>
             </View>
             <View style={[styles.inputGroup, { width: "35%" }]}>
               <Text style={styles.label}>Nacionalidad</Text>
@@ -281,8 +275,9 @@ const PlanillaInscripsion = ({ data }) => {
             <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Fecha de Nacimiento</Text>
               <Text style={styles.valueBox}>
-                {data?.user.birthDate
-                  ? new Date(data.user.birthDate).toLocaleDateString()
+                {/* 🌟 CORREGIDO: Evita crash si user viene indefinido */}
+                {data?.birth_date
+                  ? new Date(data?.birth_date).toLocaleDateString()
                   : "N/A"}
               </Text>
             </View>
@@ -295,17 +290,18 @@ const PlanillaInscripsion = ({ data }) => {
             <View style={[styles.inputGroup, { width: "35%" }]}>
               <Text style={styles.label}>Correo Electronico</Text>
               <Text style={styles.valueBox}>
-                {data?.user.email?.toLowerCase() || "N/A"}
+                {/* 🌟 CORREGIDO: Agregado el ? a user */}
+                {data?.email?.toLowerCase() || "N/A"}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "25%" }]}>
               <Text style={styles.label}>Numero de Telefono</Text>
-              <Text style={styles.valueBox}>{fmtUpper(data?.user?.phone)}</Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.phone)}</Text>
             </View>
             <View style={[styles.inputGroup, { width: "35%" }]}>
               <Text style={styles.label}>Condicion</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.condition)}
+                {fmtUpper(data?.condition || "Nuevo Ingreso")}
               </Text>
             </View>
           </View>
@@ -323,44 +319,40 @@ const PlanillaInscripsion = ({ data }) => {
             <View style={[styles.inputGroup, { width: "50%" }]}>
               <Text style={styles.label}>Direccion</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.address)}
+                {fmtUpper(data?.address || "...")}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "46%" }]}>
               <Text style={styles.label}>Municipio</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.municipality)}
+                {fmtUpper(data?.municipality || "...")}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "25%" }]}>
               <Text style={styles.label}>Parroquia</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.parish)}
+                {fmtUpper(data?.parish || "...")}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "35%" }]}>
               <Text style={styles.label}>Discapacidad</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.disability)}
+                {fmtUpper(data?.disability || "...")}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "35%" }]}>
               <Text style={styles.label}>Alergias</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.allergies)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.allergies)}</Text>
             </View>
             <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Peso (kg) y Altura (cm)</Text>
               <Text style={styles.valueBox}>
-                {fmt(data?.user?.weight)} kg y {fmt(data?.user?.height)} cm
+                {fmt(data?.weight)} kg y {fmt(data?.user?.height)} cm
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "36%" }]}>
               <Text style={styles.label}>Tipo de Sangre</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.bloodType)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.bloodType)}</Text>
             </View>
             <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Talla de camisa</Text>
@@ -370,15 +362,11 @@ const PlanillaInscripsion = ({ data }) => {
             </View>
             <View style={[styles.inputGroup, { width: "36%" }]}>
               <Text style={styles.label}>Talla de pantalon</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.pantSize)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.pantSize)}</Text>
             </View>
             <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Talla de zapatos</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.shoeSize)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.shoeSize)}</Text>
             </View>
             <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Enfermedad o Condicion Medica</Text>
@@ -430,7 +418,8 @@ const PlanillaInscripsion = ({ data }) => {
             <View style={[styles.inputGroup, { width: "40%" }]}>
               <Text style={styles.label}>Correo Electronico</Text>
               <Text style={styles.valueBox}>
-                {data?.representative.email?.toLowerCase() || "N/A"}
+                {/* 🌟 CORREGIDO: Agregado el ? a representative */}
+                {data?.representative?.email?.toLowerCase() || "N/A"}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "35%" }]}>

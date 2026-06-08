@@ -7,6 +7,7 @@ import TableInsti from "@/components/molecules/TableInsti";
 import FormInscrip from "@/components/organism/FromInscrip";
 import Modal from "@/components/organism/Modal";
 import { useAuth } from "@/context/AuthContext";
+import PlanillaInscripsion from "@/docs/PlanillaInscripsion";
 import { getStudents } from "@/services/student/getStudents";
 import {
   faAdd,
@@ -19,7 +20,9 @@ import {
   faUser,
   faCalendar,
   faUserTie,
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useState, useEffect } from "react";
 
 export default function GestionEstudiantesPage() {
@@ -50,7 +53,7 @@ export default function GestionEstudiantesPage() {
 
   if (loading) return <Loading />;
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
-
+  console.log(students);
   return (
     <>
       <div className="flex flex-col gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -59,7 +62,7 @@ export default function GestionEstudiantesPage() {
           <Button
             onClick={() => setIsOpent(true)}
             icon={faAdd}
-            classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
+            classNameBtn="bg-indigo-500 p-4 md:p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1 w-full"
           >
             Crear Estudiante
           </Button>
@@ -74,6 +77,7 @@ export default function GestionEstudiantesPage() {
           <FormInscrip SIG={SIG} authority={authority} id_period={id_period} />
         </Modal>
       </div>
+
       {/* Modal para ver información del estudiante */}
       <Modal
         title="Información del Estudiante"
@@ -82,7 +86,7 @@ export default function GestionEstudiantesPage() {
       >
         <FormInscrip mode="edit" student={selectedStudent} />
       </Modal>
-      {console.log(selectedStudent)}
+
       {/* Tabla de estudiantes */}
       <TableInsti
         titelTable={[
@@ -92,6 +96,7 @@ export default function GestionEstudiantesPage() {
           { name: "Contacto", icon: faGenderless },
           { name: "Representante Legal", icon: faUserTie },
           { name: "Grado y Sección", icon: faBook },
+          { name: "Aciones", icon: faBook },
         ]}
         data={students}
         loading={loading}
@@ -164,9 +169,7 @@ export default function GestionEstudiantesPage() {
             <td className="px-6 py-4 text-center text-slate-700">
               <div className="flex flex-col gap-1">
                 {student.id_year ? (
-                  <span className="text-sm text-slate-500">
-                    {student.id_year}
-                  </span>
+                  <span className="text-sm text-slate-500">{student.year}</span>
                 ) : (
                   <span className="text-sm text-slate-500">
                     No tiene año asignado
@@ -174,7 +177,7 @@ export default function GestionEstudiantesPage() {
                 )}
                 {student.id_section ? (
                   <span className="text-sm font-bold text-cyan-700">
-                    {student.id_section}
+                    {student.section}
                   </span>
                 ) : (
                   <span className="text-sm text-slate-500">
@@ -182,6 +185,38 @@ export default function GestionEstudiantesPage() {
                   </span>
                 )}
               </div>
+            </td>
+            <td className="px-6 py-4 text-center">
+              <PDFDownloadLink
+                key={student.tuition_number}
+                // 📄 Pasamos el documento limpio con sus datos
+                document={
+                  <PlanillaInscripsion
+                    data={student}
+                    institution={"U.E.N Juna de Escalona"}
+                  />
+                }
+                // 💾 El nombre del archivo se define aquí en el contenedor
+                fileName={`Planilla_${student.tuition_number}_inscripcion.pdf`}
+              >
+                {({ blob, url, loading, error }) => (
+                  <button
+                    type="button"
+                    disabled={loading}
+                    // ✨ Tus estilos de Tailwind aplicados directamente al botón interactivo
+                    className="flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-indigo-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        Generando...
+                      </>
+                    ) : (
+                      "Descargar Planilla"
+                    )}
+                  </button>
+                )}
+              </PDFDownloadLink>
             </td>
           </tr>
         )}
@@ -209,7 +244,7 @@ export default function GestionEstudiantesPage() {
                       day: "2-digit",
                       month: "2-digit",
                       year: "numeric",
-                      timeZone: "UTC", // 👈 Evita que la zona horaria te ruede un día atrás
+                      timeZone: "UTC",
                     })
                   : "No registrada"}
               </p>
@@ -244,7 +279,6 @@ export default function GestionEstudiantesPage() {
             {/* Pie de Tarjeta: Estatus de la sección (LÓGICA DEL NUEVO FLUJO) */}
             <div className="mt-auto pt-3 flex items-center justify-between gap-2">
               {student.id_year && student.id_section ? (
-                // 🟢 Si ya tiene aula asignada (Muestra badge azul/indigo)
                 <div className="flex gap-1.5 w-full">
                   <span className="px-2 py-1 text-[11px] font-bold bg-indigo-50 text-indigo-600 rounded-md border border-indigo-100">
                     {student.year_name || `${student.id_year}° Año`}

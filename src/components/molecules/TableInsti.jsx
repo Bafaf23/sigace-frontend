@@ -8,6 +8,25 @@ import {
   faBoxOpen,
 } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ *
+ * @param {array} titelTable - Array de objetos con las propiedades label y key
+ * @param {array} data
+ * @param {boolean} loading
+ * @param {function} renderMovilCard
+ * @param {function} renderTableRows
+ * @returns {JSX.Element}
+ *
+ * @expal
+ * <TableInsti
+ *  titelTable={[
+ *    { label: "Nombre", key: "name" },
+ *    { label: "Dirección", key: "address" },
+ *    { label: "Teléfono", key: "phone" },
+ *  ]}
+ *  data={data}
+ * />
+ */
 export default function TableInsti({
   titelTable = [],
   data = [],

@@ -1,6 +1,10 @@
 import Button from "../atom/Button";
+import Input from "../atom/Input";
+import Selector from "../atom/Selector";
+import { createEvaluation } from "@/services/evaluation/createEvaluation";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 /**
  * Formulario para crear el plan Evaluativo del la materia asignada el profesor
@@ -8,25 +12,36 @@ import { useState } from "react";
  * @returns {JSX.Element}
  */
 
-export default function FormularioPV() {
+export default function FormCargaPV({
+  onSuccess,
+  idLoadAcademic,
+  idLapseActive,
+}) {
   const [formData, setFormData] = useState({
-    semana: "",
-    contenido: "",
-    actividad: "",
-    tecnica: "",
-    instrumento: "",
-    tipoForma: "S/H",
-    porcentaje: "",
+    date: "",
+    referent_teorical: "",
+    activity: "",
+    technical: "",
+    instrument: "",
+    porcentage: "",
+    id_load_academic: idLoadAcademic,
+    id_lapse: idLapseActive,
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Evaluación creada:", formData);
-    if (onAgregar) onAgregar(formData);
+    const response = await createEvaluation(formData);
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+    const created = response.data ?? response.evaluation ?? response;
+    if (onSuccess && created && !created.error) onSuccess(created);
+    toast.success("Evaluación creada exitosamente");
   };
 
   return (
@@ -34,121 +49,79 @@ export default function FormularioPV() {
       onSubmit={handleSubmit}
       className="grid grid-cols-1 gap-4 md:grid-cols-3"
     >
-      {/* Semana */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-500">Semana</label>
-        <input
-          type="number"
-          name="semana"
-          placeholder="Ej: 02"
-          className="rounded-lg border border-slate-300 p-2 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+      <div className="col-span-1">
+        {/* Semana */}
+        <Input
+          label="Fecha"
+          type="date"
+          name="date"
+          placeholder="Ej: 2026-01-01"
           onChange={handleChange}
           required
         />
       </div>
-
-      {/* Contenido / Referente */}
-      <div className="flex flex-col gap-1 md:col-span-2">
-        <label className="text-xs font-semibold text-slate-500">
-          Referente Teórico (Contenido)
-        </label>
-        <input
+      <div className="col-span-2">
+        {/* Contenido / Referente */}
+        <Input
+          label="Referente Teórico (Contenido)"
           type="text"
-          name="contenido"
+          name="referent_teorical"
           placeholder="Ej: Ecuaciones de segundo grado"
-          className="rounded-lg border border-slate-300 p-2 text-sm outline-none focus:border-indigo-500"
           onChange={handleChange}
           required
         />
       </div>
-
       {/* Estrategia / Actividad */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-500">
-          Estrategia (Actividad)
-        </label>
-        <input
-          type="text"
-          name="actividad"
-          placeholder="Ej: Taller grupal"
-          className="rounded-lg border border-slate-300 p-2 text-sm outline-none focus:border-indigo-500"
-          onChange={handleChange}
-          required
-        />
-      </div>
-
+      <Input
+        label="Estrategia / Actividad"
+        type="text"
+        name="activity"
+        placeholder="Ej: Taller grupal"
+        onChange={handleChange}
+        required
+      />
       {/* Técnica */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-500">Técnica</label>
-        <select
-          name="tecnica"
-          className="rounded-lg border border-slate-300 p-2 text-sm outline-none"
-          onChange={handleChange}
-        >
-          <option value="">Seleccione...</option>
-          <option value="Observación">Observación</option>
-          <option value="Análisis de producción">Análisis de producción</option>
-          <option value="Prueba escrita">Prueba escrita</option>
-          <option value="Entrevista">Entrevista</option>
-        </select>
-      </div>
+      <Selector
+        label="Técnica"
+        name="technique"
+        options={[
+          { value: "Observación", label: "Observación" },
+          { value: "Análisis de producción", label: "Análisis de producción" },
+          { value: "Prueba escrita", label: "Prueba escrita" },
+          { value: "Entrevista", label: "Entrevista" },
+        ]}
+        onChange={(e) =>
+          setFormData({ ...formData, technical: e.target.value })
+        }
+        value={formData.technical}
+      />
 
       {/* Instrumento */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-500">
-          Instrumento
-        </label>
-        <input
-          type="text"
-          name="instrumento"
-          placeholder="Ej: Escala de estimación"
-          className="rounded-lg border border-slate-300 p-2 text-sm outline-none focus:border-indigo-500"
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <Input
+        label="Instrumento"
+        type="text"
+        name="instrument"
+        placeholder="Ej: Escala de estimación"
+        onChange={handleChange}
+        required
+      />
 
-      {/* Tipo/Forma */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-500">
-          Tipo / Forma
-        </label>
-        <select
-          name="tipoForma"
-          className="rounded-lg border border-slate-300 p-2 text-sm font-bold text-indigo-600 outline-none"
-          onChange={handleChange}
-        >
-          <option value="S/H">Sumativa / Heteroevaluación</option>
-          <option value="S/C">Sumativa / Coevaluación</option>
-          <option value="F/A">Formativa / Autoevaluación</option>
-        </select>
-      </div>
-
-      {/* Porcentaje */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-500">
-          Ponderación (%)
-        </label>
-        <div className="flex items-center gap-2">
-          <input
-            type="number"
-            name="porcentaje"
-            max="100"
-            placeholder="Ej: 20"
-            className="w-full rounded-lg border border-slate-300 p-2 text-sm font-bold text-indigo-500 outline-none focus:border-indigo-500"
-            onChange={handleChange}
-            required
-          />
-          <span className="font-bold text-slate-400">%</span>
-        </div>
-      </div>
+      {/* Ponderación */}
+      <Input
+        label="Ponderación (%)"
+        type="number"
+        name="porcentage"
+        placeholder="Ej: 20%"
+        onChange={handleChange}
+        required
+      />
 
       {/* Botón de envío */}
       <div className="flex items-end">
         <Button
           icon={faPlus}
           type="submit"
-          classNameBtn="w-full rounded-lg bg-indigo-500 px-4 py-2 text-sm font-bold text-white shadow-md shadow-indigo-200 transition-all hover:bg-indigo-600 active:scale-95"
+          classNameBtn="w-full bg-indigo-500 p-3 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1 hover:bg-indigo-600"
         >
           {"Añadir al Plan"}
         </Button>
