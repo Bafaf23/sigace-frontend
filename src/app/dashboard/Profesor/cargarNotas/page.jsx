@@ -50,7 +50,7 @@ export default function CargarNotas() {
     const loadPantallaInicial = async () => {
       try {
         setLoadingPantalla(true);
-        const cargaResponse = await getLoadAcademic(user.user.id);
+        const cargaResponse = await getLoadAcademic(user.user.id_user);
         setSubjects(Array.isArray(cargaResponse) ? cargaResponse : []);
       } catch (error) {
         console.error("Error al cargar los datos de la pantalla:", error);

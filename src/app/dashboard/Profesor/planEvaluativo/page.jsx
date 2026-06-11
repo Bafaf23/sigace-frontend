@@ -48,7 +48,7 @@ export default function PlanEvaluativo() {
     if (!user?.user?.id) return;
 
     const fetchLoadAcademic = async () => {
-      const data = await getLoadAcademic(user.user.id);
+      const data = await getLoadAcademic(user?.user?.id_user);
       if (data.error) {
         toast.error(data.error);
         return;

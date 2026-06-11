@@ -55,7 +55,7 @@ export default function HeaderDashbord({ user, titelPage }) {
 
                   <div>
                     <p className="text-slate-500 dark:text-slate-500">
-                      Bienvenido a tu panel de controle.
+                      Bienvenido a tu panel de control.
                     </p>
                   </div>
                 </div>

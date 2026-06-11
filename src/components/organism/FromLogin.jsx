@@ -73,7 +73,7 @@ export default function FromLogin() {
             SIGACE<span className="text-cyan-500">.</span>
           </h1>
           <p className="font-medium text-slate-500 dark:text-slate-300">
-            Controle de Estudios Inteligente
+            control de Estudios Inteligente
           </p>
         </div>
 

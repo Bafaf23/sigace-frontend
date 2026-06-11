@@ -4,6 +4,7 @@ import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import { useAuth } from "@/context/AuthContext";
+import { getSchoolBySIG } from "@/services/school/getSchoolBySIG";
 import {
   faEdit,
   faInfoCircle,
@@ -15,6 +16,7 @@ import {
   faSchool,
   faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
 
 function displayOrUnset(value) {
   if (value == null || value === "") return "No asignado";
@@ -23,13 +25,24 @@ function displayOrUnset(value) {
 
 export default function ProfilePage() {
   const { user, loading, handleLogout } = useAuth();
+  const [school, setSchool] = useState({});
+  const SIG = user?.user.SIG;
+  useEffect(() => {
+    const getSchool = async () => {
+      const data = await getSchoolBySIG(SIG);
+      setSchool(data);
+    };
 
+    getSchool();
+  }, []);
   if (loading || !user?.user) {
     return <Loading />;
   }
 
   const u = user.user;
+  const role = user?.user.role;
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+  console.log(school);
 
   return (
     <div className="mx-auto w-full max-w-5xl p-4 md:p-6 animate-fade-in">
@@ -64,7 +77,6 @@ export default function ProfilePage() {
 
       {/* CUERPO CENTRAL ASIMÉTRICO */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-    
         <section className="lg:col-span-2 space-y-6 rounded-3xl border border-slate-200/60 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
@@ -162,21 +174,22 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-4">
-              <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800/40">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                  Código SIG Institucional
-                </span>
-                <span className="text-xl font-black text-cyan-600 dark:text-cyan-400 tracking-tight font-mono block">
-                  {displayOrUnset(u.SIG)}
-                </span>
-              </div>
-
+              {role !== "Estudiante" && (
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800/40">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                    Código SIG Institucional
+                  </span>
+                  <span className="text-xl font-black text-cyan-600 dark:text-cyan-400 tracking-tight font-mono block">
+                    {displayOrUnset(u.SIG)}
+                  </span>
+                </div>
+              )}
               <div className="space-y-1 px-1">
                 <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
                   Centro Educativo
                 </span>
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {displayOrUnset(u.schoolName)}
+                  {displayOrUnset(school.name).toUpperCase()}
                 </p>
               </div>
 

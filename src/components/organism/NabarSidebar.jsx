@@ -51,17 +51,12 @@ export const menuLink = {
     {
       icon: faHome,
       label: "Mi Inicio",
-      href: "/dashboard/student",
+      href: "/dashboard/Estudiante",
     },
     {
       icon: faListCheck,
       label: "Mis Notas",
-      href: "/dashboard/student/notas",
-    },
-    {
-      icon: faUserCheck,
-      label: "Mi Asistencia",
-      href: "/dashboard/student/asistencia",
+      href: "/dashboard/Estudiante/notas",
     },
   ],
   Administrador: [
@@ -72,7 +67,7 @@ export const menuLink = {
     },
     {
       icon: faSitemap,
-      label: "Controle de Secciones",
+      label: "control de Secciones",
       href: "/dashboard/Administrador/controlSecciones",
     },
     {

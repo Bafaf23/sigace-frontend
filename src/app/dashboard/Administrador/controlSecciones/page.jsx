@@ -13,7 +13,7 @@ import { getStudenNotEnrollment } from "@/services/student/getStudenNotEnrollmen
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useCallback } from "react";
 
-export default function controleSecciones() {
+export default function controlSecciones() {
   const { user } = useAuth();
   const [sections, setSections] = useState([]);
   const [isOpen, setIsopen] = useState(false);
@@ -56,7 +56,7 @@ export default function controleSecciones() {
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">
-        <HeaderDashbord titelPage={"Controle de Secciones"} />
+        <HeaderDashbord titelPage={"control de Secciones"} />
         <div className="p-3 hidden md:block lg:block">
           <Button
             onClick={() => setIsopen(!isOpen)}

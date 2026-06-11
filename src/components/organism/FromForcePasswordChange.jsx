@@ -1,14 +1,14 @@
 "use client";
-import InputPass from "../atom/InputPass";
 import Button from "../atom/Button";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { validate, patterns } from "@/services/regex/regex";
-import { toast } from "react-hot-toast";
-import Loading from "@/app/(auth)/force-password-change/loading";
-import { faInfoCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
 import Icon from "../atom/Icon";
+import InputPass from "../atom/InputPass";
+import Loading from "@/app/(auth)/force-password-change/loading";
 import { changePassword } from "@/services/auth/changePassw";
+import { validate, patterns } from "@/services/regex/regex";
+import { faInfoCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 export default function FromForcePasswordChange() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function FromForcePasswordChange() {
       setUser(parsedUser);
 
       // Extraemos el ID considerando tu estructura de datos segura
-      const userId = parsedUser?.user?.id || parsedUser?.id || "";
+      const userId = parsedUser?.user?.id_user;
 
       setFormData({
         newPassword: "",
@@ -45,7 +45,7 @@ export default function FromForcePasswordChange() {
     setLoading(false);
 
     // 🚨 Arreglo de dependencias vacío para evitar el bucle infinito
-  }, [router]);
+  }, []);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
