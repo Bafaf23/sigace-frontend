@@ -29,7 +29,6 @@ export default function NotasPage() {
       try {
         setLoading(true);
 
-        const idSection = user.user.id_section || 1; // Quemado temporal para tus pruebas
         const idStudent = user.user.id || 1; // Quemado temporal para tus pruebas
         const SIG = user.user.SIG;
 
@@ -56,7 +55,7 @@ export default function NotasPage() {
     };
 
     fetchGrades();
-  }, [user]); // Re-ejecuta cuando el usuario del contexto ya esté disponible
+  }, [user]);
 
   if (loading) return <Loading />;
 

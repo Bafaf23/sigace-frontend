@@ -13,7 +13,7 @@ export const getPeriod = async (SIG, token) => {
 
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/lapses/getAcademicPeriods/${SIG}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/getAcademicPeriods/${SIG}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

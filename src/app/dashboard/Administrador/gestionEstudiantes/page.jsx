@@ -41,7 +41,7 @@ export default function GestionEstudiantesPage() {
 
     const fetchStudents = async () => {
       try {
-        const data = await getStudents(SIG, authority);
+        const data = await getStudents(SIG, authority, id_period);
         setStudents(data);
       } catch (error) {
         console.error("Error al traer los estudiantes:", error);

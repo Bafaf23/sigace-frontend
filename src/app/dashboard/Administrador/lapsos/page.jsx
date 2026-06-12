@@ -5,12 +5,12 @@ import CardLapse from "@/components/molecules/CardLapse";
 import ConfirmAtionModal from "@/components/molecules/ConfirmAtionModal";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import { useAuth } from "@/context/AuthContext";
+import { createPeriod } from "@/services/academicPeriod/createPeriod";
+import { endAcademicPeriod } from "@/services/academicPeriod/endAcademicPeriod";
+import { getPeriod } from "@/services/academicPeriod/getPeriod";
 import { createLapse } from "@/services/lapse/createLapse";
-import { createPeriod } from "@/services/lapse/createPeriod";
-import { endAcademicPeriod } from "@/services/lapse/endAcademicPeriod";
-import { getLapses } from "@/services/lapse/getLapse";
-import { getPeriod } from "@/services/lapse/getPeriod";
 import { endLapse } from "@/services/lapse/endLapse";
+import { getLapses } from "@/services/lapse/getLapse";
 import { startLapse } from "@/services/lapse/stardLapse";
 import { faCalendar, faCheck, faBook } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
@@ -38,7 +38,7 @@ export default function LapsoPage() {
   };
 
   const fetchLapses = async () => {
-    const result = await getLapses(SIG);
+    const result = await getLapses(SIG, user?.user.period);
     if (result.error) {
       toast.error(result.error);
       return;

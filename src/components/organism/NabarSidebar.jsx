@@ -20,6 +20,7 @@ import {
   faUserGraduate,
   faBuilding,
   faUsers,
+  faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 
@@ -100,6 +101,11 @@ export const menuLink = {
       icon: faCalendarCheck,
       label: "Configuración de Lapsos",
       href: "/dashboard/Administrador/lapsos",
+    },
+    {
+      icon: faGraduationCap,
+      label: "Promociones",
+      href: "/dashboard/Administrador/promociones",
     },
   ],
   SuperAdmin: [

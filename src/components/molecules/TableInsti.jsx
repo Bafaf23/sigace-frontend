@@ -65,7 +65,7 @@ export default function TableInsti({
               {titelTable.map((titel, index) => (
                 <th
                   key={index}
-                  className="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-400"
+                  className={`${titel.className || `px-6 py-4`} text-sm font-semibold text-slate-600 dark:text-slate-400`}
                 >
                   <Icon icon={titel.icon} />
                   {titel.name}
@@ -77,7 +77,7 @@ export default function TableInsti({
             {data.length === 0 ? (
               <tr>
                 <td
-                  colSpan="7"
+                  colSpan={titelTable.length}
                   className="px-6 py-10 text-center text-slate-400"
                 >
                   <div className="flex flex-col gap-2 items-center justify-center">

@@ -9,7 +9,7 @@ import axios from "axios";
 export const endAcademicPeriod = async (SIG, token) => {
   try {
     const response = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}/lapses/endAcademicPeriod/${SIG}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/endAcademicPeriod/${SIG}`,
       {},
       {
         headers: {
