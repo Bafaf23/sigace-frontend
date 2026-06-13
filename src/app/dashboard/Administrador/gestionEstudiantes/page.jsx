@@ -1,8 +1,10 @@
 "use client";
 import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
+import Icon from "@/components/atom/Icon";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import Serch from "@/components/molecules/Serch";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormInscrip from "@/components/organism/FromInscrip";
 import Modal from "@/components/organism/Modal";
@@ -12,15 +14,16 @@ import { getStudents } from "@/services/student/getStudents";
 import {
   faAdd,
   faBook,
-  faGenderless,
-  faEllipsisV,
   faIdCard,
   faEdit,
   faTrash,
   faUser,
+  faClipboardList,
+  // 🌟 CORREGIDO: Importación correcta en CamelCase
   faCalendar,
   faUserTie,
-  faFile,
+  faAward,
+  faFilePdf, // 🌟 ADICIÓN: Ideal para la descarga de documentos PDF
 } from "@fortawesome/free-solid-svg-icons";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useState, useEffect } from "react";
@@ -53,11 +56,11 @@ export default function GestionEstudiantesPage() {
 
   if (loading) return <Loading />;
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
-  console.log(students);
+
   return (
     <>
       <div className="flex flex-col gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">
-        <HeaderDashbord titelPage={"Gestion de Estudiantes"} />
+        <HeaderDashbord titelPage={"Gestión de Estudiantes"} />
         <div className="p-3">
           <Button
             onClick={() => setIsOpent(true)}
@@ -67,18 +70,18 @@ export default function GestionEstudiantesPage() {
             Crear Estudiante
           </Button>
         </div>
+
         {/* Modal para crear estudiante */}
         <Modal
           title="Crear Estudiante"
           isOpen={isOpent}
           onClose={() => setIsOpent(false)}
         >
-          {/* Al pasarle las variables aquí, ya estamos 100% seguros de que existen */}
           <FormInscrip SIG={SIG} authority={authority} id_period={id_period} />
         </Modal>
       </div>
 
-      {/* Modal para ver información del estudiante */}
+      {/* Modal para ver/editar información del estudiante */}
       <Modal
         title="Información del Estudiante"
         isOpen={isOpenModal}
@@ -87,16 +90,23 @@ export default function GestionEstudiantesPage() {
         <FormInscrip mode="edit" student={selectedStudent} />
       </Modal>
 
+      <div className="p-4 flex justify-between items-center">
+        <Serch placeholder="V-12345678" />
+        <p className="text-slate-500">
+          {" "}
+          Total de la matricula: {students?.length}
+        </p>
+      </div>
       {/* Tabla de estudiantes */}
       <TableInsti
         titelTable={[
           { name: "Número de matrícula", icon: faIdCard },
           { name: "Nombre y Apellido", icon: faUser },
           { name: "Edad", icon: faCalendar },
-          { name: "Contacto", icon: faGenderless },
+          { name: "Contacto", icon: faUser },
           { name: "Representante Legal", icon: faUserTie },
           { name: "Grado y Sección", icon: faBook },
-          { name: "Aciones", icon: faBook },
+          { name: "Acciones", icon: faClipboardList },
         ]}
         data={students}
         loading={loading}
@@ -109,7 +119,7 @@ export default function GestionEstudiantesPage() {
               <div className="flex flex-col gap-1">
                 <Button
                   icon={faIdCard}
-                  classNameBtn="font-bold text-cyan-700 text-sm uppercase tracking-wide border border-cyan-700/10 rounded-md px-2 py-1 inline-flex items-center bg-cyan-50 w-fit cursor-pointer hover:bg-cyan-100 hover:text-cyan-700 transition-all duration-300 hover:underline"
+                  classNameBtn="font-bold text-cyan-700 text-sm uppercase tracking-wide border border-cyan-700/10 rounded-md px-2 py-1 inline-flex items-center bg-cyan-50 w-fit cursor-pointer hover:bg-cyan-100 transition-all duration-300 hover:underline"
                   onClick={() => {
                     setSelectedStudent(student);
                     setIsOpenModal(true);
@@ -134,9 +144,9 @@ export default function GestionEstudiantesPage() {
                 </span>
               </div>
             </td>
-            <td className="px-6 py-4 text-center text-slate-500">
+            <td className="px-6 py-4 text-slate-500">
               <div className="flex flex-col gap-1">
-                <span className=" text-slate-500">
+                <span>
                   {new Date(student.birth_date).toLocaleDateString("es-ES", {
                     day: "2-digit",
                     month: "2-digit",
@@ -146,77 +156,117 @@ export default function GestionEstudiantesPage() {
                 <span className="text-xs text-slate-500">{student.gender}</span>
               </div>
             </td>
-            <td className="px-6 py-4 text-center text-slate-500 font-medium">
+            <td className="px-6 py-4 text-slate-500 font-medium">
               <div className="flex flex-col gap-1">
-                <span className="text-sm text-slate-500">{student.phone}</span>
-                <span className="text-sm text-slate-500">{student.email}</span>
+                <span className="text-sm">{student.phone}</span>
+                <span className="text-sm truncate max-w-[150px]">
+                  {student.email}
+                </span>
               </div>
             </td>
-            <td className="px-6 py-4 text-center text-slate-700">
+            <td className="px-6 py-4 text-slate-700">
               <div className="flex flex-col gap-1">
-                <span className="text-ms text-slate-700 font-bold">
+                <span className="text-sm font-bold">
                   {student.representative_name}{" "}
                   {student.representative_last_name}
                 </span>
                 <span className="text-sm text-slate-500">
                   {student.representative_phone}
                 </span>
-                <span className="text-sm text-slate-500">
+                <span className="text-xs text-indigo-500 font-semibold">
                   ({student.representative_relationship})
                 </span>
               </div>
             </td>
-            <td className="px-6 py-4 text-center text-slate-700">
+            <td className="px-6 py-4 text-slate-700">
               <div className="flex flex-col gap-1">
                 {student.id_year ? (
                   <span className="text-sm text-slate-500">{student.year}</span>
                 ) : (
-                  <span className="text-sm text-slate-500">
-                    No tiene año asignado
+                  <span className="text-xs text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded border border-amber-200 w-fit">
+                    Sin año asignado
                   </span>
                 )}
                 {student.id_section ? (
                   <span className="text-sm font-bold text-cyan-700">
-                    {student.section}
+                    Sección {student.section}
                   </span>
                 ) : (
-                  <span className="text-sm text-slate-500">
-                    No tiene sección asignada
+                  <span className="text-xs text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded border border-amber-200 w-fit">
+                    Sin sección
                   </span>
                 )}
               </div>
             </td>
-            <td className="px-6 py-4 text-center">
-              <PDFDownloadLink
-                key={student.tuition_number}
-                // 📄 Pasamos el documento limpio con sus datos
-                document={
-                  <PlanillaInscripsion
-                    data={student}
-                    institution={"U.E.N Juna de Escalona"}
-                  />
-                }
-                // 💾 El nombre del archivo se define aquí en el contenedor
-                fileName={`Planilla_${student.tuition_number}_inscripcion.pdf`}
-              >
-                {({ blob, url, loading, error }) => (
-                  <button
-                    type="button"
-                    disabled={loading}
-                    // ✨ Tus estilos de Tailwind aplicados directamente al botón interactivo
-                    className="flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-indigo-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
-                  >
-                    {loading ? (
-                      <>
+            <td className="px-6 py-4">
+              {/* 🌟 GRUPO DE ACCIONES COMPLETO PARA DESKTOP */}
+              <div className="flex items-center justify-center gap-2">
+                {/* Botón para abrir edición rápida */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedStudent(student);
+                    setIsOpenModal(true);
+                  }}
+                  className="p-2 text-slate-400 hover:text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
+                  title="Editar Estudiante"
+                >
+                  <Icon icon={faEdit} className="w-4 h-4" />
+                </button>
+
+                {/* Botón del PDF (Planilla de inscripción) */}
+                <PDFDownloadLink
+                  key={student.tuition_number}
+                  document={
+                    <PlanillaInscripsion
+                      data={student}
+                      institution={"U.E.N Juana de Escalona"}
+                    />
+                  }
+                  fileName={`Planilla_${student.tuition_number}_inscripcion.pdf`}
+                >
+                  {({ loading }) => (
+                    <button
+                      type="button"
+                      disabled={loading}
+                      title="Descargar Planilla de Inscripción"
+                      className="flex items-center justify-center p-2 rounded-lg bg-cyan-600 text-white transition-all hover:bg-cyan-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                    >
+                      {loading ? (
                         <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        Generando...
-                      </>
-                    ) : (
-                      "Descargar Planilla"
-                    )}
-                  </button>
-                )}
-              </PDFDownloadLink>
+                      ) : (
+                        <Icon icon={faClipboardList} className="w-4 h-4" /> // 🌟 CORREGIDO: Icono adecuado para planilla
+                      )}
+                    </button>
+                  )}
+                </PDFDownloadLink>
+                {/* Notas certifiacadas */}
+                <PDFDownloadLink
+                  key={student.document}
+                  document={
+                    <PlanillaInscripsion
+                      data={student}
+                      institution={"U.E.N Juana de Escalona"}
+                    />
+                  }
+                  fileName={`Notas_Certificadas${student.document}.pdf`}
+                >
+                  {({ loading }) => (
+                    <button
+                      type="button"
+                      disabled={loading}
+                      title="Descargar las notas Certifiacadas"
+                      className="flex items-center justify-center p-2 rounded-lg bg-orange-500 text-white transition-all hover:bg-orange-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                    >
+                      {loading ? (
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      ) : (
+                        <Icon icon={faAward} className="w-4 h-4" /> // 🌟 CORREGIDO: Icono adecuado para planilla
+                      )}
+                    </button>
+                  )}
+                </PDFDownloadLink>
+              </div>
             </td>
           </tr>
         )}
@@ -225,17 +275,41 @@ export default function GestionEstudiantesPage() {
             className="flex flex-col gap-2 p-5 bg-white rounded-xl shadow-sm border border-slate-100 transition-all duration-300 hover:shadow-md hover:border-slate-200 relative overflow-hidden"
             key={student.id}
           >
-            {/* Cabecera: Matrícula y Nombre Principal */}
+            {/* Cabecera Móvil */}
             <div className="flex flex-col border-b border-slate-100 pb-2 mb-1">
               <span className="text-xs font-mono font-semibold text-indigo-500 tracking-wider">
                 {student.tuition_number || "SIN MATRÍCULA"}
               </span>
-              <h3 className="text-base font-bold text-slate-800 capitalize">
-                {student.name.toLowerCase()} {student.last_name.toLowerCase()}
-              </h3>
+              <div className="flex justify-between items-start">
+                <h3 className="text-base font-bold text-slate-800 capitalize">
+                  {student.name.toLowerCase()} {student.last_name.toLowerCase()}
+                </h3>
+                {/* Descarga rápida desde móvil */}
+                <PDFDownloadLink
+                  document={
+                    <PlanillaInscripsion
+                      data={student}
+                      institution={"U.E.N Juana de Escalona"}
+                    />
+                  }
+                  fileName={`Planilla_${student.tuition_number}_inscripcion.pdf`}
+                >
+                  {({ loading }) => (
+                    <button
+                      disabled={loading}
+                      className="text-cyan-600 p-1 hover:bg-cyan-50 rounded"
+                    >
+                      <Icon
+                        icon={loading ? faAdd : faClipboardList}
+                        className="w-4 h-4"
+                      />
+                    </button>
+                  )}
+                </PDFDownloadLink>
+              </div>
             </div>
 
-            {/* Información del Estudiante */}
+            {/* Datos del estudiante */}
             <div className="space-y-1 text-xs text-slate-600">
               <p>
                 <span className="font-medium text-slate-400">Nacimiento:</span>{" "}
@@ -258,7 +332,7 @@ export default function GestionEstudiantesPage() {
               </p>
             </div>
 
-            {/* Información del Representante (Bloque visual separado) */}
+            {/* Datos del Representante */}
             <div className="mt-2 pt-2 border-t border-slate-50 bg-slate-50/50 p-2 rounded-lg text-xs text-slate-600">
               <p className="font-semibold text-slate-700 mb-1">
                 Representante:
@@ -276,7 +350,7 @@ export default function GestionEstudiantesPage() {
               </p>
             </div>
 
-            {/* Pie de Tarjeta: Estatus de la sección (LÓGICA DEL NUEVO FLUJO) */}
+            {/* Asignación de Aula */}
             <div className="mt-auto pt-3 flex items-center justify-between gap-2">
               {student.id_year && student.id_section ? (
                 <div className="flex gap-1.5 w-full">
@@ -288,7 +362,6 @@ export default function GestionEstudiantesPage() {
                   </span>
                 </div>
               ) : (
-                // 🟡 Si acaba de ser registrado y está esperando cupo (Badge de Alerta)
                 <span className="w-full text-center px-2 py-1 text-[11px] font-bold bg-amber-50 text-amber-700 rounded-md border border-amber-200">
                   Pendiente por Asignar Aula
                 </span>

@@ -351,7 +351,7 @@ const PlanillaInscripsion = ({ data, institution }) => {
               <View style={styles.sectionNumber}>
                 <Text>2</Text>
               </View>
-              <Text style={styles.sectionTitle}>Dirección y Datos Médicos</Text>
+              <Text style={styles.sectionTitle}>Datos Médicos</Text>
             </View>
           </View>
 

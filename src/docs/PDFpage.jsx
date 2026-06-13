@@ -1,5 +1,7 @@
 "use client";
+import Asistencias from "@/docs/Asistencias";
 import PlanillaInscripsion from "@/docs/PlanillaInscripsion";
+import PlanillaReguistroCalificaciones from "@/docs/PlanillaReguistroCalificaciones";
 import dynamic from "next/dynamic";
 
 const PDFViewer = dynamic(
@@ -24,7 +26,9 @@ export default function PDFpage() {
 
       {/* El visor del PDF con el documento adentro */}
       <PDFViewer style={{ flex: 1, border: "none" }}>
-        <PlanillaInscripsion />
+        <PlanillaReguistroCalificaciones />
+        {/*     <PlanillaInscripsion /> */}
+        {/*  <Asistencias /> */}
       </PDFViewer>
     </div>
   );

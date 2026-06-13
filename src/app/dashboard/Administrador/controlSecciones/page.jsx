@@ -39,7 +39,7 @@ export default function controlSecciones() {
   const loadSections = useCallback(() => {
     if (!SIG || !authority) return;
     setLoading(true);
-    getSection(SIG, authority)
+    getSection(SIG, authority, period)
       .then((data) => {
         setSections(data);
       })
@@ -52,7 +52,7 @@ export default function controlSecciones() {
     loadSections();
     loadStudents();
   }, [loadSections, loadStudents]);
-
+  console.log(sections);
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">

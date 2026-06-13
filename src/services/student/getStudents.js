@@ -7,9 +7,9 @@ import axios from "axios";
  * @param {number} id_period - id de perido academico
  * @returns {Promise<Array>} - Un array de estudiantes
  */
-export const getStudents = async (SIG, authority, id_period) => {
+export const getStudents = async (SIG, authority) => {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/students/getStudents/${SIG}/${id_period}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/students/getStudents/${SIG}`,
     {
       headers: {
         Authorization: `Bearer ${authority}`,

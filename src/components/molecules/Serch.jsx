@@ -1,5 +1,5 @@
-import Input from "../atom/Input";
 import Button from "../atom/Button";
+import Input from "../atom/Input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 /**
@@ -10,12 +10,12 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
  * @param {string} props.placeholder - Texto de ayuda para el usuario (ej: Buscar institucion por SIG)
  * @returns {JSX.Element}
  */
-export default function Serch({ search, setSearch }) {
+export default function Serch({ search, setSearch, placeholder }) {
   return (
     <div className="flex items-center gap-2">
       <Input
         type="text"
-        placeholder="Buscar institucion por SIG"
+        placeholder={placeholder}
         className="w-full"
         name="search"
         value={search}

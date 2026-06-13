@@ -27,6 +27,7 @@ export default function LapsoPage() {
 
   const SIG = user?.user?.SIG;
   const token = user?.user?.token;
+  const id_period = user?.user?.id_period;
 
   const fetchPeriod = async () => {
     const result = await getPeriod(SIG, token);
@@ -38,7 +39,7 @@ export default function LapsoPage() {
   };
 
   const fetchLapses = async () => {
-    const result = await getLapses(SIG, user?.user.period);
+    const result = await getLapses(SIG, id_period);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -49,7 +50,7 @@ export default function LapsoPage() {
     fetchPeriod();
     fetchLapses();
   }, [SIG, token]);
-
+  console.log(id_period);
   return (
     <main className="animate-in fade-in duration-500">
       <section className="flex flex-col gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">

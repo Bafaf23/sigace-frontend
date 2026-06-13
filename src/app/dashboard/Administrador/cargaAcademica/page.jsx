@@ -54,6 +54,7 @@ export default function CargaAcademicaPage() {
     loadCatalogData();
   }, [loadCatalogData]);
 
+  console.log(teachers)
   return (
     <div>
       <div className="flex flex-col justify-between items-center gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">

@@ -90,7 +90,7 @@ export default function GestionDocentesPage() {
             data={teachers}
             renderTableRows={(teacher) => (
               <tr
-                key={teacher.id}
+                key={teacher.id_teacher}
                 className="transition-colors hover:bg-slate-50/50 group border-b border-slate-100"
               >
                 <td className="px-6 py-4 font-medium text-slate-700 text-sm">
@@ -108,13 +108,14 @@ export default function GestionDocentesPage() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-wrap gap-1 max-w-xs">
-                    {teacher.subjects && teacher.subjects.length > 0 ? (
-                      teacher.subjects.map((subject, index) => (
+                    {teacher.academic_load &&
+                    teacher.academic_load.length > 0 ? (
+                      teacher.academic_load.map((subject, index) => (
                         <span
                           key={index}
                           className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10"
                         >
-                          {subject.code} ({subject.section})
+                          {subject.subject_name} ({subject.code_subject})
                         </span>
                       ))
                     ) : (
@@ -161,7 +162,7 @@ export default function GestionDocentesPage() {
             // 📱 Vista Móvil (Responsive)
             renderMovilCard={(teacher) => (
               <div
-                key={`card-teacher-${teacher.id}`}
+                key={`card-teacher-${teacher.id_teacher}`}
                 className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm mb-3"
               >
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-2">

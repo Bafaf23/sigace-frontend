@@ -26,7 +26,7 @@ export default function PromocionesPage() {
   // 2. Fetch para traer los datos del Backend (Paso 1 completado)
   useEffect(() => {
     const fetchApprovedStudents = async () => {
-      const data = await getApproved(7);
+      const data = await getApproved(user?.user.id_period);
       setStudents(data);
       setLoading(false);
     };
@@ -40,6 +40,12 @@ export default function PromocionesPage() {
     // Aquí ejecutaremos el lote completo enviando los IDs al backend
   };
 
+  // Objeto de estilos
+  const statusStyles = {
+    Aprobado: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+    "Materia Pendiente": "bg-amber-50 text-amber-700 border border-amber-200",
+    Reprobado: "bg-rose-50 text-rose-700 border border-rose-200",
+  };
   return (
     <div>
       <HeaderDashbord titelPage="Promocion" />
@@ -86,6 +92,7 @@ export default function PromocionesPage() {
                 { name: "ID", icon: faIdCard },
                 { name: "Nombre y Apellido", icon: faUser },
                 { name: "Año y Seccion", icon: faLayerGroup },
+                { name: "Perido", icon: faLayerGroup },
                 { name: "Promedio Final", icon: faProjectDiagram },
                 { name: "Estado", icon: faCheck },
               ]}
@@ -117,12 +124,15 @@ export default function PromocionesPage() {
                       </span>
                     </div>
                   </td>
+                  <td className="px-6 py-4 text-cyan-600 font-bold">
+                    {student.period}
+                  </td>
                   <td className="px-6 py-4 text-orange-500 font-bold">
                     {student.general_average}
                   </td>
                   <td className="px-6 py-4">
                     <div
-                      className={`flex items-center gap-1.5 px-2.5 py-1 border rounded-full w-fit text-xs font-semibold tracking-wide bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400-`}
+                      className={`flex items-center gap-1.5 px-2.5 py-1 border rounded-full w-fit text-xs font-semibold tracking-wide ${statusStyles[student.status]}`}
                     >
                       <Icon icon={faCheck} className="text-xs" />
                       <span>{student.status}</span>
