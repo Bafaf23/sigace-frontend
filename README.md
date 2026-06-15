@@ -1,6 +1,6 @@
 # 🎓 SIGACE
 
-### Sistema Inteligente de Gestión Académica y Controle de Estudios
+### Sistema Inteligente de Gestión Académica y control de Estudios
 
 **SIGACE** es una solución integral diseñada para la automatización de procesos administrativos y académicos en instituciones educativas. Permite centralizar la información de estudiantes, docentes y representantes bajo una arquitectura segura y escalable.
 
@@ -9,7 +9,7 @@
 ## ✨ Funcionalidades principales
 
 - **Gestión de inscripciones:** 📝 registro de alumnos en periodos académicos.
-- **Controle de calificaciones:** 📊 notas por lapsos, asignaturas y secciones.
+- **control de calificaciones:** 📊 notas por lapsos, asignaturas y secciones.
 - **Gestión de usuarios:** 👥 roles para administradores, docentes, estudiantes y representantes.
 - **Reportes:** 📄 boletas y listados en PDF (p. ej. `@react-pdf/renderer`).
 - **Datos académicos:** 🔗 grados, secciones y carga docente enlazados con la API del backend.

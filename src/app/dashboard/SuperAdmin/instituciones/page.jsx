@@ -2,7 +2,6 @@
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Button from "@/components/atom/Button";
 import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
 import Modal from "@/components/organism/Modal";
 import { deleteSchool } from "@/services/school/deleteSchool";
@@ -55,8 +54,6 @@ export default function InstitucionesPage() {
           </Modal>
         </div>
       </div>
-
-      <QuickActions />
 
       <div className="p-4">
         <div className="border border-amber-200 bg-amber-50 p-4 rounded-xl flex items-center gap-2">

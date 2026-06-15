@@ -1,10 +1,10 @@
 "use client";
-import Loading from "@/app/loading";
 import Icon from "@/components/atom/Icon";
+import SkeletonCard from "@/components/atom/SkeletonCard";
 import ListSubjects from "@/components/molecules/ListSubjects";
 import HeaderGestionMaterias from "@/components/organism/HeaderGestionMaterias";
 import { useAuth } from "@/context/AuthContext";
-import { getSubjects } from "@/services/subject/getSuject";
+import { getSubjects } from "@/services/subject/getSujects";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useState } from "react";
 
@@ -33,7 +33,6 @@ export default function MateriasPage() {
     loadSubjects();
   }, [loadSubjects]);
 
-  if (loading) return <Loading />;
   return (
     <div className="">
       <HeaderGestionMaterias
@@ -50,11 +49,14 @@ export default function MateriasPage() {
           </p>
         </div>
       </div>
-
-      <ListSubjects
-        dataSubjects={dataSubjects}
-        onSubjectDeleted={() => loadSubjects(true)}
-      />
+      {loading ? (
+        <SkeletonCard />
+      ) : (
+        <ListSubjects
+          dataSubjects={dataSubjects}
+          onSubjectDeleted={() => loadSubjects(true)}
+        />
+      )}
     </div>
   );
 }

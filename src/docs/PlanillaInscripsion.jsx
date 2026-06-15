@@ -6,9 +6,10 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+import React from "react";
 
 /**
- * Formatea un valor para que sea mayúsculas
+ * Formatea un valor para mitigar nulos
  * @param {string} value
  * @param {function} transform
  * @returns {string}
@@ -23,7 +24,7 @@ function fmt(value, transform = (s) => s) {
 }
 
 /**
- * Formatea un valor para que sea mayúsculas
+ * Formatea un valor a mayúsculas
  * @param {string} value
  * @returns {string}
  */
@@ -45,7 +46,7 @@ function medicalConditionText(user) {
   return "";
 }
 
-// 1. Estilos con ADN SIGACE (Minimalista y Moderno)
+// Estilos adaptados para incluir la tercera firma
 const styles = StyleSheet.create({
   page: {
     paddingRight: 40,
@@ -54,9 +55,8 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     backgroundColor: "#FFFFFF",
     fontFamily: "Helvetica",
-    color: "#334155", // Slate 700
+    color: "#334155",
   },
-
   watermarkContainer: {
     position: "absolute",
     top: 0,
@@ -66,31 +66,19 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: -1, // Se asegura de estar detrás del texto
+    zIndex: -1,
   },
-
-  watermarkText: {
-    fontSize: 60,
-    color: "#E2E8F0", // Un gris muy claro (Slate-200)
-    opacity: 0.4,
-    transform: "rotate(-45deg)", // Rotación clásica diagonal
-    fontWeight: "bold",
-    textTransform: "uppercase",
-  },
-
   watermarkImage: {
     width: 300,
     opacity: 0.05,
   },
-
-  // Barra lateral decorativa o acento superior
   accentBar: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: 6,
-    backgroundColor: "#04C4D9", // Dark cyan SIGACE
+    backgroundColor: "#04C4D9",
   },
   header: {
     flexDirection: "row",
@@ -101,33 +89,44 @@ const styles = StyleSheet.create({
   },
   institutionInfo: {
     flexDirection: "column",
+    width: "65%",
   },
   mainTitle: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#0F172A",
     letterSpacing: 1,
+    marginTop: 2,
   },
   badge: {
     backgroundColor: "#F1F5F9",
-    padding: "4 8",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     borderRadius: 4,
     fontSize: 8,
     color: "#64748B",
     marginTop: 5,
     alignSelf: "flex-start",
   },
-  // Secciones Estilizadas
+  headerDocType: {
+    width: "35%",
+    textAlign: "right",
+  },
   section: {
     marginBottom: 10,
   },
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#E2E8F0",
     paddingBottom: 5,
+  },
+  sectionHeaderLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   sectionNumber: {
     backgroundColor: "#1E293B",
@@ -146,15 +145,37 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     textTransform: "uppercase",
   },
-  // Grid de Datos
+  tuitionBadge: {
+    backgroundColor: "#EFF6FF",
+    borderWidth: 1,
+    borderColor: "#BFDBFE",
+    borderRadius: 4,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  tuitionLabel: {
+    fontSize: 8,
+    fontWeight: "bold",
+    color: "#2563EB",
+    textTransform: "uppercase",
+    marginRight: 4,
+  },
+  tuitionValue: {
+    fontSize: 11,
+    fontWeight: "bold",
+    color: "#1D4ED8",
+  },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    justifyContent: "flex-start",
   },
   inputGroup: {
     flexDirection: "column",
     marginBottom: 5,
+    paddingRight: 6,
   },
   label: {
     fontSize: 8,
@@ -166,12 +187,13 @@ const styles = StyleSheet.create({
   valueBox: {
     fontSize: 10,
     color: "#1E293B",
-    padding: "6 0",
+    paddingVertical: 6,
     borderBottomWidth: 1,
     borderBottomColor: "#CBD5E1",
-    minWidth: 100,
+    minHeight: 20,
   },
-  // Footer / Firmas
+
+  // 🌟 FOOTER REDISEÑADO PARA 3 COLUMNAS SIMÉTRICAS (30% cada una)
   footer: {
     marginTop: "auto",
     flexDirection: "row",
@@ -179,28 +201,42 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   signatureLine: {
-    width: "40%",
+    width: "30%", // Bajó de 42% a 30% para que quepan las tres en línea
     borderTopWidth: 1,
-    borderTopColor: "#E2E8F0",
+    borderTopColor: "#CBD5E1",
     textAlign: "center",
-    paddingTop: 4,
+    paddingTop: 6,
+  },
+  signatureTitle: {
+    fontSize: 8,
+    fontWeight: "bold",
+    color: "#1E293B",
+    marginBottom: 15, // Espacio para que firmen físicamente
+    textTransform: "uppercase",
   },
   signatureText: {
     fontSize: 8,
     color: "#64748B",
+    lineHeight: 1.2,
   },
 });
 
-const PlanillaInscripsion = ({ data }) => {
+// Modificado para aceptar el objeto 'institution' completo con los datos del plantel
+const PlanillaInscripsion = ({ data, institution }) => {
+  // Extraemos el nombre de la institución si viene como string o como objeto
+  const institutionName =
+    typeof institution === "object" ? institution?.name : institution;
+
   return (
     <Document>
       <Page size="letter" style={styles.page} wrap>
+        {/* FONDO Y BARRA TOP */}
         <View style={styles.watermarkContainer} fixed>
           <Image src="/logoSigace.png" style={styles.watermarkImage} />
         </View>
         <View style={styles.accentBar} />
 
-        {/* HEADER ESTILO DASHBOARD */}
+        {/* ENCABEZADO */}
         <View style={styles.header}>
           <View style={styles.institutionInfo}>
             <Text style={{ fontSize: 9, color: "#64748B" }}>
@@ -209,179 +245,142 @@ const PlanillaInscripsion = ({ data }) => {
             <Text style={{ fontSize: 9, color: "#64748B" }}>
               Ministerio del Poder Popular para la Educación
             </Text>
-            <Text style={styles.mainTitle}>
-              {fmtUpper(data?.institution?.name)}
-            </Text>
+            <Text style={styles.mainTitle}>{fmtUpper(institutionName)}</Text>
             <View style={styles.badge}>
-              <Text>
-                SIGACE • Fecha:{" "}
-                {data?.createdAt || new Date().toLocaleDateString()}
-              </Text>
+              <Text>SIGACE • Fecha: {new Date().toLocaleDateString()}</Text>
             </View>
           </View>
-          <View style={{ textAlign: "right" }}>
+
+          <View style={styles.headerDocType}>
             <Text
               style={{ fontSize: 14, fontWeight: "bold", color: "#1E293B" }}
             >
               PLANILLA DE
             </Text>
             <Text
-              style={{ fontSize: 14, fontWeight: "bold", color: "#3B82F6" }}
+              style={{ fontSize: 14, fontWeight: "bold", color: "#04C4D9" }}
             >
               INSCRIPCIÓN
             </Text>
             <Text
-              style={{ fontSize: 14, fontWeight: "bold", color: "#1E293B" }}
+              style={{
+                fontSize: 14,
+                fontWeight: "bold",
+                color: "#1E293B",
+                marginTop: 2,
+              }}
             >
-              {data?.sig || "SIG4465"}-{data?.user?.dni || "02"}
+              {data?.SIG || "SIG4465"}-{data?.id || "02"}
             </Text>
           </View>
         </View>
 
         {/* SECCIÓN 1: ESTUDIANTE */}
         <View style={styles.section}>
-          {/* Datos Personales */}
           <View style={styles.sectionHeader}>
-            <View style={styles.sectionNumber}>
-              <Text>1</Text>
+            <View style={styles.sectionHeaderLeft}>
+              <View style={styles.sectionNumber}>
+                <Text>1</Text>
+              </View>
+              <Text style={styles.sectionTitle}>
+                Información del Estudiante
+              </Text>
             </View>
-            <Text style={styles.sectionTitle}>Información del Estudiante</Text>
+
+            {/* Matrícula Estilizada */}
+            {data?.tuition_number && (
+              <View style={styles.tuitionBadge}>
+                <Text style={styles.tuitionLabel}>Nº Matrícula:</Text>
+                <Text style={styles.tuitionValue}>{data.tuition_number}</Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.grid}>
-            <View style={[styles.inputGroup, { width: "50%" }]}>
+            <View style={[styles.inputGroup, { width: "55%" }]}>
               <Text style={styles.label}>Nombres y Apellidos</Text>
               <Text style={styles.valueBox}>
                 {fmtUpper(
-                  [data?.user?.name, data?.user?.lastName]
-                    .filter(Boolean)
-                    .join(" "),
+                  [data?.name, data?.last_name].filter(Boolean).join(" "),
                 )}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "20%" }]}>
+            <View style={[styles.inputGroup, { width: "25%" }]}>
               <Text style={styles.label}>Identificación</Text>
               <Text style={styles.valueBox}>
-                {data?.user.dni || "V-00000000"}
+                {data?.document || "V-00000000"}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "25%" }]}>
+            <View style={[styles.inputGroup, { width: "20%" }]}>
               <Text style={styles.label}>Sexo</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.gender)}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "35%" }]}>
-              <Text style={styles.label}>Nacionalidad</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.nationality || "Venezolana")}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.gender)}</Text>
             </View>
 
             <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Fecha de Nacimiento</Text>
               <Text style={styles.valueBox}>
-                {data?.user.birthDate
-                  ? new Date(data.user.birthDate).toLocaleDateString()
+                {data?.birth_date
+                  ? new Date(data.birth_date).toLocaleDateString()
                   : "N/A"}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "30%" }]}>
-              <Text style={styles.label}>Lateralidad</Text>
+            <View style={[styles.inputGroup, { width: "45%" }]}>
+              <Text style={styles.label}>Correo Electrónico</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.lateralidad || "NINGUNA")}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "35%" }]}>
-              <Text style={styles.label}>Correo Electronico</Text>
-              <Text style={styles.valueBox}>
-                {data?.user.email?.toLowerCase() || "N/A"}
+                {data?.email ? data.email.toLowerCase() : "N/A"}
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "25%" }]}>
-              <Text style={styles.label}>Numero de Telefono</Text>
-              <Text style={styles.valueBox}>{fmtUpper(data?.user?.phone)}</Text>
+              <Text style={styles.label}>Número de Teléfono</Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.phone)}</Text>
             </View>
-            <View style={[styles.inputGroup, { width: "35%" }]}>
-              <Text style={styles.label}>Condicion</Text>
+
+            <View style={[styles.inputGroup, { width: "100%" }]}>
+              <Text style={styles.label}>Condición</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.condition)}
+                {fmtUpper(data?.condition || "Nuevo Ingreso")}
               </Text>
             </View>
           </View>
         </View>
 
-        {/* SECCIÓN 2: Direccion y datos Medicos */}
+        {/* SECCIÓN 2: DIRECCIÓN Y DATOS MÉDICOS */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <View style={styles.sectionNumber}>
-              <Text>2</Text>
+            <View style={styles.sectionHeaderLeft}>
+              <View style={styles.sectionNumber}>
+                <Text>2</Text>
+              </View>
+              <Text style={styles.sectionTitle}>Datos Médicos</Text>
             </View>
-            <Text style={styles.sectionTitle}>Direccion y datos Medicos</Text>
           </View>
+
           <View style={styles.grid}>
-            <View style={[styles.inputGroup, { width: "50%" }]}>
-              <Text style={styles.label}>Direccion</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.address)}
-              </Text>
+            <View style={[styles.inputGroup, { width: "40%" }]}>
+              <Text style={styles.label}>Alergias</Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.allergies)}</Text>
             </View>
-            <View style={[styles.inputGroup, { width: "46%" }]}>
-              <Text style={styles.label}>Municipio</Text>
+            <View style={[styles.inputGroup, { width: "35%" }]}>
+              <Text style={styles.label}>Peso (kg) y Altura (cm)</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.municipality)}
+                {fmt(data?.weight)} kg y {fmt(data?.height)} cm
               </Text>
             </View>
             <View style={[styles.inputGroup, { width: "25%" }]}>
-              <Text style={styles.label}>Parroquia</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.parish)}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "35%" }]}>
-              <Text style={styles.label}>Discapacidad</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.disability)}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "35%" }]}>
-              <Text style={styles.label}>Alergias</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.allergies)}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "30%" }]}>
-              <Text style={styles.label}>Peso (kg) y Altura (cm)</Text>
-              <Text style={styles.valueBox}>
-                {fmt(data?.user?.weight)} kg y {fmt(data?.user?.height)} cm
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "36%" }]}>
-              <Text style={styles.label}>Tipo de Sangre</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.bloodType)}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "30%" }]}>
               <Text style={styles.label}>Talla de camisa</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.shirtSize)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.shirtSize)}</Text>
             </View>
-            <View style={[styles.inputGroup, { width: "36%" }]}>
-              <Text style={styles.label}>Talla de pantalon</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.pantSize)}
-              </Text>
+
+            <View style={[styles.inputGroup, { width: "25%" }]}>
+              <Text style={styles.label}>Talla de pantalón</Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.pantSize)}</Text>
             </View>
-            <View style={[styles.inputGroup, { width: "30%" }]}>
+            <View style={[styles.inputGroup, { width: "25%" }]}>
               <Text style={styles.label}>Talla de zapatos</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.user?.shoeSize)}
-              </Text>
+              <Text style={styles.valueBox}>{fmtUpper(data?.shoeSize)}</Text>
             </View>
-            <View style={[styles.inputGroup, { width: "30%" }]}>
-              <Text style={styles.label}>Enfermedad o Condicion Medica</Text>
+            <View style={[styles.inputGroup, { width: "50%" }]}>
+              <Text style={styles.label}>Enfermedad o Condición Médica</Text>
               <Text style={styles.valueBox}>
                 {fmtUpper(medicalConditionText(data?.user))}
               </Text>
@@ -389,13 +388,15 @@ const PlanillaInscripsion = ({ data }) => {
           </View>
         </View>
 
-        {/* SECCIÓN 3: REPRESENTANTE */}
+        {/* SECCIÓN 3: REPRESENTANTE LEGAL */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <View style={styles.sectionNumber}>
-              <Text>3</Text>
+            <View style={styles.sectionHeaderLeft}>
+              <View style={styles.sectionNumber}>
+                <Text>3</Text>
+              </View>
+              <Text style={styles.sectionTitle}>Representante Legal</Text>
             </View>
-            <Text style={styles.sectionTitle}>Representante Legal</Text>
           </View>
 
           <View style={styles.grid}>
@@ -403,79 +404,97 @@ const PlanillaInscripsion = ({ data }) => {
               <Text style={styles.label}>Nombre del Representante</Text>
               <Text style={styles.valueBox}>
                 {fmtUpper(
-                  [data?.representative?.name, data?.representative?.lastName]
+                  [data?.representative_name, data?.representative_last_name]
                     .filter(Boolean)
                     .join(" "),
                 )}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "20%" }]}>
-              <Text style={styles.label}>Identificacion</Text>
+            <View style={[styles.inputGroup, { width: "25%" }]}>
+              <Text style={styles.label}>Identificación</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.representative?.dni)}
+                {fmtUpper(data?.representative_document)}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "26%" }]}>
+            <View style={[styles.inputGroup, { width: "25%" }]}>
               <Text style={styles.label}>Parentesco</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.representative?.relationship)}
+                {fmtUpper(data?.representative_relationship)}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "20%" }]}>
-              <Text style={styles.label}>Telefono</Text>
+
+            <View style={[styles.inputGroup, { width: "30%" }]}>
+              <Text style={styles.label}>Teléfono</Text>
               <Text style={styles.valueBox}>
-                {fmtUpper(data?.representative?.phone)}
+                {fmtUpper(data?.representative_phone)}
               </Text>
             </View>
-            <View style={[styles.inputGroup, { width: "40%" }]}>
-              <Text style={styles.label}>Correo Electronico</Text>
+            <View style={[styles.inputGroup, { width: "70%" }]}>
+              <Text style={styles.label}>Correo Electrónico</Text>
               <Text style={styles.valueBox}>
-                {data?.representative.email?.toLowerCase() || "N/A"}
-              </Text>
-            </View>
-            <View style={[styles.inputGroup, { width: "35%" }]}>
-              <Text style={styles.label}>Folio del acta de nacimiento</Text>
-              <Text style={styles.valueBox}>
-                {fmtUpper(data?.representative?.birthCertificate)}
+                {data?.representative_email
+                  ? data.representative_email.toLowerCase()
+                  : "N/A"}
               </Text>
             </View>
           </View>
         </View>
 
-        {/* PIE DE PÁGINA / FIRMAS */}
+        {/* 🏛️ PIE DE PÁGINA / SECCIÓN DE FIRMAS ACTUALIZADA (3 COLUMNAS) */}
         <View style={styles.footer}>
+          {/* Columna 1: Estudiante */}
           <View style={styles.signatureLine}>
+            <Text style={styles.signatureTitle}>Estudiante</Text>
             <Text style={styles.signatureText}>
               {fmtUpper(
-                [data?.user?.name, data?.user?.lastName]
-                  .filter(Boolean)
-                  .join(" "),
+                [data?.name, data?.last_name].filter(Boolean).join(" "),
               )}
             </Text>
             <Text style={styles.signatureText}>
-              {fmtUpper(data?.user?.dni)}
+              {data?.document ? fmtUpper(data.document) : "C.I. N/A"}
             </Text>
           </View>
+
+          {/* Columna 2: Representante */}
           <View style={styles.signatureLine}>
+            <Text style={styles.signatureTitle}>Representante Legal</Text>
             <Text style={styles.signatureText}>
               {fmtUpper(
-                [data?.representative?.name, data?.representative?.lastName]
+                [data?.representative_name, data?.representative_last_name]
                   .filter(Boolean)
                   .join(" "),
               )}
             </Text>
             <Text style={styles.signatureText}>
-              {fmtUpper(data?.representative?.dni)}
+              {data?.representative_document
+                ? fmtUpper(data.representative_document)
+                : "C.I. N/A"}
+            </Text>
+          </View>
+
+          {/* Columna 3: Control de Estudios (NUEVA) */}
+          <View style={styles.signatureLine}>
+            <Text style={styles.signatureTitle}>Control de Estudios</Text>
+            <Text style={styles.signatureText}>
+              {institution?.coordinator_name
+                ? fmtUpper(institution.coordinator_name)
+                : "FIRMA Y SELLO"}
+            </Text>
+            <Text style={styles.signatureText}>
+              {institution?.coordinator_document
+                ? `C.I. ${fmtUpper(institution.coordinator_document)}`
+                : "RECEPTOR AUTORIZADO"}
             </Text>
           </View>
         </View>
 
+        {/* PIE DE PÁGINA SISTÉMICO */}
         <Text
           style={{
             fontSize: 7,
             color: "#94A3B8",
             textAlign: "center",
-            marginTop: 10,
+            marginTop: 15,
             paddingBottom: 5,
           }}
         >

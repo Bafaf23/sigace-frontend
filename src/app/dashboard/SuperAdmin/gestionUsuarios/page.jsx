@@ -2,7 +2,6 @@
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-import QuickActions from "@/components/molecules/QuickActions";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormRegister from "@/components/organism/FormRegister";
 import Modal from "@/components/organism/Modal";
@@ -56,7 +55,6 @@ export default function UsuariosPage() {
           </Modal>
         </div>
       </div>
-      <QuickActions />
       <div className="p-3">
         <div className="border border-cyan-200 bg-cyan-50 p-4 rounded-xl flex items-center gap-2">
           <Icon icon={faInfoCircle} className="text-cyan-600 text-xl" />

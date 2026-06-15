@@ -1,8 +1,10 @@
 import axios from "axios";
 
 /**
- * Obtiene los estudiantes de la base de datos
+ ** Obtiene los estudiantes de la base de datos
  * @param {string} SIG - El SIG del estudiante
+ * @param {string} Token - creado desde el servidor
+ * @param {number} id_period - id de perido academico
  * @returns {Promise<Array>} - Un array de estudiantes
  */
 export const getStudents = async (SIG, authority) => {

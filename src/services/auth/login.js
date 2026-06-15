@@ -1,26 +1,40 @@
+import axios from "axios";
+
 /**
- * Funcion para iniciar sesión con los datos del formulario
+ * Función para iniciar sesión con los datos del formulario
  * @param {Object} formData - Datos del formulario de inicio de sesión
- * @returns {Object} - Datos de la respuesta del servidor
+ * @returns {Object} - Datos de la respuesta del servidor o error controlado
  */
 export async function login(formData) {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-      body: JSON.stringify(formData),
-    }).then((res) => res.json());
+    );
 
-    if (data.error) {
-      console.error("Error al iniciar sesión:", data.error);
-      return { error: data.error };
-    }
-    return data;
+    return response.data;
   } catch (error) {
-    console.error("Error:", error);
-    return { error: "Error al iniciar sesión: " + error.message };
+    // Verificamos si el backend alcanzó a responder algo
+    if (error.response && error.response.data) {
+      // Extraemos cualquiera de las variantes que pueda mandar el servidor
+      const serverError =
+        error.response.data.error || error.response.data.message;
+
+      console.error("Error del servidor original:", serverError);
+
+      return {
+        error: serverError || "Credenciales incorrectas o error de acceso",
+      };
+    }
+
+    // Si el servidor ni siquiera respondió (ej. backend apagado o error de red)
+    console.error("Error de conexión:", error.message);
+    return { error: "No se pudo conectar con el servidor de autenticación" };
   }
 }

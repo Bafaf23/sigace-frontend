@@ -28,7 +28,7 @@ export default function LegalPage() {
         El presente documento establece las reglas y condiciones bajo las cuales
         el Representante Legal (en adelante, "el Usuario") hará uso de la
         plataforma digital SIGACE (en adelante, "el Sistema") para la gestión de
-        inscripción, controle de estudios y consulta académica del estudiante.
+        inscripción, control de estudios y consulta académica del estudiante.
       </p>
 
       {/* 1. Declaración de Representación Legal */}

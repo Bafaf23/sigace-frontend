@@ -1,4 +1,5 @@
 import Selector from "../atom/Selector";
+import Link from "next/link";
 
 /**
  * Titulos de las paginas que suporta el saludo al usuario o el titulo de la pagian.
@@ -27,49 +28,41 @@ export default function HeaderDashbord({ user, titelPage }) {
 
   return (
     <section className="flex w-full flex-col md:flex-row md:justify-between">
-      <div className="w-full rounded-b-2xl bg-indigo-500 p-3 text-slate-100 shadow-indigo-400 md:bg-transparent lg:bg-transparent dark:bg-indigo-600 dark:shadow-indigo-400">
-        <div className="mb-2 flex w-full items-center justify-between gap-2">
+      <div className="w-full px-4 py-2 text-slate-500">
+        <div className="flex w-full items-center justify-between gap-2">
           {user ? (
             <div className="flex flex-col justify-between w-full">
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-slate-50 md:text-3xl md:text-indigo-300 dark:text-slate-500">
-                  Hola,
-                </h1>
-                <span className="text-2xl font-bold text-slate-50 normal-case md:text-3xl md:text-indigo-500 dark:text-slate-500">
-                  {user.user.name} {user.user.lastName}
-                </span>
-              </div>
-              <div>
-                <p className="text-slate-300 dark:text-slate-500">
-                  Bienvenido a tu panel de controle.
-                </p>
-                <div className="flex items-center justify-between rounded-xl bg-indigo-600 p-1 md:bg-transparent">
-                  {/* ultima conexcion */}
-                  <div>
-                    <p className="text-xs italic md:text-gray-400/40">
-                      Tu ultima coneccion
-                    </p>
-                    <span className="text-xs italic md:text-gray-400/40">
-                      {formatLastLogin(user?.lastLogin)}
+                <Link href="/dashboard/profile">
+                  <div className="w-10 h-10 p-2 rounded-full overflow-hidden flex items-center justify-center bg-indigo-600">
+                    <span className="text-xl font-bold text-white">
+                      {user.user.name.charAt(0)}
+                      {user.user.lastName.charAt(0)}
                     </span>
                   </div>
-                  {/* selector de materias */}
-                  {user?.materias && (
-                    <div className="md:hidden">
-                      <Selector
-                        id={"materias"}
-                        name={"Materia"}
-                        options={user.materias || []}
-                        label={"Materias"}
-                        className={"text-slate-100"}
-                      />
+                </Link>
+                <div>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <h1 className="text-2xl font-bold text-slate-400 md:text-3xl md:text-indigo-700 dark:text-slate-600">
+                        Hola,
+                      </h1>
+                      <span className="text-2xl font-bold text-slate-600 normal-case md:text-3xl md:text-indigo-700 dark:text-slate-600">
+                        {user.user.name} {user.user.lastName}
+                      </span>
                     </div>
-                  )}
+                  </div>
+
+                  <div>
+                    <p className="text-slate-500 dark:text-slate-500">
+                      Bienvenido a tu panel de control.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           ) : (
-            <h1 className="text-2xl font-bold text-slate-50 uppercase md:text-slate-500 lg:text-slate-500 dark:md:text-slate-400 md:text-3xl">
+            <h1 className="text-2xl font-bold uppercase md:text-3xl">
               {titelPage}
             </h1>
           )}

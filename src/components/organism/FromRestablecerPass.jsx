@@ -1,15 +1,15 @@
 "use client";
-import { login } from "@/services/auth/login";
 import Button from "@/components/atom/Button";
 import Input from "@/components/atom/Input";
 import InputPass from "@/components/atom/InputPass";
 import Links from "@/components/atom/Links";
-import Link from "next/link";
+import { login } from "@/services/auth/login";
 import {
   faKey,
   faArrowLeft,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -65,7 +65,7 @@ export default function FromRestablecerPass() {
             SIGACE<span className="text-cyan-500">.</span>
           </h1>
           <p className="font-medium text-slate-500 dark:text-slate-300">
-            Controle de Estudios Inteligente
+            control de Estudios Inteligente
           </p>
         </div>
 

@@ -20,6 +20,7 @@ import {
   faUserGraduate,
   faBuilding,
   faUsers,
+  faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 
@@ -51,17 +52,12 @@ export const menuLink = {
     {
       icon: faHome,
       label: "Mi Inicio",
-      href: "/dashboard/student",
+      href: "/dashboard/Estudiante",
     },
     {
       icon: faListCheck,
       label: "Mis Notas",
-      href: "/dashboard/student/notas",
-    },
-    {
-      icon: faUserCheck,
-      label: "Mi Asistencia",
-      href: "/dashboard/student/asistencia",
+      href: "/dashboard/Estudiante/notas",
     },
   ],
   Administrador: [
@@ -72,7 +68,7 @@ export const menuLink = {
     },
     {
       icon: faSitemap,
-      label: "Controle de Secciones",
+      label: "control de Secciones",
       href: "/dashboard/Administrador/controlSecciones",
     },
     {
@@ -101,11 +97,16 @@ export const menuLink = {
       label: "Gestion de Estudiantes",
       href: "/dashboard/Administrador/gestionEstudiantes",
     },
-    /*  {
+    {
       icon: faCalendarCheck,
       label: "Configuración de Lapsos",
       href: "/dashboard/Administrador/lapsos",
-    }, */
+    },
+    {
+      icon: faGraduationCap,
+      label: "Promociones",
+      href: "/dashboard/Administrador/promociones",
+    },
   ],
   SuperAdmin: [
     {
