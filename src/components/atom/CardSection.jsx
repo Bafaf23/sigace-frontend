@@ -12,9 +12,11 @@ import {
   faPrint,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePDF } from "@react-pdf/renderer";
+import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 
 export default function CardSecction({
+  SIG,
   id,
   grade,
   identifier,
@@ -115,8 +117,8 @@ export default function CardSecction({
       {/* Footer de Acciones */}
       <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 bg-slate-50 p-3 md:justify-around dark:border-slate-800 dark:bg-slate-700">
         {/* Enlace de descarga interactivo */}
-        <a
-          href={instance.url || "#"}
+        <Link
+          href={`${process.env.NEXT_PUBLIC_API_URL}/reports/sectionList/${SIG}/${id_section}`}
           download={`Lista_${grade}_${identifier}.pdf`}
           onClick={(e) => {
             if (!puedeDescargar) e.preventDefault();
@@ -143,7 +145,7 @@ export default function CardSecction({
               <span>Ver lista</span>
             </>
           )}
-        </a>
+        </Link>
 
         {/* Botón de inscripción */}
         {availableStudents.length > 0 && (

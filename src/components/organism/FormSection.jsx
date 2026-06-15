@@ -46,14 +46,14 @@ export default function FormSection({ onSuccess }) {
     getTeachersAll(SIG, authority).then((data) => {
       setTeachers(
         data.map((teacher) => ({
-          value: teacher.id,
+          value: teacher.id_teacher,
           label: `${teacher.document} - ${teacher.name} ${teacher.last_name}`,
         })),
       );
     });
     getYears(SIG).then((data) => setYears(data));
   }, [SIG]);
-
+  console.log(teachers);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

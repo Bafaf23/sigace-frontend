@@ -25,6 +25,7 @@ export default function controlSecciones() {
   const authority = user?.user?.token;
   const period = user?.user?.id_period;
 
+  console.log(sections);
   // 1. Obtener alumnos sin inscripción (Disponibles para asignar)
   const loadStudents = useCallback(() => {
     if (!SIG || !authority || !period) return;
@@ -144,6 +145,7 @@ export default function controlSecciones() {
         <SkeletonCard />
       ) : (
         <CardGridSetion
+          SIG={SIG}
           dataSet={sections}
           availableStudents={students}
           period={period}
