@@ -10,6 +10,7 @@ import Modal from "@/components/organism/Modal";
 import { useAuth } from "@/context/AuthContext";
 import { getSection } from "@/services/section/getSection";
 import { getStudenNotEnrollment } from "@/services/student/getStudenNotEnrollment";
+import { getStudentSection } from "@/services/student/getStudentSection";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useCallback } from "react";
 
@@ -24,6 +25,7 @@ export default function controlSecciones() {
   const authority = user?.user?.token;
   const period = user?.user?.id_period;
 
+  // 1. Obtener alumnos sin inscripción (Disponibles para asignar)
   const loadStudents = useCallback(() => {
     if (!SIG || !authority || !period) return;
     setLoading(true);
@@ -31,22 +33,55 @@ export default function controlSecciones() {
       .then((data) => {
         setStudents(data);
       })
+      .catch((err) =>
+        console.error("Error al cargar alumnos no inscritos:", err),
+      )
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, authority]);
+  }, [SIG, authority, period]);
 
+  // 2. Obtener Secciones emparejadas con sus respectivos estudiantes (Carga en Paralelo)
   const loadSections = useCallback(() => {
-    if (!SIG || !authority) return;
+    if (!SIG || !authority || !period) return;
     setLoading(true);
+
     getSection(SIG, authority, period)
-      .then((data) => {
-        setSections(data);
+      .then(async (seccionesData) => {
+        if (!Array.isArray(seccionesData)) return;
+
+        // Mapeamos cada sección para buscar sus alumnos de base de datos simultáneamente
+        const seccionesConAlumnos = await Promise.all(
+          seccionesData.map(async (seccion) => {
+            try {
+              // Ajusta los parámetros de getStudentSection según requiera tu servicio
+              const alumnosDeLaSeccion = await getStudentSection(
+                seccion.id,
+                SIG,
+              );
+
+              return {
+                ...seccion,
+                sectionStudents: alumnosDeLaSeccion || [], // Data real inyectada para el PDF
+                current: alumnosDeLaSeccion?.length || 0, // Sincroniza el contador en base a la Query SQL
+              };
+            } catch (error) {
+              console.error(
+                `Error cargando alumnos de la sección ${seccion.id}:`,
+                error,
+              );
+              return { ...seccion, sectionStudents: [], current: 0 };
+            }
+          }),
+        );
+
+        setSections(seccionesConAlumnos);
       })
+      .catch((err) => console.error("Error al cargar secciones:", err))
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, authority]);
+  }, [SIG, authority, period]);
 
   useEffect(() => {
     loadSections();
@@ -69,6 +104,7 @@ export default function controlSecciones() {
           </Button>
         </div>
       </div>
+
       <Modal
         title={"Crea una nueva seccion"}
         isOpen={isOpen}
@@ -81,6 +117,7 @@ export default function controlSecciones() {
           }}
         />
       </Modal>
+
       <div className="p-3">
         <div className="flex items-center gap-2 bg-indigo-500/20 p-3 rounded-lg border border-indigo-500/30">
           <Icon icon={faInfoCircle} className="text-indigo-500 text-2xl" />
@@ -90,6 +127,7 @@ export default function controlSecciones() {
           </p>
         </div>
       </div>
+
       <div className="md:hidden lg:hidden p-3 w-full">
         <Button
           onClick={() => setIsopen(!isOpen)}
@@ -101,6 +139,7 @@ export default function controlSecciones() {
           {"Crear seccion"}
         </Button>
       </div>
+
       {loading ? (
         <SkeletonCard />
       ) : (

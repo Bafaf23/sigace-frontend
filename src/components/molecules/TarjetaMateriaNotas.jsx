@@ -114,11 +114,11 @@ export default function TarjetaMateriaNotas({ subject }) {
                     >
                       <td className="px-6 py-3.5">
                         <span className="font-semibold text-slate-700 dark:text-slate-300 block text-sm">
-                          {activity.name}
+                          {activity.activity}
                         </span>
                       </td>
                       <td className="px-6 py-3.5 text-sm text-slate-500 dark:text-slate-400">
-                        {activity.referent_teorical || "—"}
+                        {activity.referent || "—"}
                       </td>
                       <td className="px-6 py-3.5 text-center text-sm font-medium text-slate-600 dark:text-slate-400">
                         {activity.porcentage}%

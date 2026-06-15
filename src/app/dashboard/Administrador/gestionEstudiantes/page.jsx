@@ -4,6 +4,7 @@ import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+// 🌟 SUGERENCIA: Si corriges el nombre del archivo a Search, recuerda cambiarlo aquí
 import Serch from "@/components/molecules/Serch";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormInscrip from "@/components/organism/FromInscrip";
@@ -19,11 +20,10 @@ import {
   faTrash,
   faUser,
   faClipboardList,
-  // 🌟 CORREGIDO: Importación correcta en CamelCase
   faCalendar,
   faUserTie,
   faAward,
-  faFilePdf, // 🌟 ADICIÓN: Ideal para la descarga de documentos PDF
+  faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useState, useEffect } from "react";
@@ -34,6 +34,8 @@ export default function GestionEstudiantesPage() {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [search, setSearch] = useState("");
+  const [appliedFilter, setAppliedFilter] = useState("");
 
   const SIG = user?.user?.SIG;
   const authority = user?.user?.token;
@@ -54,7 +56,29 @@ export default function GestionEstudiantesPage() {
     fetchStudents();
   }, [SIG, authority]);
 
+  // Restablecer el filtro si el usuario limpia por completo el input
+  useEffect(() => {
+    if (search.trim() === "") {
+      setAppliedFilter("");
+    }
+  }, [search]);
+
+  const handleSearch = () => {
+    setAppliedFilter(search);
+  };
+
+  // Filtrado optimizado evaluando múltiples campos (Cédula o Nombre)
+  const filteredStudents = students.filter((student) => {
+    const cedulaStr = String(student?.document || "");
+    const nameStr = String(student?.name || "");
+    const lastNameStr = String(student?.last_name || "");
+    const completeTerm = `${cedulaStr} ${nameStr} ${lastNameStr}`.toLowerCase();
+
+    return completeTerm.includes(appliedFilter.toLowerCase().trim());
+  });
+
   if (loading) return <Loading />;
+
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
 
   return (
@@ -90,13 +114,19 @@ export default function GestionEstudiantesPage() {
         <FormInscrip mode="edit" student={selectedStudent} />
       </Modal>
 
-      <div className="p-4 flex justify-between items-center">
-        <Serch placeholder="V-12345678" />
-        <p className="text-slate-500">
-          {" "}
-          Total de la matricula: {students?.length}
+      <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        {/* 🌟 CORREGIDO: Se añade el prop setSearch */}
+        <Serch
+          placeholder="Buscar por cédula..."
+          search={search}
+          setSearch={setSearch}
+          onSearch={handleSearch}
+        />
+        <p className="text-slate-500 font-medium whitespace-nowrap">
+          Matrícula mostrada: {filteredStudents.length} de {students.length}
         </p>
       </div>
+
       {/* Tabla de estudiantes */}
       <TableInsti
         titelTable={[
@@ -108,7 +138,7 @@ export default function GestionEstudiantesPage() {
           { name: "Grado y Sección", icon: faBook },
           { name: "Acciones", icon: faClipboardList },
         ]}
-        data={students}
+        data={filteredStudents} // 🌟 CORREGIDO: Ahora usa la lista filtrada
         loading={loading}
         renderTableRows={(student) => (
           <tr
@@ -147,11 +177,14 @@ export default function GestionEstudiantesPage() {
             <td className="px-6 py-4 text-slate-500">
               <div className="flex flex-col gap-1">
                 <span>
-                  {new Date(student.birth_date).toLocaleDateString("es-ES", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  })}
+                  {student.birth_date
+                    ? new Date(student.birth_date).toLocaleDateString("es-ES", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        timeZone: "UTC",
+                      })
+                    : "N/A"}
                 </span>
                 <span className="text-xs text-slate-500">{student.gender}</span>
               </div>
@@ -199,9 +232,7 @@ export default function GestionEstudiantesPage() {
               </div>
             </td>
             <td className="px-6 py-4">
-              {/* 🌟 GRUPO DE ACCIONES COMPLETO PARA DESKTOP */}
               <div className="flex items-center justify-center gap-2">
-                {/* Botón para abrir edición rápida */}
                 <button
                   type="button"
                   onClick={() => {
@@ -214,9 +245,8 @@ export default function GestionEstudiantesPage() {
                   <Icon icon={faEdit} className="w-4 h-4" />
                 </button>
 
-                {/* Botón del PDF (Planilla de inscripción) */}
                 <PDFDownloadLink
-                  key={student.tuition_number}
+                  key={`planilla-${student.tuition_number}`}
                   document={
                     <PlanillaInscripsion
                       data={student}
@@ -235,33 +265,33 @@ export default function GestionEstudiantesPage() {
                       {loading ? (
                         <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       ) : (
-                        <Icon icon={faClipboardList} className="w-4 h-4" /> // 🌟 CORREGIDO: Icono adecuado para planilla
+                        <Icon icon={faClipboardList} className="w-4 h-4" />
                       )}
                     </button>
                   )}
                 </PDFDownloadLink>
-                {/* Notas certifiacadas */}
+
                 <PDFDownloadLink
-                  key={student.document}
+                  key={`notas-${student.document}`}
                   document={
                     <PlanillaInscripsion
                       data={student}
                       institution={"U.E.N Juana de Escalona"}
                     />
                   }
-                  fileName={`Notas_Certificadas${student.document}.pdf`}
+                  fileName={`Notas_Certificadas_${student.document}.pdf`}
                 >
                   {({ loading }) => (
                     <button
                       type="button"
                       disabled={loading}
-                      title="Descargar las notas Certifiacadas"
+                      title="Descargar las notas Certificadas"
                       className="flex items-center justify-center p-2 rounded-lg bg-orange-500 text-white transition-all hover:bg-orange-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
                     >
                       {loading ? (
                         <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       ) : (
-                        <Icon icon={faAward} className="w-4 h-4" /> // 🌟 CORREGIDO: Icono adecuado para planilla
+                        <Icon icon={faAward} className="w-4 h-4" />
                       )}
                     </button>
                   )}
@@ -273,18 +303,17 @@ export default function GestionEstudiantesPage() {
         renderMovilCard={(student) => (
           <div
             className="flex flex-col gap-2 p-5 bg-white rounded-xl shadow-sm border border-slate-100 transition-all duration-300 hover:shadow-md hover:border-slate-200 relative overflow-hidden"
-            key={student.id}
+            key={`movil-${student.id}`}
           >
-            {/* Cabecera Móvil */}
             <div className="flex flex-col border-b border-slate-100 pb-2 mb-1">
               <span className="text-xs font-mono font-semibold text-indigo-500 tracking-wider">
                 {student.tuition_number || "SIN MATRÍCULA"}
               </span>
               <div className="flex justify-between items-start">
                 <h3 className="text-base font-bold text-slate-800 capitalize">
-                  {student.name.toLowerCase()} {student.last_name.toLowerCase()}
+                  {student.name?.toLowerCase()}{" "}
+                  {student.last_name?.toLowerCase()}
                 </h3>
-                {/* Descarga rápida desde móvil */}
                 <PDFDownloadLink
                   document={
                     <PlanillaInscripsion
@@ -309,7 +338,6 @@ export default function GestionEstudiantesPage() {
               </div>
             </div>
 
-            {/* Datos del estudiante */}
             <div className="space-y-1 text-xs text-slate-600">
               <p>
                 <span className="font-medium text-slate-400">Nacimiento:</span>{" "}
@@ -332,7 +360,6 @@ export default function GestionEstudiantesPage() {
               </p>
             </div>
 
-            {/* Datos del Representante */}
             <div className="mt-2 pt-2 border-t border-slate-50 bg-slate-50/50 p-2 rounded-lg text-xs text-slate-600">
               <p className="font-semibold text-slate-700 mb-1">
                 Representante:
@@ -350,7 +377,6 @@ export default function GestionEstudiantesPage() {
               </p>
             </div>
 
-            {/* Asignación de Aula */}
             <div className="mt-auto pt-3 flex items-center justify-between gap-2">
               {student.id_year && student.id_section ? (
                 <div className="flex gap-1.5 w-full">

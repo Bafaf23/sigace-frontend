@@ -4,6 +4,7 @@ import Button from "@/components/atom/Button";
 import SkeletonCard from "@/components/atom/SkeletonCard";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import Search from "@/components/molecules/Serch";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormRegister from "@/components/organism/FormRegister";
 import Modal from "@/components/organism/Modal";
@@ -25,6 +26,8 @@ import { useState, useEffect } from "react";
 export default function GestionDocentesPage() {
   const [isOpent, setIsOpent] = useState(false);
   const [teachers, setTeachers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
   const { user, loading } = useAuth();
 
   useEffect(() => {
@@ -36,7 +39,25 @@ export default function GestionDocentesPage() {
         .catch((err) => console.error("Error al cargar docentes:", err));
     }
   }, [user, loading]);
-  console.log(teachers);
+
+  useEffect(() => {
+    if (search.trim() === "") {
+      setSearch("");
+    }
+  }, [search]);
+
+  const handleSearchs = () => {
+    setFilter(search);
+  };
+
+  const filterTeacher = teachers.filter((teacher) => {
+    const cedulaStr = String(teacher?.document || "");
+    const nameStr = String(teacher?.name || "");
+    const lastNameStr = String(teacher?.last_name || "");
+    const completeTerm = `${cedulaStr} ${nameStr} ${lastNameStr}`.toLowerCase();
+
+    return completeTerm.includes(filter.toLowerCase().trim());
+  });
 
   if (loading) return <Loading />;
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
@@ -73,7 +94,16 @@ export default function GestionDocentesPage() {
           Crear Docente
         </Button>
       </div>
-
+      <div className="p-3">
+        <div className="w-fit">
+          <Search
+            placeholder="Buaca por cédula..."
+            search={search}
+            setSearch={setSearch}
+            onSearch={handleSearchs}
+          />
+        </div>
+      </div>
       {loading ? (
         <SkeletonCard />
       ) : (
@@ -87,7 +117,7 @@ export default function GestionDocentesPage() {
               { name: "Estatus", icon: faInfoCircle },
               { name: "Acciones", icon: faEllipsisV },
             ]}
-            data={teachers}
+            data={filterTeacher}
             renderTableRows={(teacher) => (
               <tr
                 key={teacher.id_teacher}

@@ -50,7 +50,10 @@ export default function CargarNotas() {
     const loadPantallaInicial = async () => {
       try {
         setLoadingPantalla(true);
-        const cargaResponse = await getLoadAcademic(user.user.id_user);
+        const cargaResponse = await getLoadAcademic(
+          user.user.id_user,
+          user?.user.SIG,
+        );
         setSubjects(Array.isArray(cargaResponse) ? cargaResponse : []);
       } catch (error) {
         console.error("Error al cargar los datos de la pantalla:", error);
@@ -191,7 +194,7 @@ export default function CargarNotas() {
               <Selector
                 options={subjects.map((subject) => ({
                   value: subject.code_subject,
-                  label: `${subject.name} - ${subject.year_name}`,
+                  label: `${subject.subject_name} - ${subject.year_name}`,
                 }))}
                 name="materia"
                 label="Materia"

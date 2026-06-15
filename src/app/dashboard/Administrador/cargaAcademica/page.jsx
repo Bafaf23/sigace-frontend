@@ -32,7 +32,7 @@ export default function CargaAcademicaPage() {
     setLoading(true);
     Promise.all([
       getTeachersAll(SIG, token),
-      getSection(SIG, token),
+      getSection(SIG, token, id_period),
       getSubjects(SIG),
       getLoad({ SIG, token }),
     ])

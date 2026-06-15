@@ -5,17 +5,18 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
 /**
  * Grilla de secciones cargadas en el sistema.
  *
- * @componet
+ * @component
  *
  * @param {object} props
- * @param {object} props.dataSet - Objeto de la seccion
+ * @param {Array} props.dataSet - Arreglo de objetos de sección
  * @param {Array} props.availableStudents
+ * @param {string|number} props.period
  * @returns {JSX.Element}
  */
 
 export default function CardGridSetion({
   dataSet = [],
-  availableStudents,
+  availableStudents = [],
   period,
 }) {
   if (!dataSet || dataSet.length === 0)
@@ -37,7 +38,11 @@ export default function CardGridSetion({
   return (
     <div className="grid gap-5 p-3 md:grid-cols-1 lg:grid-cols-2">
       {dataSet.map((section) => {
-        const teacherName = `${section.teacher_name} ${section.teacher_last_name}`;
+        // Formateamos el nombre del docente guía de manera limpia
+        const teacherName = section.teacher_name
+          ? `${section.teacher_name} ${section.teacher_last_name || ""}`.trim()
+          : "No asignado";
+
         return (
           <CardSecction
             id={section.id}
@@ -45,11 +50,12 @@ export default function CardGridSetion({
             grade={section.year_name}
             identifier={section.name}
             teacher={teacherName}
-            current={section.total_students || 0}
-            max={section.capacity}
+            current={section.current ?? section.total_students ?? 0} // Usa la cuenta de la consulta en paralelo o fallback
+            max={section.capacity || 35}
             availableStudents={availableStudents}
             period={period}
             id_section={section.id}
+            sectionStudents={section.sectionStudents || []} // <--- Corregido: Se alinea con el prop de la tarjeta
           />
         );
       })}

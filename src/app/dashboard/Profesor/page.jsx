@@ -29,8 +29,9 @@ export default function TeachersPage() {
     const fetchLoadAcademic = async () => {
       try {
         setDataLoading(true);
-        const data = await getLoadAcademic(user.user.id_user);
-        if (data.error) {
+        const id = Number(user?.user.id_user);
+        const data = await getLoadAcademic(id, user?.user.SIG);
+        if (data?.error) {
           toast.error(data.error);
           return;
         }
@@ -67,7 +68,7 @@ export default function TeachersPage() {
 
   // --- LISTAS FORMATEADAS (SIN DUPLICADOS) PARA LAS DESCRIPCIONES ---
   const listaMaterias = [
-    ...new Set(loadAcademic.map((item) => item.name)),
+    ...new Set(loadAcademic.map((item) => item.subject_name)),
   ].join(", ");
   const listaSecciones = [
     ...new Set(loadAcademic.map((item) => item.section_name)),
@@ -76,6 +77,7 @@ export default function TeachersPage() {
     ...new Set(loadAcademic.map((item) => item.year_name)),
   ].join(", ");
 
+  console.log(loadAcademic);
   return (
     <div className="animate-in fade-in duration-500">
       <HeaderDashbord user={user} />

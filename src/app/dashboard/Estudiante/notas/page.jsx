@@ -1,9 +1,9 @@
 "use client";
 import Loading from "@/app/loading";
+import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import TarjetaMateriaNotas from "@/components/molecules/TarjetaMateriaNotas";
-// 🌟 Importamos tu componente optimizado
 import { useAuth } from "@/context/AuthContext";
 import { getLapseActive } from "@/services/lapse/getLapseActive";
 import { getGrade } from "@/services/student/getGrade";
@@ -11,16 +11,26 @@ import {
   faClock,
   faGraduationCap,
   faClipboardList,
+  faPrint,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { use, useEffect, useState } from "react";
 
 export default function NotasPage() {
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [section, setSection] = useState({
+    yearName: "",
+    sectionName: "",
+    sectionId: null,
+  });
   const [lapse, setLapse] = useState({});
   const [generalAverage, setGeneralAverage] = useState("0.00");
 
   const { user } = useAuth();
+
+  const SIG = user?.user.SIG;
+  const id = user?.user.id;
 
   useEffect(() => {
     if (!user?.user?.SIG) return;
@@ -29,15 +39,24 @@ export default function NotasPage() {
       try {
         setLoading(true);
 
-        const idStudent = user.user.id || 1; // Quemado temporal para tus pruebas
+        const idStudent = user.user.id;
         const SIG = user.user.SIG;
 
         const response = await getGrade(idStudent, SIG);
         const lapseActive = await getLapseActive(SIG);
 
         const listaMaterias = response?.subjects || [];
+        const yearName = response?.year || "";
+        const sectionName = response?.section || "";
+        const sectionId = response?.section_id || null;
+
         setSubjects(listaMaterias);
         setLapse(lapseActive);
+        setSection({
+          yearName: yearName,
+          sectionName: sectionName,
+          sectionId: sectionId,
+        });
 
         if (listaMaterias.length > 0) {
           const sumaDefinitivas = listaMaterias.reduce(
@@ -56,6 +75,8 @@ export default function NotasPage() {
 
     fetchGrades();
   }, [user]);
+
+  console.log(subjects);
 
   if (loading) return <Loading />;
 
@@ -83,8 +104,8 @@ export default function NotasPage() {
             </p>
           </div>
         </div>
-        {/* Tarjetas Superiores Informativas */}
-        <div className="grid grid-cols-2 mb-4 gap-3">
+        {/* Tarjetas Superiores Informativas //TODO:hacer las tarjetas componentes */}
+        <div className="grid grid-cols-3 mb-4 gap-3">
           {/* Tarjeta: Periodo */}
           <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all">
             <div className="p-2 bg-cyan-50 dark:bg-cyan-950/40 rounded-lg text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
@@ -120,6 +141,20 @@ export default function NotasPage() {
                 {generalAverage} pts
               </span>
             </div>
+          </div>
+          <div className="flex items-center justify-end">
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${SIG}/${id}/${section.sectionId}`}
+            >
+              <Button
+                classNameBtn="bg-indigo-500 p-3 rounded-xl text-white font-medium flex gap-2 items-center cursor-pointer hover:bg-indigo-700 transition-colors"
+                icon={faPrint}
+              >
+                {"Imprimir Boleta"}
+              </Button>
+            </Link>
           </div>
         </div>
 

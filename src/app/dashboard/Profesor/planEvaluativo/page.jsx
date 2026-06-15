@@ -48,7 +48,7 @@ export default function PlanEvaluativo() {
     if (!user?.user?.id) return;
 
     const fetchLoadAcademic = async () => {
-      const data = await getLoadAcademic(user?.user?.id_user);
+      const data = await getLoadAcademic(user?.user?.id_user, user?.user.SIG);
       if (data.error) {
         toast.error(data.error);
         return;
@@ -179,7 +179,7 @@ export default function PlanEvaluativo() {
               <Selector
                 options={subjects.map((subject) => ({
                   value: subject.code_subject,
-                  label: `${subject.name} - ${subject.year_name}`,
+                  label: `${subject.subject_name} - ${subject.year_name}`,
                 }))}
                 name="materia"
                 label="Materia"
@@ -207,7 +207,7 @@ export default function PlanEvaluativo() {
               </span>
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 truncate italic">
                 {selectedSubject
-                  ? `${selectedSubject.name} - ${selectedSubject.year_name} ${selectedSubject.section_name ?? ""}`.trim()
+                  ? `${selectedSubject.subject_name} - ${selectedSubject.year_name} ${selectedSubject.section_name ?? ""}`.trim()
                   : "Sin materia asignada"}
               </span>
             </div>
@@ -292,7 +292,7 @@ export default function PlanEvaluativo() {
           ]}
           renderTableRows={(row) => (
             <tr
-              key={row.id}
+              key={row.id_load_academic}
               className="transition-colors text-slate-500 hover:bg-slate-50/50"
             >
               <td className="px-4 py-4 text-center font-medium text-cyan-600">

@@ -87,7 +87,7 @@ export default function FormAcadLoand({
           label={"Seleciona un profesor"}
           id={"teacherId"}
           options={teachers.map((teacher) => ({
-            value: teacher.id,
+            value: teacher.id_teacher,
             label: `${teacher.document} - ${teacher.name} ${teacher.last_name}`,
           }))}
           name="teacherId"
