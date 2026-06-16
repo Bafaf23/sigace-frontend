@@ -18,6 +18,7 @@ export default function CardGridSetion({
   dataSet = [],
   availableStudents = [],
   period,
+  SIG,
 }) {
   if (!dataSet || dataSet.length === 0)
     return (
@@ -45,6 +46,7 @@ export default function CardGridSetion({
 
         return (
           <CardSecction
+            SIG={SIG}
             id={section.id}
             key={section.id}
             grade={section.year_name}
@@ -55,7 +57,7 @@ export default function CardGridSetion({
             availableStudents={availableStudents}
             period={period}
             id_section={section.id}
-            sectionStudents={section.sectionStudents || []} // <--- Corregido: Se alinea con el prop de la tarjeta
+            sectionStudents={section.sectionStudents || []}
           />
         );
       })}

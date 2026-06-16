@@ -4,6 +4,9 @@ import Icon from "@/components/atom/Icon";
 import CardLapse from "@/components/molecules/CardLapse";
 import ConfirmAtionModal from "@/components/molecules/ConfirmAtionModal";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import FormAcademicPeriod from "@/components/organism/FormAcademicPeriod";
+import FormCreateLapse from "@/components/organism/FromCreateLapse";
+import Modal from "@/components/organism/Modal";
 import { useAuth } from "@/context/AuthContext";
 import { createPeriod } from "@/services/academicPeriod/createPeriod";
 import { endAcademicPeriod } from "@/services/academicPeriod/endAcademicPeriod";
@@ -20,10 +23,30 @@ export default function LapsoPage() {
   const { user } = useAuth();
   const [period, setPeriod] = useState(null);
   const [lapses, setLapses] = useState([]);
+
+  // Estados para controlar los modales de manera independiente
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalConfirmPeriodOpen, setIsModalConfirmPeriodOpen] =
+    useState(false);
   const [isModalCreateLapseOpen, setIsModalCreateLapseOpen] = useState(false);
+  const [isModalCreateLapseOpenConfir, setIsModalCreateLapseOpenConfir] =
+    useState(false);
   const [isModalEndPeriodOpen, setIsModalEndPeriodOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [formData, setformData] = useState({
+    dateStard: "",
+    dateEnd: "",
+    namePeriod: "",
+  });
+
+  // UNIFICACIÓN: Cambiado 'dateStard' por 'dateStart' para sincronizar con los inputs nuevos
+  const [formDataLapse, setFormDataLapse] = useState({
+    dateStart: "",
+    dateEnd: "",
+    nameLapse: "",
+  });
 
   const SIG = user?.user?.SIG;
   const token = user?.user?.token;
@@ -39,6 +62,7 @@ export default function LapsoPage() {
   };
 
   const fetchLapses = async () => {
+    if (!id_period) return;
     const result = await getLapses(SIG, id_period);
     if (result.error) {
       toast.error(result.error);
@@ -46,16 +70,18 @@ export default function LapsoPage() {
     }
     setLapses(result);
   };
+
   useEffect(() => {
     fetchPeriod();
     fetchLapses();
-  }, [SIG, token]);
-  console.log(id_period);
+  }, [SIG, token, id_period]);
+
   return (
     <main className="animate-in fade-in duration-500">
       <section className="flex flex-col gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">
         <HeaderDashbord titelPage="Configuración de Lapsos" />
       </section>
+
       <section className="p-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -66,6 +92,7 @@ export default function LapsoPage() {
               {period?.name || "No hay periodo actual"}
             </div>
           </div>
+
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
               {period?.is_active ? (
@@ -85,50 +112,96 @@ export default function LapsoPage() {
                   Iniciar periodo
                 </Button>
               )}
-              {period?.is_active && lapses?.length === 0 ? (
+
+              {/* Botón modificado: Eliminada la restricción de lapses.length === 0 para permitir añadir lapsos uno por uno */}
+              {period?.is_active ? (
                 <Button
                   icon={faCalendar}
                   classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
                   onClick={() => setIsModalCreateLapseOpen(true)}
                 >
-                  Crear Lapsos
+                  Crear Lapso
                 </Button>
               ) : null}
             </div>
-            <ConfirmAtionModal
+
+            {/* MODAL 1: Formulario para ingresar datos del Lapso Unitario */}
+            <Modal
+              title={"Crear Nuevo Lapso / Momento"}
               isOpen={isModalCreateLapseOpen}
-              onCancel={() => setIsModalCreateLapseOpen(false)}
-              title="Crear lapsos"
-              message={`¿Estás seguro de querer crear los lapsos para este año escolar?, toma en cuenta que este proceso es irreversible y los lapsos se crearan automaticamente`}
+              onClose={() => setIsModalCreateLapseOpen(false)}
+            >
+              <FormCreateLapse
+                formDataLapse={formDataLapse}
+                setFormDataLapse={setFormDataLapse} // 👈 CORRECCIÓN CRUCIAL: Mismo nombre de Prop que espera el componente hijo
+                onSubmit={() => {
+                  setIsModalCreateLapseOpen(false);
+                  setIsModalCreateLapseOpenConfir(true);
+                }}
+              />
+            </Modal>
+
+            {/* MODAL 1.5: Confirmación de guardado del lapso */}
+            <ConfirmAtionModal
+              isOpen={isModalCreateLapseOpenConfir}
+              onCancel={() => {
+                setIsModalCreateLapseOpenConfir(false);
+              }}
+              title="Confirmar Registro de Lapso"
+              // CORRECCIÓN: Texto adaptado a la creación uno por uno
+              message={`¿Estás seguro de querer registrar el lapso "${formDataLapse.nameLapse}" para este año escolar?`}
               onConfirm={async () => {
-                const data = await createLapse(SIG, token);
+                const data = await createLapse(SIG, token, formDataLapse);
                 if (data.error) {
                   toast.error(data.error);
                   return;
                 }
-                setIsModalCreateLapseOpen(false);
-                toast.success("Lapsos creados correctamente");
+                setIsModalCreateLapseOpenConfir(false);
+                toast.success(`Lapso registrado correctamente`);
+
+                // Limpieza del estado para que el formulario quede vacío la próxima vez
+                setFormDataLapse({ nameLapse: "", dateStart: "", dateEnd: "" });
                 await fetchLapses();
               }}
               variant="warning"
             />
-            <ConfirmAtionModal
+
+            {/* MODAL 2: Formulario para ingresar datos del periodo */}
+            <Modal
               isOpen={isModalOpen}
-              onCancel={() => setIsModalOpen(false)}
+              title="Iniciar un Periodo académico"
+              onClose={() => setIsModalOpen(false)}
+            >
+              <FormAcademicPeriod
+                formData={formData}
+                setformData={setformData}
+                onSubmit={() => {
+                  setIsModalOpen(false);
+                  setIsModalConfirmPeriodOpen(true);
+                }}
+              />
+            </Modal>
+
+            {/* MODAL 3: Confirmación de inicio de periodo */}
+            <ConfirmAtionModal
+              isOpen={isModalConfirmPeriodOpen}
+              onCancel={() => setIsModalConfirmPeriodOpen(false)}
               title="Iniciar periodo"
-              message={`¿Estás seguro de querer iniciar este año escolar?, toma en cuenta que este proceso es irreversible y los lapsos se crearan automaticamente`}
+              message="¿Estás seguro de querer iniciar este año escolar?, toma en cuenta que este proceso es irreversible."
               onConfirm={async () => {
-                const data = await createPeriod(SIG, token);
+                const data = await createPeriod(SIG, token, formData);
                 if (data.error) {
                   toast.error(data.error);
                   return;
                 }
                 toast.success("Periodo iniciado correctamente");
-                setIsModalOpen(false);
+                setIsModalConfirmPeriodOpen(false);
                 await fetchPeriod();
               }}
               variant="info"
             />
+
+            {/* MODAL 4: Confirmación para finalizar el periodo */}
             <ConfirmAtionModal
               isOpen={isModalEndPeriodOpen}
               onCancel={() => setIsModalEndPeriodOpen(false)}
@@ -150,6 +223,7 @@ export default function LapsoPage() {
           </div>
         </div>
       </section>
+
       <section className="p-3">
         {lapses?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -194,11 +268,12 @@ export default function LapsoPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full border border-dashed border-slate-200 bg-slate-100/50 rounded-xl p-6">
-            <Icon icon={faBook} className="text-4xl text-slate-500" />
-            <p className="text-lg font-bold text-slate-500">
+          <div className="flex flex-col items-center justify-center h-full border border-dashed border-slate-200 bg-slate-100/50 rounded-xl p-6 text-center">
+            <Icon icon={faBook} className="text-4xl text-slate-500 mb-2" />
+            <p className="text-lg font-bold text-slate-500 max-w-md">
               Parece que no hay lapsos creados. Si ya iniciaste el periodo, crea
-              un lapso para empezar a administrar las notas de los estudiantes.
+              los lapsos correspondientes para empezar a administrar las notas
+              de los estudiantes.
             </p>
           </div>
         )}
