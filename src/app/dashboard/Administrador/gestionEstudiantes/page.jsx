@@ -26,6 +26,7 @@ import {
   faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function GestionEstudiantesPage() {
@@ -245,57 +246,44 @@ export default function GestionEstudiantesPage() {
                   <Icon icon={faEdit} className="w-4 h-4" />
                 </button>
 
-                <PDFDownloadLink
-                  key={`planilla-${student.tuition_number}`}
-                  document={
-                    <PlanillaInscripsion
-                      data={student}
-                      institution={"U.E.N Juana de Escalona"}
-                    />
-                  }
-                  fileName={`Planilla_${student.tuition_number}_inscripcion.pdf`}
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${SIG}/${student.id}/${student.representative_id}`}
+                  onClick={(e) => loading && e.preventDefault()}
+                  target="_blank" // Recomendado para reportes/PDFs
                 >
-                  {({ loading }) => (
-                    <button
-                      type="button"
-                      disabled={loading}
-                      title="Descargar Planilla de Inscripción"
-                      className="flex items-center justify-center p-2 rounded-lg bg-cyan-600 text-white transition-all hover:bg-cyan-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
-                    >
-                      {loading ? (
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      ) : (
-                        <Icon icon={faClipboardList} className="w-4 h-4" />
-                      )}
-                    </button>
-                  )}
-                </PDFDownloadLink>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    title="Descargar Planilla de Inscripción"
+                    className="flex items-center justify-center p-2 rounded-lg bg-cyan-600 text-white transition-all hover:bg-cyan-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                  >
+                    {loading ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    ) : (
+                      <Icon icon={faClipboardList} className="w-4 h-4" />
+                    )}
+                  </button>
+                </Link>
 
-                <PDFDownloadLink
-                  key={`notas-${student.document}`}
-                  document={
-                    <PlanillaInscripsion
-                      data={student}
-                      institution={"U.E.N Juana de Escalona"}
-                    />
+                <Link
+                  href={`#`}
+                  onClick={() =>
+                    alert(`Este esta opcion no esta disponible por el moneto`)
                   }
-                  fileName={`Notas_Certificadas_${student.document}.pdf`}
                 >
-                  {({ loading }) => (
-                    <button
-                      type="button"
-                      disabled={loading}
-                      title="Descargar las notas Certificadas"
-                      className="flex items-center justify-center p-2 rounded-lg bg-orange-500 text-white transition-all hover:bg-orange-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
-                    >
-                      {loading ? (
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      ) : (
-                        <Icon icon={faAward} className="w-4 h-4" />
-                      )}
-                    </button>
-                  )}
-                </PDFDownloadLink>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    title="Descargar las notas Certificadas"
+                    className="flex items-center justify-center p-2 rounded-lg bg-orange-500 text-white transition-all hover:bg-orange-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                  >
+                    {loading ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    ) : (
+                      <Icon icon={faAward} className="w-4 h-4" />
+                    )}
+                  </button>
+                </Link>
               </div>
             </td>
           </tr>
