@@ -26,7 +26,7 @@ export default function controlSecciones() {
   const period = user?.user?.id_period;
 
   console.log(sections);
-  // 1. Obtener alumnos sin inscripción (Disponibles para asignar)
+  // 1. Obtener Estudiantes sin inscripción (Disponibles para asignar)
   const loadStudents = useCallback(() => {
     if (!SIG || !authority || !period) return;
     setLoading(true);
@@ -35,7 +35,7 @@ export default function controlSecciones() {
         setStudents(data);
       })
       .catch((err) =>
-        console.error("Error al cargar alumnos no inscritos:", err),
+        console.error("Error al cargar Estudiantes no inscritos:", err),
       )
       .finally(() => {
         setLoading(false);
@@ -51,24 +51,24 @@ export default function controlSecciones() {
       .then(async (seccionesData) => {
         if (!Array.isArray(seccionesData)) return;
 
-        // Mapeamos cada sección para buscar sus alumnos de base de datos simultáneamente
-        const seccionesConAlumnos = await Promise.all(
+        // Mapeamos cada sección para buscar sus Estudiantes de base de datos simultáneamente
+        const seccionesConEstudiantes = await Promise.all(
           seccionesData.map(async (seccion) => {
             try {
               // Ajusta los parámetros de getStudentSection según requiera tu servicio
-              const alumnosDeLaSeccion = await getStudentSection(
+              const EstudiantesDeLaSeccion = await getStudentSection(
                 seccion.id,
                 SIG,
               );
 
               return {
                 ...seccion,
-                sectionStudents: alumnosDeLaSeccion || [], // Data real inyectada para el PDF
-                current: alumnosDeLaSeccion?.length || 0, // Sincroniza el contador en base a la Query SQL
+                sectionStudents: EstudiantesDeLaSeccion || [], // Data real inyectada para el PDF
+                current: EstudiantesDeLaSeccion?.length || 0, // Sincroniza el contador en base a la Query SQL
               };
             } catch (error) {
               console.error(
-                `Error cargando alumnos de la sección ${seccion.id}:`,
+                `Error cargando Estudiantes de la sección ${seccion.id}:`,
                 error,
               );
               return { ...seccion, sectionStudents: [], current: 0 };
@@ -76,7 +76,7 @@ export default function controlSecciones() {
           }),
         );
 
-        setSections(seccionesConAlumnos);
+        setSections(seccionesConEstudiantes);
       })
       .catch((err) => console.error("Error al cargar secciones:", err))
       .finally(() => {
@@ -124,7 +124,7 @@ export default function controlSecciones() {
           <Icon icon={faInfoCircle} className="text-indigo-500 text-2xl" />
           <p className="text-sm font-medium text-indigo-500  dark:text-indigo-400">
             En este modulo puedes crear y gestionar las secciones de tu escuela.
-            Tambien puedes inscribir a los alumnos a las secciones.
+            Tambien puedes inscribir a los Estudiantes a las secciones.
           </p>
         </div>
       </div>

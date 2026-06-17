@@ -14,7 +14,8 @@ import {
   faPrint,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function NotasPage() {
   const [subjects, setSubjects] = useState([]);
@@ -31,7 +32,7 @@ export default function NotasPage() {
 
   const SIG = user?.user.SIG;
   const id = user?.user.id;
-
+  console.log(section);
   useEffect(() => {
     if (!user?.user?.SIG) return;
 
@@ -76,7 +77,15 @@ export default function NotasPage() {
     fetchGrades();
   }, [user]);
 
-  console.log(subjects);
+  const handlePrint = () => {
+    if (!SIG || !id || !section.sectionId) {
+      toast.error("Información de sección incompleta para generar la boleta.");
+      return;
+    }
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${SIG}/${id}/${section.sectionId}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   if (loading) return <Loading />;
 
@@ -142,19 +151,16 @@ export default function NotasPage() {
               </span>
             </div>
           </div>
+
           <div className="flex items-center justify-end">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${SIG}/${id}/${section.sectionId}`}
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="bg-indigo-500 p-3 rounded-xl text-white font-medium flex gap-2 items-center cursor-pointer hover:bg-indigo-700 transition-colors w-fit shadow-sm"
             >
-              <Button
-                classNameBtn="bg-indigo-500 p-3 rounded-xl text-white font-medium flex gap-2 items-center cursor-pointer hover:bg-indigo-700 transition-colors"
-                icon={faPrint}
-              >
-                {"Imprimir Boleta"}
-              </Button>
-            </Link>
+              <Icon icon={faPrint} className="w-4 h-4" />
+              Imprimir Boleta
+            </button>
           </div>
         </div>
 

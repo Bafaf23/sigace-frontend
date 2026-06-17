@@ -182,7 +182,7 @@ const ReporteImprimiblePorSeccion = ({
     ? `${labelAnio} - ${labelSeccion}`
     : `${labelAnio}° AÑO - ${labelSeccion}`;
 
-  const alumnosDelGrupo = Array.isArray(students) ? students : [];
+  const EstudiantesDelGrupo = Array.isArray(students) ? students : [];
 
   return (
     <Document>
@@ -231,7 +231,7 @@ const ReporteImprimiblePorSeccion = ({
                 ESTUDIANTES
               </Text>
               <Text style={{ fontSize: 7, color: "#94A3B8", marginTop: 2 }}>
-                Total Aula: {alumnosDelGrupo.length} Alumnos
+                Total Aula: {EstudiantesDelGrupo.length} Estudiantes
               </Text>
             </View>
           </View>
@@ -253,7 +253,7 @@ const ReporteImprimiblePorSeccion = ({
 
         {/* LISTADO DE ESTUDIANTES */}
         <View style={styles.tableContainer}>
-          {alumnosDelGrupo.map((student, index) => (
+          {EstudiantesDelGrupo.map((student, index) => (
             <View
               key={student?.id || index}
               style={[

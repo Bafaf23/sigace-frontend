@@ -27,7 +27,7 @@ export default function CargarNotas() {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [lapses, setLapses] = useState([]);
   const [notesData, setNotesData] = useState([]);
-  const [alumnosDisponibles, setAlumnosDisponibles] = useState([]);
+  const [EstudiantesDisponibles, setEstudiantesDisponibles] = useState([]);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [activities, setActivities] = useState([]);
 
@@ -85,7 +85,7 @@ export default function CargarNotas() {
     const idLoadAcademic = selectedSubject?.id_load_academic;
     if (!idLoadAcademic || !SIG) {
       setNotesData([]);
-      setAlumnosDisponibles([]);
+      setEstudiantesDisponibles([]);
       setActivities([]);
       return;
     }
@@ -150,11 +150,11 @@ export default function CargarNotas() {
           );
         }
 
-        // 2. Procesar Alumnos de la Sección
+        // 2. Procesar Estudiantes de la Sección
         if (studentsRes?.error) {
           toast.error(studentsRes.error);
         } else {
-          setAlumnosDisponibles(
+          setEstudiantesDisponibles(
             Array.isArray(studentsRes)
               ? studentsRes
               : (studentsRes?.data ?? []),
@@ -226,7 +226,7 @@ export default function CargarNotas() {
                 title="Cargar Calificaciones"
               >
                 <FormCargaNotas
-                  listaAlumnosSinNotas={alumnosDisponibles}
+                  listaEstudiantesSinNotas={EstudiantesDisponibles}
                   activities={
                     activities.find((a) => a.id_lapse === activeLapse?.id)
                       ?.list ?? []
@@ -248,7 +248,7 @@ export default function CargarNotas() {
           lapses.map((lapso) => (
             <TablaNotas
               data={lapso}
-              students={alumnosDisponibles}
+              students={EstudiantesDisponibles}
               activities={
                 activities.find((a) => a.id_lapse === lapso.id)?.list ?? []
               }

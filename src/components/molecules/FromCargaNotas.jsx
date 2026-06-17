@@ -15,22 +15,22 @@ import toast from "react-hot-toast";
  * Formulario de carga de notas enfocado en Selección de Actividad (SIGACE)
  */
 
-const getAlumnoNombre = (al) => {
+const getEstudianteNombre = (al) => {
   if (al.nombre) return al.nombre;
   return [al.name, al.last_name].filter(Boolean).join(" ");
 };
 
-const getAlumnoId = (al) => String(al.id ?? al.tuition_number ?? "");
+const getEstudianteId = (al) => String(al.id ?? al.tuition_number ?? "");
 
 export default function FormCargaNotas({
-  listaAlumnosSinNotas = [],
+  listaEstudiantesSinNotas = [],
   activities = [], // Recibe las actividades del lapso activo
   onSave,
   onCancel,
 }) {
   const [idEvaluation, setIdEvaluation] = useState("");
   const [busqueda, setBusqueda] = useState("");
-  const [alumnoSeleccionado, setAlumnoSeleccionado] = useState(null);
+  const [EstudianteSeleccionado, setEstudianteSeleccionado] = useState(null);
   const [grade, setGrade] = useState("");
 
   // Obtener los datos de la actividad que está seleccionada actualmente
@@ -38,16 +38,16 @@ export default function FormCargaNotas({
     (act) => Number(act.id) === idEvaluation,
   );
 
-  // Filtrar alumnos por nombre o cédula
-  const alumnosFiltrados = listaAlumnosSinNotas.filter((al) => {
-    const nombre = getAlumnoNombre(al);
-    const id = getAlumnoId(al);
+  // Filtrar Estudiantes por nombre o cédula
+  const EstudiantesFiltrados = listaEstudiantesSinNotas.filter((al) => {
+    const nombre = getEstudianteNombre(al);
+    const id = getEstudianteId(al);
     const q = busqueda.toLowerCase();
     return nombre.toLowerCase().includes(q) || id.includes(busqueda);
   });
 
-  const handleSelectAlumno = (alumno) => {
-    setAlumnoSeleccionado(alumno);
+  const handleSelectEstudiante = (Estudiante) => {
+    setEstudianteSeleccionado(Estudiante);
     setBusqueda("");
   };
 
@@ -55,11 +55,12 @@ export default function FormCargaNotas({
     e.preventDefault();
     if (!idEvaluation)
       return alert("Por favor, selecciona una actividad primero");
-    if (!alumnoSeleccionado) return alert("Debes seleccionar un estudiante");
+    if (!EstudianteSeleccionado)
+      return alert("Debes seleccionar un estudiante");
     if (grade === "") return alert("Debes ingresar una calificación");
 
     const formData = {
-      id_student: alumnoSeleccionado.id,
+      id_student: EstudianteSeleccionado.id,
       id_evaluation: idEvaluation,
       grade: grade,
     };
@@ -74,7 +75,7 @@ export default function FormCargaNotas({
     toast.success(result.message || "Calificación guardada");
     onSave?.();
 
-    setAlumnoSeleccionado(null);
+    setEstudianteSeleccionado(null);
     setGrade("");
   };
 
@@ -90,8 +91,8 @@ export default function FormCargaNotas({
             value={idEvaluation}
             onChange={(e) => {
               setIdEvaluation(e.target.value);
-              // Si cambia de actividad, reiniciamos el alumno por seguridad
-              setAlumnoSeleccionado(null);
+              // Si cambia de actividad, reiniciamos el Estudiante por seguridad
+              setEstudianteSeleccionado(null);
               setGrade("");
             }}
             className="w-full rounded-xl border-2 border-slate-200 p-3 bg-white outline-none focus:border-indigo-500 font-medium text-slate-700 appearance-none"
@@ -117,7 +118,7 @@ export default function FormCargaNotas({
         className={`space-y-5 transition-all ${!idEvaluation ? "opacity-30 pointer-events-none" : "opacity-100"}`}
       >
         {/* 2. Buscador de Estudiantes */}
-        {!alumnoSeleccionado ? (
+        {!EstudianteSeleccionado ? (
           <div className="relative">
             <label className="mb-1 block text-sm font-bold text-slate-700">
               2. Buscar Estudiante (Nombre o Cédula)
@@ -140,31 +141,31 @@ export default function FormCargaNotas({
             {/* Lista desplegable de resultados */}
             {busqueda.length > 0 && (
               <div className="absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl">
-                {alumnosFiltrados.length > 0 ? (
-                  alumnosFiltrados.map((al) => (
+                {EstudiantesFiltrados.length > 0 ? (
+                  EstudiantesFiltrados.map((al) => (
                     <div
                       key={al.id}
-                      onClick={() => handleSelectAlumno(al)}
+                      onClick={() => handleSelectEstudiante(al)}
                       className="flex cursor-pointer justify-between border-b p-3 last:border-0 hover:bg-indigo-50"
                     >
                       <span className="font-medium text-slate-700">
-                        {getAlumnoNombre(al)}
+                        {getEstudianteNombre(al)}
                       </span>
                       <span className="text-xs text-slate-400">
-                        {getAlumnoId(al)}
+                        {getEstudianteId(al)}
                       </span>
                     </div>
                   ))
                 ) : (
                   <div className="p-3 text-center text-sm text-slate-400">
-                    No hay coincidencia de alumnos
+                    No hay coincidencia de Estudiantes
                   </div>
                 )}
               </div>
             )}
           </div>
         ) : (
-          /* Card de Alumno Confirmado */
+          /* Card de Estudiante Confirmado */
           <div className="animate-in slide-in-from-top-2 flex items-center justify-between rounded-xl bg-indigo-600 p-4 text-white shadow-lg">
             <div>
               <p className="text-xs font-bold uppercase opacity-80">
@@ -173,25 +174,25 @@ export default function FormCargaNotas({
                 a:
               </p>
               <p className="text-lg font-bold">
-                {getAlumnoNombre(alumnoSeleccionado)}
+                {getEstudianteNombre(EstudianteSeleccionado)}
               </p>
             </div>
             <button
               type="button"
               onClick={() => {
-                setAlumnoSeleccionado(null);
+                setEstudianteSeleccionado(null);
                 setGrade("");
               }}
               className="rounded-md bg-indigo-400 px-2 py-1 text-xs transition-colors hover:bg-indigo-300"
             >
-              Cambiar Alumno
+              Cambiar Estudiante
             </button>
           </div>
         )}
 
         {/* 3. Input Único de Nota */}
         <div
-          className={`max-w-xs mx-auto text-center transition-opacity ${!alumnoSeleccionado ? "opacity-30 pointer-events-none" : "opacity-100"}`}
+          className={`max-w-xs mx-auto text-center transition-opacity ${!EstudianteSeleccionado ? "opacity-30 pointer-events-none" : "opacity-100"}`}
         >
           <label className="mb-1 block text-xs font-bold text-slate-500 uppercase">
             Calificación Definitiva (0 - 20)
@@ -201,7 +202,7 @@ export default function FormCargaNotas({
             max="20"
             min="0"
             step="0.1"
-            disabled={!alumnoSeleccionado}
+            disabled={!EstudianteSeleccionado}
             className="w-full rounded-xl border-2 border-slate-200 p-3 text-center text-3xl font-extrabold outline-none focus:border-indigo-500 text-indigo-600 bg-slate-50"
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
@@ -222,9 +223,9 @@ export default function FormCargaNotas({
         </Button>
         <Button
           type="submit"
-          disabled={!alumnoSeleccionado || grade === ""}
+          disabled={!EstudianteSeleccionado || grade === ""}
           classNameBtn={`flex-1 p-3 rounded-xl font-bold text-white shadow-lg transition-all ${
-            alumnoSeleccionado && grade !== ""
+            EstudianteSeleccionado && grade !== ""
               ? "bg-indigo-600 hover:bg-indigo-700"
               : "bg-slate-300 cursor-not-allowed"
           }`}

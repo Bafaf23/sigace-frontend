@@ -68,7 +68,7 @@ export const menuLink = {
     },
     {
       icon: faSitemap,
-      label: "control de Secciones",
+      label: "Control de Secciones",
       href: "/dashboard/Administrador/controlSecciones",
     },
     {
