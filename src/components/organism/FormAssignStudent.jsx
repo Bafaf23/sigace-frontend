@@ -23,7 +23,7 @@ export default function FormAssignStudent({
     e.preventDefault();
 
     if (!dataForm.id_student) {
-      return toast.error("Por favor, selecciona un alumno");
+      return toast.error("Por favor, selecciona un Estudiante");
     }
 
     setLoading(true);
@@ -35,7 +35,7 @@ export default function FormAssignStudent({
       setLoading(false);
       return;
     }
-    toast.success("Alumno asignado con éxito");
+    toast.success("Estudiante asignado con éxito");
     setDataForm({
       id_student: "",
       id_section: id_section,
@@ -48,7 +48,7 @@ export default function FormAssignStudent({
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-2">
       <Selector
-        label={"Seleciona un alumno"}
+        label={"Seleciona un Estudiante"}
         options={students?.map((s) => ({
           value: s.id,
           label: `${s.document} - ${s.name} ${s.last_name}`,

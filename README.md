@@ -8,7 +8,7 @@
 
 ## ✨ Funcionalidades principales
 
-- **Gestión de inscripciones:** 📝 registro de alumnos en periodos académicos.
+- **Gestión de inscripciones:** 📝 registro de Estudiantes en periodos académicos.
 - **control de calificaciones:** 📊 notas por lapsos, asignaturas y secciones.
 - **Gestión de usuarios:** 👥 roles para administradores, docentes, estudiantes y representantes.
 - **Reportes:** 📄 boletas y listados en PDF (p. ej. `@react-pdf/renderer`).

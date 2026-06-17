@@ -87,15 +87,15 @@ export default function TablaNotas({ data, students, notes, activities }) {
               {students.map((student) => {
                 // 🔍 1. Buscamos el primer registro de este estudiante en las notas del lapso
                 // para extraer el 'final_grade' que calculó el backend
-                const notaDelAlumno = notes.find(
+                const notaDelEstudiante = notes.find(
                   (n) => n.id_student === student.id,
                 );
 
                 // Si existe el registro, usamos su final_grade, si no, por defecto es 0.00
                 const definitiva =
-                  notaDelAlumno?.final_grade !== undefined &&
-                  notaDelAlumno?.final_grade !== null
-                    ? parseFloat(notaDelAlumno.final_grade).toFixed(2)
+                  notaDelEstudiante?.final_grade !== undefined &&
+                  notaDelEstudiante?.final_grade !== null
+                    ? parseFloat(notaDelEstudiante.final_grade).toFixed(2)
                     : "0.00";
 
                 // ⚖️ 2. Validamos el estatus de aprobación (en escala de 20, >= 9.5 aprueba)

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     minHeight: 18,
     alignItems: "center",
   },
-  // Anclajes fijos para identificar al alumno
+  // Anclajes fijos para identificar al Estudiante
   colNum: {
     width: "3%",
     textAlign: "center",
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderRightColor: "#E2E8F0",
   },
-  colAlumnos: {
+  colEstudiantes: {
     width: "22%",
     fontSize: 7,
     borderRightWidth: 1,
@@ -331,7 +331,7 @@ export const SabanaAnualPDF = ({
             <Text style={styles.colCedula}></Text>
             <Text
               style={[
-                styles.colAlumnos,
+                styles.colEstudiantes,
                 styles.headerText,
                 { color: "#475569" },
               ]}
@@ -382,7 +382,7 @@ export const SabanaAnualPDF = ({
           >
             <Text style={[styles.colNum, styles.headerText]}>N°</Text>
             <Text style={[styles.colCedula, styles.headerText]}>Cédula</Text>
-            <Text style={[styles.colAlumnos, styles.headerText]}>
+            <Text style={[styles.colEstudiantes, styles.headerText]}>
               Apellidos y Nombres
             </Text>
 
@@ -412,7 +412,7 @@ export const SabanaAnualPDF = ({
             </Text>
           </View>
 
-          {/* CUERPO MATRICIAL: ALUMNOS Y NOTAS */}
+          {/* CUERPO MATRICIAL: EstudianteS Y NOTAS */}
           {studentsReport.length > 0 ? (
             studentsReport.map((student, index) => (
               <View
@@ -430,7 +430,7 @@ export const SabanaAnualPDF = ({
                 <Text style={styles.colCedula}>
                   {student.document || "V-XXXXXXXX"}
                 </Text>
-                <Text style={styles.colAlumnos}>
+                <Text style={styles.colEstudiantes}>
                   {fmtUpper(
                     [student.last_name, student.name]
                       .filter(Boolean)

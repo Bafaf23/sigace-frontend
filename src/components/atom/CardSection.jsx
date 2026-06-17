@@ -33,10 +33,10 @@ export default function CardSecction({
   const isFull = current >= max;
 
   // 1. Consolidamos la lista de estudiantes de forma segura
-  const listaAlumnos = students || sectionStudents || [];
+  const listaEstudiantes = students || sectionStudents || [];
 
   // 2. Serializamos la lista a un string para tener una dependencia ultra estable
-  const alumnosClave = JSON.stringify(listaAlumnos);
+  const EstudiantesClave = JSON.stringify(listaEstudiantes);
 
   // 3. MEMORIZAMOS EL DOCUMENTO COMPLETO: Esto es lo que evita el error de "changed size"
   const documentoPdf = useMemo(() => {
@@ -45,15 +45,15 @@ export default function CardSecction({
 
     return (
       <ReporteImprimiblePorSeccion
-        students={listaAlumnos}
+        students={listaEstudiantes}
         section={identifier}
         institution="U.E.N Juana de Escalona"
         year={grade}
         teacher={teacher || "No asignado"}
       />
     );
-    // Solo se recalcula el objeto si cambia el string de los alumnos o la info de la sección
-  }, [alumnosClave, grade, identifier, teacher]);
+    // Solo se recalcula el objeto si cambia el string de los Estudiantes o la info de la sección
+  }, [EstudiantesClave, grade, identifier, teacher]);
 
   // 4. Inicializamos el hook usePDF de forma limpia sin argumentos iniciales
   const [instance, updateInstance] = usePDF();
@@ -67,7 +67,7 @@ export default function CardSecction({
 
   // Auxiliar para saber si el botón de impresión debe estar activo o no
   const puedeDescargar =
-    !instance.loading && instance.url && listaAlumnos.length > 0;
+    !instance.loading && instance.url && listaEstudiantes.length > 0;
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md dark:border-slate-800 dark:bg-slate-900">
@@ -134,7 +134,7 @@ export default function CardSecction({
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               <span>Generando...</span>
             </>
-          ) : listaAlumnos.length === 0 ? (
+          ) : listaEstudiantes.length === 0 ? (
             <>
               <Icon icon={faPrint} className="w-4 h-4" />
               <span>Sección vacía</span>
@@ -154,7 +154,7 @@ export default function CardSecction({
             icon={faUserPlus}
             classNameBtn="text-slate-500 transition-colors hover:text-green-600 text-sm font-medium truncate dark:text-slate-200"
           >
-            {"Inscribir alumno"}
+            {"Inscribir Estudiante"}
           </Button>
         )}
 
@@ -162,7 +162,7 @@ export default function CardSecction({
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title={"Inscribir Alumno en Sección"}
+          title={"Inscribir Estudiante en Sección"}
         >
           <FormAssignStudent
             students={availableStudents}

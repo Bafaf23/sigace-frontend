@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     borderRightColor: "#E2E8F0",
     padding: 2,
   },
-  colAlumnos: {
+  colEstudiantes: {
     width: "30%",
     fontSize: 8,
     borderRightWidth: 1,
@@ -334,7 +334,7 @@ const Asistencias = ({ students = [], institution, sectionData }) => {
               <Text style={styles.valueBox}>___________________________</Text>
             </View>
             <View style={[styles.inputGroup, { width: "20%" }]}>
-              <Text style={styles.label}>Total Alumnos</Text>
+              <Text style={styles.label}>Total Estudiantes</Text>
               <Text style={styles.valueBox}>
                 {students?.length || "0"} Estudiantes
               </Text>
@@ -348,7 +348,7 @@ const Asistencias = ({ students = [], institution, sectionData }) => {
           <View style={[styles.tableRow, styles.tableHeaderRow]}>
             <Text style={[styles.colNum, styles.headerText]}>N°</Text>
             <Text style={[styles.colCedula, styles.headerText]}>Cédula</Text>
-            <Text style={[styles.colAlumnos, styles.headerText]}>
+            <Text style={[styles.colEstudiantes, styles.headerText]}>
               Apellidos y Nombres
             </Text>
             {diasDelMes.map((dia) => (
@@ -368,7 +368,7 @@ const Asistencias = ({ students = [], institution, sectionData }) => {
             </Text>
           </View>
 
-          {/* Mapeo Dinámico de los Alumnos de la Sección */}
+          {/* Mapeo Dinámico de los Estudiantes de la Sección */}
           {students && students.length > 0 ? (
             students.map((student, index) => (
               <View
@@ -386,7 +386,7 @@ const Asistencias = ({ students = [], institution, sectionData }) => {
                 <Text style={styles.colCedula}>
                   {student.document || "V-XXXXXXXX"}
                 </Text>
-                <Text style={styles.colAlumnos}>
+                <Text style={styles.colEstudiantes}>
                   {fmtUpper(
                     [student.last_name, student.name]
                       .filter(Boolean)
@@ -413,7 +413,8 @@ const Asistencias = ({ students = [], institution, sectionData }) => {
                   padding: 15,
                 }}
               >
-                No existen alumnos activos asociados a esta sección actualmente.
+                No existen Estudiantes activos asociados a esta sección
+                actualmente.
               </Text>
             </View>
           )}

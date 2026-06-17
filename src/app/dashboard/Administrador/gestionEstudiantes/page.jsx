@@ -139,7 +139,7 @@ export default function GestionEstudiantesPage() {
           { name: "Grado y Sección", icon: faBook },
           { name: "Acciones", icon: faClipboardList },
         ]}
-        data={filteredStudents} // 🌟 CORREGIDO: Ahora usa la lista filtrada
+        data={filteredStudents}
         loading={loading}
         renderTableRows={(student) => (
           <tr
@@ -148,16 +148,13 @@ export default function GestionEstudiantesPage() {
           >
             <td className="px-6 py-4">
               <div className="flex flex-col gap-1">
-                <Button
+                <Link
+                  href={`/dashboard/Administrador/gestionEstudiantes/${student.id}`}
                   icon={faIdCard}
-                  classNameBtn="font-bold text-cyan-700 text-sm uppercase tracking-wide border border-cyan-700/10 rounded-md px-2 py-1 inline-flex items-center bg-cyan-50 w-fit cursor-pointer hover:bg-cyan-100 transition-all duration-300 hover:underline"
-                  onClick={() => {
-                    setSelectedStudent(student);
-                    setIsOpenModal(true);
-                  }}
+                  className="font-bold text-cyan-700 text-sm uppercase tracking-wide border border-cyan-700/10 rounded-md px-2 py-1 inline-flex items-center bg-cyan-50 w-fit cursor-pointer hover:bg-cyan-100 transition-all duration-300 hover:underline"
                 >
                   {student.tuition_number}
-                </Button>
+                </Link>
                 <span
                   className={`text-xs uppercase tracking-wide font-bold ${student.status === "Activo" ? "text-green-500" : "text-red-500"} w-fit`}
                 >

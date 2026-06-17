@@ -139,7 +139,7 @@ export default function FormSection({ onSuccess }) {
           <div className="flex items-center gap-2">
             <Icon icon={faInfoCircle} className="text-gray-500 text-xl" />
             <p className="text-sm text-gray-500">
-              Se recomienda que la capacidad máxima sea de 35 alumnos por
+              Se recomienda que la capacidad máxima sea de 35 Estudiantes por
               sección.
             </p>
           </div>
