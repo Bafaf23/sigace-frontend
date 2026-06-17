@@ -11,6 +11,12 @@ export async function getGrade(id_student, SIG) {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/subjects/getSubjectSecction/student/${id_student}/${SIG}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
 
     return response.data;

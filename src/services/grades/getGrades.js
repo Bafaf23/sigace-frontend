@@ -9,6 +9,12 @@ export const getGrades = async (idLoadAcademic) => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/grades/getGrade/${idLoadAcademic}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

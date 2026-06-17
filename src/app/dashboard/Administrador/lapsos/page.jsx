@@ -49,11 +49,11 @@ export default function LapsoPage() {
   });
 
   const SIG = user?.user?.SIG;
-  const token = user?.user?.token;
+
   const id_period = user?.user?.id_period;
 
   const fetchPeriod = async () => {
-    const result = await getPeriod(SIG, token);
+    const result = await getPeriod(SIG);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -74,7 +74,7 @@ export default function LapsoPage() {
   useEffect(() => {
     fetchPeriod();
     fetchLapses();
-  }, [SIG, token, id_period]);
+  }, [SIG, id_period]);
 
   return (
     <main className="animate-in fade-in duration-500">
@@ -151,7 +151,7 @@ export default function LapsoPage() {
               // CORRECCIÓN: Texto adaptado a la creación uno por uno
               message={`¿Estás seguro de querer registrar el lapso "${formDataLapse.nameLapse}" para este año escolar?`}
               onConfirm={async () => {
-                const data = await createLapse(SIG, token, formDataLapse);
+                const data = await createLapse(SIG, formDataLapse);
                 if (data.error) {
                   toast.error(data.error);
                   return;
@@ -189,7 +189,7 @@ export default function LapsoPage() {
               title="Iniciar periodo"
               message="¿Estás seguro de querer iniciar este año escolar?, toma en cuenta que este proceso es irreversible."
               onConfirm={async () => {
-                const data = await createPeriod(SIG, token, formData);
+                const data = await createPeriod(SIG, formData);
                 if (data.error) {
                   toast.error(data.error);
                   return;
@@ -208,7 +208,7 @@ export default function LapsoPage() {
               title="Finalizar periodo"
               message="¿Estás seguro de querer finalizar este año escolar? Este proceso es irreversible y cerrará el periodo académico actual."
               onConfirm={async () => {
-                const data = await endAcademicPeriod(SIG, token);
+                const data = await endAcademicPeriod(SIG);
                 if (data.error) {
                   toast.error(data.error);
                   return;
@@ -250,7 +250,7 @@ export default function LapsoPage() {
                 onFinalizar={async (id) => {
                   setIsLoading(true);
                   try {
-                    const data = await endLapse(id, token);
+                    const data = await endLapse(id);
                     if (data.error) {
                       toast.error(data.error);
                       return;

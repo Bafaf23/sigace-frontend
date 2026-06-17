@@ -3,17 +3,16 @@ import axios from "axios";
 /**
  * Finalizar un lapso
  * @param {string} id - El ID del lapso
- * @param {string} token - Token de autenticación
  * @returns {Promise<Object>} - La respuesta de la API
  */
-export const endLapse = async (id, token) => {
+export const endLapse = async (id) => {
   try {
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/lapses/end/${id}`,
       {},
       {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       },

@@ -10,7 +10,7 @@ export async function getSchoolBySIG(SIG) {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/schools/getSchoolBySIG/${SIG}`,
       {
-        method: "GET",
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },

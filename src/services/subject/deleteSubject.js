@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /**
  * Elimina una materia por id en el backend Flask.
  * @param {string|number} id
@@ -5,17 +7,17 @@
  */
 export async function deleteSubject(id) {
   try {
-    const response = await fetch(
+    const response = await axios.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/subject/delete/${id}`,
       {
-        method: "DELETE",
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       },
     );
 
-    if (!response.ok) {
+    if (!response) {
       console.error(`Error al eliminar materia: ${response.status}`);
       return { ok: false, status: response.status };
     }

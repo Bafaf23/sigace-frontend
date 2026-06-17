@@ -9,6 +9,13 @@ export async function getSubjects(schoolId) {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/subjects/get/${schoolId}`,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

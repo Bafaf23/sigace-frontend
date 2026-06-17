@@ -3,17 +3,17 @@ import axios from "axios";
 /**
  * Crea un nuevo estudiante
  * @param {object} formData - Los datos del estudiante
- * @param {string} authority - La autorización del usuario
  * @returns {Promise<object>} El estudiante creado
  */
-export async function createStudent(formData, authority) {
+export async function createStudent(formData) {
   try {
     const result = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/students/createStudent`,
       formData,
       {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${authority}`,
+          "Content-Type": "application/json",
         },
       },
     );

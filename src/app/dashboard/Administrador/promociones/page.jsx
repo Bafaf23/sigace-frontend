@@ -12,6 +12,7 @@ import {
   faUser,
   faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function PromocionesPage() {
@@ -23,10 +24,10 @@ export default function PromocionesPage() {
 
   const currentPeriodId = user?.user.id_period;
 
-  // 2. Fetch para traer los datos del Backend (Paso 1 completado)
   useEffect(() => {
+    if (!currentPeriodId) return;
     const fetchApprovedStudents = async () => {
-      const data = await getApproved(user?.user.id_period);
+      const data = await getApproved(currentPeriodId);
       setStudents(data);
       setLoading(false);
     };
@@ -89,7 +90,7 @@ export default function PromocionesPage() {
           ) : (
             <TableInsti
               titelTable={[
-                { name: "ID", icon: faIdCard },
+                { name: "Numero Matrícula", icon: faIdCard },
                 { name: "Nombre y Apellido", icon: faUser },
                 { name: "Año y Seccion", icon: faLayerGroup },
                 { name: "Perido", icon: faLayerGroup },
@@ -102,12 +103,19 @@ export default function PromocionesPage() {
                   key={student.document}
                   className="transition-colors hover:bg-slate-50/50"
                 >
-                  <td className="px-6 py-4">{student.id_student}</td>
+                  <td className="px-6 py-4">
+                    <Link
+                      key={`studnet-${student.id_student}`}
+                      href={`/dashboard/Administrador/gestionEstudiantes/${student.id_student}`}
+                      className="font-bold text-cyan-700 text-sm uppercase tracking-wide border border-cyan-700/10 rounded-md px-2 py-1 inline-flex items-center bg-cyan-50 w-fit cursor-pointer hover:bg-cyan-100 transition-all duration-300 hover:underline"
+                    >
+                      {student.tuition_number}
+                    </Link>
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex flex-col">
                       <span className="text-slate-700 font-bold">
-                        {student.name}
-                        {student.last_name}
+                        {student.name} {student.last_name}
                       </span>
                       <span className="text-sm text-slate-500">
                         {student.document}

@@ -8,13 +8,11 @@ import axios from "axios";
 export async function deleteUser(userId, roleId) {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/deleteUser/${userId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/deleteUser/${userId}/${roleId}`,
       {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        data: {
-          roleId,
+          "Content-Type": "application/json",
         },
       },
     );

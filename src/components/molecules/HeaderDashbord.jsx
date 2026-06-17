@@ -36,8 +36,8 @@ export default function HeaderDashbord({ user, titelPage }) {
                 <Link href="/dashboard/profile">
                   <div className="w-10 h-10 p-2 rounded-full overflow-hidden flex items-center justify-center bg-indigo-600">
                     <span className="text-xl font-bold text-white">
-                      {user.user.name.charAt(0)}
-                      {user.user.lastName.charAt(0)}
+                      {user?.user.name.charAt(0)}
+                      {user?.user.last_name.charAt(0)}
                     </span>
                   </div>
                 </Link>
@@ -48,7 +48,7 @@ export default function HeaderDashbord({ user, titelPage }) {
                         Hola,
                       </h1>
                       <span className="text-2xl font-bold text-slate-600 normal-case md:text-3xl md:text-indigo-700 dark:text-slate-600">
-                        {user.user.name} {user.user.lastName}
+                        {user?.user.name} {user?.user.last_name}
                       </span>
                     </div>
                   </div>

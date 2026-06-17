@@ -5,7 +5,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function FormLapse({ period, token }) {
+export default function FormLapse({ period }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -20,7 +20,7 @@ export default function FormLapse({ period, token }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const result = await createLapse(formData, token);
+    const result = await createLapse(formData);
     if (result.error) {
       toast.error(result.error);
       setLoading(false);

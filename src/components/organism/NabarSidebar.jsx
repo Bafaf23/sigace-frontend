@@ -162,7 +162,7 @@ export default function NavbarSidebar() {
 
       {/* Cerrar sesion */}
       <div className="flex items-center justify-between">
-        <ItemProfile user={user} />
+        <ItemProfile user={user?.user} />
       </div>
       <div className="mt-auto border-t border-slate-400/30 pt-4 dark:border-slate-700">
         <Button

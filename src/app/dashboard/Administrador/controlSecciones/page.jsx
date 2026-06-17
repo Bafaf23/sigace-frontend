@@ -22,13 +22,12 @@ export default function controlSecciones() {
   const [students, setStudents] = useState([]);
 
   const SIG = user?.user?.SIG;
-  const authority = user?.user?.token;
   const period = user?.user?.id_period;
 
   console.log(sections);
   // 1. Obtener Estudiantes sin inscripción (Disponibles para asignar)
   const loadStudents = useCallback(() => {
-    if (!SIG || !authority || !period) return;
+    if (!SIG || !period) return;
     setLoading(true);
     getStudenNotEnrollment({ SIG, id_period: period })
       .then((data) => {
@@ -40,14 +39,14 @@ export default function controlSecciones() {
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, authority, period]);
+  }, [SIG, period]);
 
   // 2. Obtener Secciones emparejadas con sus respectivos estudiantes (Carga en Paralelo)
   const loadSections = useCallback(() => {
-    if (!SIG || !authority || !period) return;
+    if (!SIG || !period) return;
     setLoading(true);
 
-    getSection(SIG, authority, period)
+    getSection(SIG, period)
       .then(async (seccionesData) => {
         if (!Array.isArray(seccionesData)) return;
 
@@ -82,7 +81,7 @@ export default function controlSecciones() {
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, authority, period]);
+  }, [SIG, period]);
 
   useEffect(() => {
     loadSections();

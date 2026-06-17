@@ -8,6 +8,12 @@ import axios from "axios";
 export async function getYears(SIG) {
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/subjects/getYears/${SIG}`,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
   );
   return response.data;
 }

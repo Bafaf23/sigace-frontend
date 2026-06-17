@@ -9,6 +9,12 @@ export const deleteEvaluation = async (id) => {
   try {
     const response = await axios.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/evaluations/delete/${id}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

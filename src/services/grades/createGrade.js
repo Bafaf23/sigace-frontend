@@ -10,6 +10,12 @@ export const createGrade = async (data) => {
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/grades/uploadNote`,
       data,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

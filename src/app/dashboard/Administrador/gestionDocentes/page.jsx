@@ -32,7 +32,7 @@ export default function GestionDocentesPage() {
 
   useEffect(() => {
     if (!loading && user?.user?.SIG) {
-      getTeachersAll(user.user.SIG, user.user.token)
+      getTeachersAll(user.user.SIG, user.user.id_period)
         .then((data) => {
           setTeachers(data);
         })

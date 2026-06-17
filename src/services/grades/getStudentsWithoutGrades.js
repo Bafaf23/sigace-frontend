@@ -11,6 +11,12 @@ export const getStudentsWithoutGrades = async (idLoadAcademic, idLapse) => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/grades/students/${idLoadAcademic}`,
       { params: { id_lapse: idLapse } },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

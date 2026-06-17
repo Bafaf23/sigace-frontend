@@ -3,17 +3,17 @@ import axios from "axios";
 /**
  * Actualiza un estudiante en la base de datos.
  * @param {object} formData - Datos del estudiante.
- * @param {string} authority - La autorización del usuario.
  * @returns {Promise<object>} - Datos del estudiante actualizado.
  */
-export async function updateStudent(formData, authority) {
+export async function updateStudent(formData) {
   try {
     const result = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/students/updateStudent`,
       formData,
       {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${authority}`,
+          "Content-Type": "application/json",
         },
       },
     );

@@ -10,6 +10,12 @@ export const getLoadAcademic = async (id, SIG) => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/teachers/getLoadAcademicTeacher/${id}/${SIG}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

@@ -1,4 +1,5 @@
 import axios from "axios";
+
 /**
  * Crea una carga académica
  * @param {object} formData - Datos de la carga académica
@@ -9,6 +10,12 @@ export const createLoad = async (formData) => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/loadAcademic/create`,
       formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

@@ -19,7 +19,7 @@ export default function FormSection({ onSuccess }) {
   const { user } = useAuth();
 
   const SIG = user.user.SIG;
-  const authority = user.user.token;
+
   const id_period = user.user.id_period;
   const [formData, setFormData] = useState({
     name: "",
@@ -43,7 +43,7 @@ export default function FormSection({ onSuccess }) {
   ];
 
   useEffect(() => {
-    getTeachersAll(SIG, authority).then((data) => {
+    getTeachersAll(SIG, id_period).then((data) => {
       setTeachers(
         data.map((teacher) => ({
           value: teacher.id_teacher,
@@ -71,7 +71,7 @@ export default function FormSection({ onSuccess }) {
 
     const result = await createSection(
       { ...formData, capacity: Number(formData.capacity) },
-      authority,
+      
     );
 
     if (!result.success) {
