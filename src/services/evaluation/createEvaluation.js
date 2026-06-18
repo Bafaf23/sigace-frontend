@@ -10,6 +10,12 @@ export const createEvaluation = async (data) => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/evaluations/create`,
       data,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

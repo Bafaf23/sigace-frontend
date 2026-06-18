@@ -17,7 +17,6 @@ export default function CargaAcademicaPage() {
   const { user } = useAuth();
 
   const SIG = user?.user?.SIG;
-  const token = user?.user?.token;
   const id_period = user?.user?.id_period;
 
   const [isOpen, setisOpen] = useState(false);
@@ -28,13 +27,13 @@ export default function CargaAcademicaPage() {
   const [sections, setSections] = useState([]);
 
   const loadCatalogData = useCallback(() => {
-    if (!SIG || !token) return;
+    if (!SIG ) return;
     setLoading(true);
     Promise.all([
-      getTeachersAll(SIG, token),
-      getSection(SIG, token, id_period),
+      getTeachersAll(SIG, id_period),
+      getSection(SIG, id_period),
       getSubjects(SIG),
-      getLoad({ SIG, token }),
+      getLoad({ SIG }),
     ])
       .then(([teachersData, sectionsData, subjectsData, loadData]) => {
         setTeachers(teachersData);
@@ -48,7 +47,7 @@ export default function CargaAcademicaPage() {
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, token]);
+  }, [SIG]);
 
   useEffect(() => {
     loadCatalogData();

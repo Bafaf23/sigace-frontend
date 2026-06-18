@@ -4,19 +4,17 @@ import axios from "axios";
  * Llamada a todo los profesorres por intitucion
  *
  * @param {string} schoolId - codigo SIG unico para cada institucion
- * @param {string} authToken - token de autenticacion
+ * @param {number} id_period - codigo del period activo
  * @returns {Array<object>} - Lista de los prefesores.
  */
-export async function getTeachersAll(SIG, authToken) {
+export async function getTeachersAll(SIG, id_period) {
   try {
     const result = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/teachers/get`,
+      `${process.env.NEXT_PUBLIC_API_URL}/teachers/get/${SIG}/${id_period}`,
       {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-        params: {
-          SIG,
+          "Content-Type": "application/json",
         },
       },
     );

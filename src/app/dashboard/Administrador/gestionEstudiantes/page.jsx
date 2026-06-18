@@ -39,15 +39,14 @@ export default function GestionEstudiantesPage() {
   const [appliedFilter, setAppliedFilter] = useState("");
 
   const SIG = user?.user?.SIG;
-  const authority = user?.user?.token;
   const id_period = user?.user?.id_period;
 
   useEffect(() => {
-    if (!SIG || !authority) return;
+    if (!SIG ) return;
 
     const fetchStudents = async () => {
       try {
-        const data = await getStudents(SIG, authority, id_period);
+        const data = await getStudents(SIG, id_period);
         setStudents(data);
       } catch (error) {
         console.error("Error al traer los estudiantes:", error);
@@ -55,7 +54,7 @@ export default function GestionEstudiantesPage() {
     };
 
     fetchStudents();
-  }, [SIG, authority]);
+  }, [SIG]);
 
   // Restablecer el filtro si el usuario limpia por completo el input
   useEffect(() => {
@@ -102,7 +101,7 @@ export default function GestionEstudiantesPage() {
           isOpen={isOpent}
           onClose={() => setIsOpent(false)}
         >
-          <FormInscrip SIG={SIG} authority={authority} id_period={id_period} />
+          <FormInscrip SIG={SIG} id_period={id_period} />
         </Modal>
       </div>
 
@@ -131,7 +130,7 @@ export default function GestionEstudiantesPage() {
       {/* Tabla de estudiantes */}
       <TableInsti
         titelTable={[
-          { name: "Número de matrícula", icon: faIdCard },
+          { name: "Número de Matrícula", icon: faIdCard },
           { name: "Nombre y Apellido", icon: faUser },
           { name: "Edad", icon: faCalendar },
           { name: "Contacto", icon: faUser },

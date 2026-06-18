@@ -3,17 +3,18 @@ import axios from "axios";
 /**
  * Crea una nueva sección
  * @param {object} formData - Los datos de la sección
- * @param {string} authority - La autorización del usuario
+
  * @returns {Promise<object>} La sección creada
  */
-export const createSection = async (formData, authority) => {
+export const createSection = async (formData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/sections/create`,
       formData,
       {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${authority}`,
+          "Content-Type": "application/json",
         },
       },
     );

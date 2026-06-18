@@ -12,6 +12,12 @@ export const getStudenNotEnrollment = async ({ SIG, id_period }) => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/students/getStudentNotEnrolled/${id_period}/${SIG}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     const data = response.data;
 

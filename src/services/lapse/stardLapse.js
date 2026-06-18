@@ -9,6 +9,12 @@ export const startLapse = async (id) => {
   try {
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/lapses/start/${id}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

@@ -1,14 +1,13 @@
 import axios from "axios";
 
 /**
- * Obtiene los usuarios del sistema desde el backend
- * @returns {Promise<Array<Object>>}
+ ** Obtiene la informacion de perfil del usuario
+ * @returns {Promise<object>}
  */
-
-export async function getUsers() {
+export async function getInfoProfile() {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/getUser`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
       {
         withCredentials: true,
         headers: {

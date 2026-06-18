@@ -10,6 +10,12 @@ export async function createSubject(data) {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/subjects/create/`,
       data,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

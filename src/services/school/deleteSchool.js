@@ -1,3 +1,4 @@
+import axios from "axios";
 /**
  * Elimina una institución del sistema
  * @param {string} SIG - Codigo SIG unco para cada institución
@@ -6,17 +7,17 @@
 
 export async function deleteSchool(SIG) {
   try {
-    const response = await fetch(
+    const response = await axios.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/schools/deleteSchool/${SIG}`,
       {
-        method: "DELETE",
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       },
     );
 
-    if (!response.ok) {
+    if (!response) {
       console.error(`Error en la API: ${response.status}`);
       return { ok: false, status: response.status };
     }

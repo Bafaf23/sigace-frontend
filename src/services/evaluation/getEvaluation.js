@@ -12,6 +12,12 @@ export const getEvaluation = async (idLoadAcademic, idLapse) => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/evaluations/get/${idLoadAcademic}`,
       idLapse != null ? { params: { id_lapse: idLapse } } : undefined,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

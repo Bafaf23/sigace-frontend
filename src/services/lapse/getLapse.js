@@ -14,6 +14,12 @@ export const getLapses = async (SIG, id_peirod) => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/lapses/getLapses/${SIG}/${id_peirod}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {

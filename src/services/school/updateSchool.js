@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /**
  * Actualiza una institución en el sistema
  * @param {object} school - Institución a actualizar
@@ -5,23 +7,23 @@
  */
 export async function updateSchool(school) {
   try {
-    const response = await fetch(
+    const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/schools/updateSchool`,
+      school,
       {
-        method: "POST",
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(school),
       },
     );
-    if (!response.ok) {
+    if (!response) {
       console.error("Error al actualizar la institución:", response.statusText);
       return {
         error: "Error al actualizar la institución: " + response.statusText,
       };
     }
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error) {
     console.error("Error al actualizar la institución:", error);

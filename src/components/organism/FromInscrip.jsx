@@ -26,7 +26,7 @@ import toast from "react-hot-toast";
 
 export default function FormInscrip({
   SIG,
-  authority,
+
   id_period,
   mode,
   student,
@@ -154,9 +154,9 @@ export default function FormInscrip({
     console.log(formData);
     let result;
     if (mode === "edit") {
-      result = await updateStudent(formData, authority);
+      result = await updateStudent(formData );
     } else {
-      result = await createStudent(formData, authority);
+      result = await createStudent(formData);
     }
     if (result.success !== true) {
       return toast.error(result.message);

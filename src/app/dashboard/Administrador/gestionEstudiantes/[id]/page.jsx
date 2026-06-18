@@ -70,7 +70,7 @@ export default function StudentRecords() {
   const [recordStudent, setRecordStudent] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const authority = user?.user.token;
+
   const role = user?.user.role;
 
   useEffect(() => {

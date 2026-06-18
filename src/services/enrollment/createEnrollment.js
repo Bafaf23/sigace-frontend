@@ -10,6 +10,12 @@ export const createEnrollment = async (formData) => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/enrollments/create`,
       formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     return response.data;
   } catch (error) {
