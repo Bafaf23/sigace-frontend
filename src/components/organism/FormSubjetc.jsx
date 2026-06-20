@@ -19,13 +19,28 @@ export default function FormSubject({ onSuccess }) {
 
   useEffect(() => {
     getYears().then((data) => {
-      setYears(data);
+      if (data && Array.isArray(data)) {
+        const sorted = data.sort((a, b) =>
+          a.name.localeCompare(b.name, undefined, { numeric: true }),
+        );
+
+        const formattedYears = sorted.map((year) => ({
+          value: year.id,
+          label: year.name,
+        }));
+
+        setYears(formattedYears);
+      }
     });
   }, []);
 
   const handleUpdate = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    console.log(formData);
+    if (name === "year_id") {
+      // Buscamos en la lista qué texto corresponde al ID seleccionado
+      const textoSeleccionado = years.find(y => y.value == value)?.label;
+      console.log(`ID guardado en el estado: ${value} ➡️ Corresponde a: ${textoSeleccionado}`);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -49,7 +64,7 @@ export default function FormSubject({ onSuccess }) {
     onSuccess?.();
     setLoading(false);
   };
-console.log(years)
+  console.log(years);
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
@@ -65,7 +80,7 @@ console.log(years)
 
       <Selector
         label="Año Escolar de la Asignatura"
-        options={years.map((year)=>({value:year.name, label:year.name}))}
+        options={years}
         value={formData.year_id}
         onChange={(e) => handleUpdate("year_id", e.target.value)}
         required

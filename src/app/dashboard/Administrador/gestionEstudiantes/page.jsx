@@ -4,7 +4,6 @@ import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
-// 🌟 SUGERENCIA: Si corriges el nombre del archivo a Search, recuerda cambiarlo aquí
 import Serch from "@/components/molecules/Serch";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormInscrip from "@/components/organism/FromInscrip";
@@ -38,15 +37,10 @@ export default function GestionEstudiantesPage() {
   const [search, setSearch] = useState("");
   const [appliedFilter, setAppliedFilter] = useState("");
 
-  const SIG = user?.user?.SIG;
-  const id_period = user?.user?.id_period;
-
   useEffect(() => {
-    if (!SIG ) return;
-
     const fetchStudents = async () => {
       try {
-        const data = await getStudents(SIG, id_period);
+        const data = await getStudents();
         setStudents(data);
       } catch (error) {
         console.error("Error al traer los estudiantes:", error);
@@ -54,7 +48,7 @@ export default function GestionEstudiantesPage() {
     };
 
     fetchStudents();
-  }, [SIG]);
+  }, []);
 
   // Restablecer el filtro si el usuario limpia por completo el input
   useEffect(() => {
@@ -101,7 +95,7 @@ export default function GestionEstudiantesPage() {
           isOpen={isOpent}
           onClose={() => setIsOpent(false)}
         >
-          <FormInscrip SIG={SIG} id_period={id_period} />
+          <FormInscrip />
         </Modal>
       </div>
 
@@ -115,7 +109,6 @@ export default function GestionEstudiantesPage() {
       </Modal>
 
       <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        {/* 🌟 CORREGIDO: Se añade el prop setSearch */}
         <Serch
           placeholder="Buscar por cédula..."
           search={search}
@@ -243,9 +236,9 @@ export default function GestionEstudiantesPage() {
                 </button>
 
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${SIG}/${student.id}/${student.representative_id}`}
+                  href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
                   onClick={(e) => loading && e.preventDefault()}
-                  target="_blank" // Recomendado para reportes/PDFs
+                  target="_blank"
                 >
                   <button
                     type="button"

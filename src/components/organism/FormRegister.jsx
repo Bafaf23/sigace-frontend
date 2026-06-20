@@ -25,8 +25,7 @@ export default function FormRegister({ user, mode }) {
     last_name: user?.last_name || "",
     email: user?.email || "",
     phone: user?.phone || "",
-    SIG: user?.SIG || "",
-    role_id: user?.role_id || "",
+    role_id: Number(3), // id del rol (3 solo profesores)
   });
 
   const handleChange = (e) => {
@@ -65,11 +64,6 @@ export default function FormRegister({ user, mode }) {
       return;
     }
 
-    if (!validate(patterns.sig, data.SIG)) {
-      setLoading(false);
-      toast.error("El código SIG no es válido, debe tener el formato SIG0000");
-      return;
-    }
     if (mode !== "edit") {
       const response = await createUser(data);
     } else {
@@ -95,9 +89,6 @@ export default function FormRegister({ user, mode }) {
           />
         )}
 
-        {passed == 2 && (
-          <DataSchoolRegister data={data} manejoCambio={handleChange} />
-        )}
 
         <div className="mt-8 flex justify-between border-t border-gray-100 pt-6">
           {passed === 1 ? (
@@ -112,7 +103,7 @@ export default function FormRegister({ user, mode }) {
             </Button>
           )}
 
-          {passed < 2 ? (
+          {passed < 1 ? (
             <Button
               icon={faRightLong}
               onClick={() => setPassed((p) => Math.min(2, p + 1))}

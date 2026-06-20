@@ -31,13 +31,11 @@ export default function GestionDocentesPage() {
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && user?.user?.SIG) {
-      getTeachersAll(user.user.SIG, user.user.id_period)
+      getTeachersAll()
         .then((data) => {
           setTeachers(data);
         })
         .catch((err) => console.error("Error al cargar docentes:", err));
-    }
   }, [user, loading]);
 
   useEffect(() => {
@@ -115,7 +113,6 @@ export default function GestionDocentesPage() {
               { name: "Carga Académica (Materias)", icon: faBuilding },
               { name: "Contacto", icon: faPhone },
               { name: "Estatus", icon: faInfoCircle },
-              { name: "Acciones", icon: faEllipsisV },
             ]}
             data={filterTeacher}
             renderTableRows={(teacher) => (
@@ -173,19 +170,6 @@ export default function GestionDocentesPage() {
                   >
                     {teacher.is_active ? "Activo" : "Inactivo"}
                   </span>
-                </td>
-                <td className="px-6 py-4 cursor-pointer flex gap-2">
-                  {/* Aquí podrías abrir un menú desplegable o un modal de edición */}
-                  <Button
-                    icon={faEdit}
-                    classNameBtn="p-1 text-slate-400 transition-colors hover:text-indigo-600"
-                    onClick={() => console.log("Opciones", teacher.id)}
-                  />
-                  <Button
-                    icon={faTrash}
-                    classNameBtn="p-1 text-slate-400 transition-colors hover:text-red-600"
-                    onClick={() => console.log("Opciones", teacher.id)}
-                  />
                 </td>
               </tr>
             )}

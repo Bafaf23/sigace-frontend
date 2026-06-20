@@ -41,7 +41,6 @@ const LocationFields = ({ datos, manejarCambio }) => {
   ];
 
   const housingConditionSel = [
-    { label: "Propia", value: "propia" },
     { label: "Familiar", value: "familiar" },
   ];
 

@@ -87,13 +87,6 @@ const LegalRepresentativeFields = ({ datos, manejarCambio }) => {
           value={datos.repPhone}
         />
       </div>
-      <Input
-        name="birthCertificate"
-        label="Codigo "
-        placeholder="Folio del acta de nacimiento o documento emitido por la autoridad"
-        onChange={manejarCambio}
-        value={datos.birthCertificate}
-      />
     </div>
   );
 };

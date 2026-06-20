@@ -42,7 +42,7 @@ export default function Selector({
         </option>
 
         {options.map((option, index) => (
-          <option key={index} value={option.id || option.value}>
+          <option key={index} value={option.value}>
             {option.label}
           </option>
         ))}

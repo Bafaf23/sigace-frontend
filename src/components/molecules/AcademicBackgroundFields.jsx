@@ -59,13 +59,6 @@ const AcademicFields = ({ datos, manejarCambio }) => {
               value={datos.previousSection}
               onChange={manejarCambio}
             />
-            <Input
-              name="canaimaSerial"
-              label="Serial Equipo Canaima"
-              placeholder="Opcional"
-              value={datos.canaimaSerial}
-              onChange={manejarCambio}
-            />
           </div>
         </div>
       )}
