@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "../atom/Button";
 import Input from "../atom/Input";
 import Selector from "../atom/Selector";
@@ -7,49 +9,47 @@ import { faSpinner, faSave } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-export default function FormSubject({ schoolId, onSuccess }) {
+export default function FormSubject({ onSuccess }) {
   const [loading, setLoading] = useState(false);
-
+  const [years, setYears] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
-    SIG: schoolId,
     year_id: "",
   });
 
-  const [years, setYears] = useState([]);
-
   useEffect(() => {
-    getYears(schoolId).then((data) => {
-      setYears(data.map((year) => ({ value: year.id, label: year.name })));
+    getYears().then((data) => {
+      setYears(data);
     });
   }, []);
 
   const handleUpdate = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
+    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    console.log(formData);
-
     const result = await createSubject(formData);
-    if (result.error) {
+
+    if (result?.error) {
       toast.error(result.error);
       setLoading(false);
       return;
     }
+
     toast.success("Asignatura creada exitosamente");
     setFormData({
       name: "",
-      schoolId: schoolId,
       year_id: "",
     });
+
     onSuccess?.();
     setLoading(false);
   };
-
+console.log(years)
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
@@ -65,7 +65,7 @@ export default function FormSubject({ schoolId, onSuccess }) {
 
       <Selector
         label="Año Escolar de la Asignatura"
-        options={years}
+        options={years.map((year)=>({value:year.name, label:year.name}))}
         value={formData.year_id}
         onChange={(e) => handleUpdate("year_id", e.target.value)}
         required

@@ -29,10 +29,16 @@ export async function getSchools() {
  */
 export async function getRoles() {
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/schools/getRoles`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error) {
     console.error("Error de conexión con el servidor Flask:", error);

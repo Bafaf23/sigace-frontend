@@ -6,21 +6,17 @@ import axios from "axios";
  * @param {object} formDataLapse - data del formulario crear Lapso
  * @returns {Promise<Object>} - Respuesta de la API
  */
-export const createLapse = async (SIG, formDataLapse) => {
+export const createLapse = async (formDataLapse) => {
   try {
-    // BLINDAJE: Estructuramos el cuerpo de la petición explícitamente.
-    // Esto asegura que al backend le lleguen las propiedades con el nombre exacto que espera.
     const requestBody = {
       nameLapse: formDataLapse.nameLapse,
       dateStart: formDataLapse.dateStart || formDataLapse.dateStard, // Soporta ambas variantes de tipeo
       dateEnd: formDataLapse.dateEnd,
     };
 
-    console.log("✈️ Enviando payload al backend:", requestBody);
-
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/lapses/create/${SIG}`,
-      requestBody, // Enviamos el objeto verificado
+      `${process.env.NEXT_PUBLIC_API_URL}/lapses/create`,
+      requestBody,
       {
         withCredentials: true,
         headers: {

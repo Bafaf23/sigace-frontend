@@ -39,6 +39,7 @@ export default function ProfilePage() {
   }
 
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+  console.log(user)
   return (
     <div className="mx-auto w-full max-w-5xl p-4 md:p-6 animate-fade-in">
       {/* HEADER PRINCIPAL - ESTILO DASHBOARD */}
@@ -179,7 +180,7 @@ export default function ProfilePage() {
                     Código SIG Institucional
                   </span>
                   <span className="text-xl font-black text-cyan-600 dark:text-cyan-400 tracking-tight font-mono block">
-                    {displayOrUnset(user?.school.SIG)}
+                    {displayOrUnset(user?.school?.SIG)}
                   </span>
                 </div>
               )}

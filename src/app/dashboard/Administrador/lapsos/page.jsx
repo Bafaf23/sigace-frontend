@@ -19,6 +19,11 @@ import { faCalendar, faCheck, faBook } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
+
+/**
+ * TODO: Realizar comprobaciones de lapsos: no se puede crear mas de tres lapos en un periodo academico.
+ * @returns 
+ */
 export default function LapsoPage() {
   const { user } = useAuth();
   const [period, setPeriod] = useState(null);
@@ -41,19 +46,15 @@ export default function LapsoPage() {
     namePeriod: "",
   });
 
-  // UNIFICACIÓN: Cambiado 'dateStard' por 'dateStart' para sincronizar con los inputs nuevos
+  //Momentos academicos
   const [formDataLapse, setFormDataLapse] = useState({
     dateStart: "",
     dateEnd: "",
     nameLapse: "",
   });
 
-  const SIG = user?.user?.SIG;
-
-  const id_period = user?.user?.id_period;
-
   const fetchPeriod = async () => {
-    const result = await getPeriod(SIG);
+    const result = await getPeriod();
     if (result.error) {
       toast.error(result.error);
       return;
@@ -62,8 +63,7 @@ export default function LapsoPage() {
   };
 
   const fetchLapses = async () => {
-    if (!id_period) return;
-    const result = await getLapses(SIG, id_period);
+    const result = await getLapses();
     if (result.error) {
       toast.error(result.error);
       return;
@@ -74,7 +74,7 @@ export default function LapsoPage() {
   useEffect(() => {
     fetchPeriod();
     fetchLapses();
-  }, [SIG, id_period]);
+  }, [user]);
 
   return (
     <main className="animate-in fade-in duration-500">
@@ -151,7 +151,7 @@ export default function LapsoPage() {
               // CORRECCIÓN: Texto adaptado a la creación uno por uno
               message={`¿Estás seguro de querer registrar el lapso "${formDataLapse.nameLapse}" para este año escolar?`}
               onConfirm={async () => {
-                const data = await createLapse(SIG, formDataLapse);
+                const data = await createLapse(formDataLapse);
                 if (data.error) {
                   toast.error(data.error);
                   return;
@@ -189,7 +189,7 @@ export default function LapsoPage() {
               title="Iniciar periodo"
               message="¿Estás seguro de querer iniciar este año escolar?, toma en cuenta que este proceso es irreversible."
               onConfirm={async () => {
-                const data = await createPeriod(SIG, formData);
+                const data = await createPeriod(formData);
                 if (data.error) {
                   toast.error(data.error);
                   return;
@@ -208,7 +208,7 @@ export default function LapsoPage() {
               title="Finalizar periodo"
               message="¿Estás seguro de querer finalizar este año escolar? Este proceso es irreversible y cerrará el periodo académico actual."
               onConfirm={async () => {
-                const data = await endAcademicPeriod(SIG);
+                const data = await endAcademicPeriod();
                 if (data.error) {
                   toast.error(data.error);
                   return;

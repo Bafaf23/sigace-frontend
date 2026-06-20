@@ -2,13 +2,12 @@ import axios from "axios";
 
 /**
  * End Academic Period
- * @param {string} SIG - The period to end
  * @returns {Promise<void>}
  */
-export const endAcademicPeriod = async (SIG) => {
+export const endAcademicPeriod = async () => {
   try {
     const response = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}/periods/endAcademicPeriod/${SIG}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/endAcademicPeriod`,
       {},
       {
         withCredentials: true, // Envía la cookie 'auth_token' al backend

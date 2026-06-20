@@ -6,12 +6,11 @@ import axios from "axios";
  * @param {object} formData - Objeto del formulario de inicio de periodo academico
  * @returns {Promise<Object>}
  */
-export const createPeriod = async (SIG, formData) => {
+export const createPeriod = async (formData) => {
   try {
-    // CAMBIO: Se cambió .get por .post para que admita el body (formData)
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/periods/createAcademicPeriod/${SIG}`,
-      formData, // Ahora Axios sí enviará esto en el req.body
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/createAcademicPeriod`,
+      formData, 
       {
         withCredentials: true,
         headers: {

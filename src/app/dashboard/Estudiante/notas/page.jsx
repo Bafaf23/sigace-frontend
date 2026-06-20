@@ -44,7 +44,7 @@ export default function NotasPage() {
         const SIG = user.user.SIG;
 
         const response = await getGrade(idStudent, SIG);
-        const lapseActive = await getLapseActive(SIG);
+        const lapseActive = await getLapseActive();
 
         const listaMaterias = response?.subjects || [];
         const yearName = response?.year || "";

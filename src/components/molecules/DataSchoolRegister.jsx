@@ -13,6 +13,7 @@ export default function DataSchoolRegister({ data, manejoCambio }) {
       });
     });
   }, []);
+  console.log(roles)
   return (
     <div className="animate-fade-in space-y-4">
       <div className="flex flex-col gap-4">

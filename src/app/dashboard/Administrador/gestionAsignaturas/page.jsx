@@ -13,20 +13,18 @@ export default function MateriasPage() {
   const [dataSubjects, setDataSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const school_id = user?.user?.SIG;
 
   /** @param {boolean} [silent] Si es true, actualiza la lista sin pantalla de carga completa. */
   const loadSubjects = useCallback(
     (silent = false) => {
-      if (!school_id) return;
       if (!silent) setLoading(true);
-      getSubjects(school_id)
+      getSubjects()
         .then((data) => setDataSubjects(data))
         .finally(() => {
           if (!silent) setLoading(false);
         });
     },
-    [school_id],
+    [],
   );
 
   useEffect(() => {
@@ -36,7 +34,6 @@ export default function MateriasPage() {
   return (
     <div className="">
       <HeaderGestionMaterias
-        schoolId={school_id}
         onSubjectCreated={() => loadSubjects(true)}
       />
       <div className="p-4">

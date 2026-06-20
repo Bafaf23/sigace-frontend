@@ -6,6 +6,7 @@ import axios from "axios";
  */
 export async function getInfoProfile() {
   try {
+    console.log("Llamando a la API en:", `${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
       {

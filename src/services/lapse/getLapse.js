@@ -6,14 +6,10 @@ import axios from "axios";
  * @param {number} id_peirod - Id del periodo actual
  * @returns {Promise<Array>} - Array de lapsos.
  */
-export const getLapses = async (SIG, id_peirod) => {
-  if (!SIG) {
-    return { error: "SIG es requerido" };
-  }
-
+export const getLapses = async () => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/lapses/getLapses/${SIG}/${id_peirod}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/lapses/getLapses`,
       {
         withCredentials: true,
         headers: {

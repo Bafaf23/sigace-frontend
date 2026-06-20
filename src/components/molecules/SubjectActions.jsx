@@ -22,7 +22,7 @@ export default function SubjectActions({ subject, onSubjectDeleted }) {
         icon={faTrash}
         classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-red-50 hover:text-red-600"
         onClick={async () => {
-          const { ok } = await deleteSubject(subject.id);
+          const { ok } = await deleteSubject(subject.code_subject);
           if (ok) onSubjectDeleted?.();
         }}
       />

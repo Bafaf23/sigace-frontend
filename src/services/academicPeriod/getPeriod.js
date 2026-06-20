@@ -5,14 +5,10 @@ import axios from "axios";
  * @param {string} SIG - SIG de la institución
  * @returns {Promise<{ periodActive: object | null } | { error: string }>}
  */
-export const getPeriod = async (SIG) => {
-  if (!SIG) {
-    return { periodActive: null };
-  }
-
+export const getPeriod = async () => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/periods/getAcademicPeriods/${SIG}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/getAcademicPeriods`,
       {
         withCredentials: true,
         headers: {

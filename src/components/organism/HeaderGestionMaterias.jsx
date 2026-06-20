@@ -6,7 +6,7 @@ import Modal from "@/components/organism/Modal";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function HeaderGestionMaterias({ schoolId, onSubjectCreated }) {
+export default function HeaderGestionMaterias({ onSubjectCreated }) {
   const [isOpent, setIsOpent] = useState(false);
 
   return (
@@ -26,7 +26,6 @@ export default function HeaderGestionMaterias({ schoolId, onSubjectCreated }) {
           onClose={() => setIsOpent(false)}
         >
           <FormSubjetc
-            schoolId={schoolId}
             onSuccess={() => {
               onSubjectCreated?.();
               setIsOpent(false);

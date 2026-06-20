@@ -5,10 +5,10 @@ import axios from "axios";
  * @param {string|number} id
  * @returns {Promise<{ ok: boolean, status?: number }>}
  */
-export async function deleteSubject(id) {
+export async function deleteSubject(code_subject) {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_API_URL}/subject/delete/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/subjects/deleteSub/${code_subject}`,
       {
         withCredentials: true,
         headers: {
