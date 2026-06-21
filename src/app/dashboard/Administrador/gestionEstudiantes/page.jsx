@@ -74,7 +74,7 @@ export default function GestionEstudiantesPage() {
   if (loading) return <Loading />;
 
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
-
+console.log(students)
   return (
     <>
       <div className="flex flex-col gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -223,18 +223,6 @@ export default function GestionEstudiantesPage() {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedStudent(student);
-                    setIsOpenModal(true);
-                  }}
-                  className="p-2 text-slate-400 hover:text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
-                  title="Editar Estudiante"
-                >
-                  <Icon icon={faEdit} className="w-4 h-4" />
-                </button>
-
                 <Link
                   href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
                   onClick={(e) => loading && e.preventDefault()}

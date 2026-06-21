@@ -25,13 +25,6 @@ const PersonalDataFields = ({ datos, manejarCambio, mode }) => {
     { label: "Masculino", value: "Masculino" },
   ];
 
-  const statusOptions = [
-    { label: "Activo", value: "Activo" },
-    { label: "Retirado", value: "Retirado" },
-    { label: "Traslado", value: "Traslado" },
-    { label: "Reingreso", value: "Reingreso" },
-  ];
-
   const handleToggle = (e) => {
     const { name, checked } = e.target;
     manejarCambio({ target: { name, value: checked } });
@@ -76,15 +69,6 @@ const PersonalDataFields = ({ datos, manejarCambio, mode }) => {
                 placeholder={"323233"}
                 onChange={manejarCambio}
                 value={datos.document}
-              />
-            </div>
-            <div className="">
-              <Selector
-                name={"status"}
-                label={"Estatus"}
-                options={statusOptions}
-                onChange={manejarCambio}
-                value={datos.status}
               />
             </div>
           </>

@@ -7,6 +7,8 @@ import AcademicRecord from "@/components/organism/AcademicRecord";
 import { useAuth } from "@/context/AuthContext";
 import { getRecordStudent } from "@/services/student/getRecordStudent";
 import { getStudentByI } from "@/services/student/getStudentById";
+import Modal from "@/components/organism/Modal";
+import FormInscrip from "@/components/organism/FromInscrip";
 import {
   faArrowLeft,
   faFileClipboard,
@@ -20,6 +22,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Form } from "lucide-react";
 
 // Data estática de prueba para el Récord Académico
 /* const academicDataMock = [
@@ -62,16 +65,13 @@ import { useEffect, useState } from "react";
 
 export default function StudentRecords() {
   const { id } = useParams();
-  const { user } = useAuth();
   const router = useRouter();
 
   const [student, setStudent] = useState(null);
   const [pendingSubjects, setPendingSubjects] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const [recordStudent, setRecordStudent] = useState([]);
   const [loading, setLoading] = useState(true);
-
-
-  const role = user?.user.role;
 
   useEffect(() => {
     if (!id) return;
@@ -147,7 +147,7 @@ export default function StudentRecords() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-2 space-y-6">
+    <div className="max-w-7xl mx-auto p-5 space-y-6">
       <Button
         onClick={() => router.back()}
         icon={faArrowLeft}
@@ -155,6 +155,11 @@ export default function StudentRecords() {
       >
         Volver atrás
       </Button>
+
+      {/* Modal Edit */}
+      <Modal isOpen={isOpen} onClose={()=>setIsOpen(!isOpen)} title={"Editar Informacion del Estudiante"}>
+        <FormInscrip mode={"edit"} student={student}/>
+      </Modal>
 
       {/* HEADER DEL ESTUDIANTE */}
       <section className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm gap-4">
@@ -168,6 +173,7 @@ export default function StudentRecords() {
                 {student.name} {student.last_name}
               </h1>
               <Button
+                onClick={() => setIsOpen(true)}
                 icon={faEdit}
                 classNameBtn="p-0.5 hover:bg-slate-100 rounded-lg transition-colors"
               />
@@ -216,7 +222,7 @@ export default function StudentRecords() {
             </span>
           ) : (
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-700 border border-emerald-200 uppercase tracking-wide">
-              Regular / Activo
+              {student.condition} / Activo
             </span>
           )}
         </div>
@@ -237,7 +243,7 @@ export default function StudentRecords() {
                 Año
               </label>
               <span className="text-sm font-bold text-white uppercase block mt-0.5">
-                {student.year_name || "N/A"}
+                {student.year_name || "Sin Asignar"}
               </span>
             </div>
             <div>
@@ -245,7 +251,7 @@ export default function StudentRecords() {
                 Sección
               </label>
               <span className="text-sm font-bold text-white uppercase block mt-0.5">
-                {student.section_name || "N/A"}
+                {student.section_name || "Sin Asignar"}
               </span>
             </div>
           </div>
@@ -393,8 +399,7 @@ export default function StudentRecords() {
               </p>
             </div>
           </div>
-
-          <AcademicRecord recordData={recordStudent} />
+          {recordStudent && <AcademicRecord recordData={recordStudent} />}
         </div>
       </section>
     </div>
