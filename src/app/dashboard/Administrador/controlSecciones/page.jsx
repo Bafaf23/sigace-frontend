@@ -21,15 +21,12 @@ export default function controlSecciones() {
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
 
-  const SIG = user?.user?.SIG;
   const period = user?.user?.id_period;
 
-  console.log(sections);
-  // 1. Obtener Estudiantes sin inscripción (Disponibles para asignar)
   const loadStudents = useCallback(() => {
-    if (!SIG || !period) return;
+    if (!period) return;
     setLoading(true);
-    getStudenNotEnrollment({ SIG, id_period: period })
+    getStudenNotEnrollment({ id_period: period })
       .then((data) => {
         setStudents(data);
       })
@@ -39,31 +36,28 @@ export default function controlSecciones() {
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, period]);
+  }, [period]);
 
-  // 2. Obtener Secciones emparejadas con sus respectivos estudiantes (Carga en Paralelo)
   const loadSections = useCallback(() => {
-    if (!SIG || !period) return;
+    if (!period) return;
     setLoading(true);
 
-    getSection(SIG, period)
+    getSection(period)
       .then(async (seccionesData) => {
         if (!Array.isArray(seccionesData)) return;
 
-        // Mapeamos cada sección para buscar sus Estudiantes de base de datos simultáneamente
         const seccionesConEstudiantes = await Promise.all(
           seccionesData.map(async (seccion) => {
             try {
               // Ajusta los parámetros de getStudentSection según requiera tu servicio
               const EstudiantesDeLaSeccion = await getStudentSection(
                 seccion.id,
-                SIG,
               );
 
               return {
                 ...seccion,
-                sectionStudents: EstudiantesDeLaSeccion || [], // Data real inyectada para el PDF
-                current: EstudiantesDeLaSeccion?.length || 0, // Sincroniza el contador en base a la Query SQL
+                sectionStudents: EstudiantesDeLaSeccion || [],
+                current: EstudiantesDeLaSeccion?.length || 0,
               };
             } catch (error) {
               console.error(
@@ -81,13 +75,13 @@ export default function controlSecciones() {
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG, period]);
+  }, [period]);
 
   useEffect(() => {
     loadSections();
     loadStudents();
   }, [loadSections, loadStudents]);
-  console.log(sections);
+  console.log(students);
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">
@@ -119,12 +113,24 @@ export default function controlSecciones() {
       </Modal>
 
       <div className="p-3">
-        <div className="flex items-center gap-2 bg-indigo-500/20 p-3 rounded-lg border border-indigo-500/30">
-          <Icon icon={faInfoCircle} className="text-indigo-500 text-2xl" />
-          <p className="text-sm font-medium text-indigo-500  dark:text-indigo-400">
-            En este modulo puedes crear y gestionar las secciones de tu escuela.
-            Tambien puedes inscribir a los Estudiantes a las secciones.
-          </p>
+        <div className="flex items-start gap-3 bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20">
+          <Icon
+            icon={faInfoCircle}
+            className="text-indigo-500 text-xl mt-0.5 shrink-0"
+          />
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+              En este módulo puedes{" "}
+              <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                crear y gestionar
+              </span>{" "}
+              las secciones de tu institución, así como realizar el proceso de{" "}
+              <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                inscripción y asignación
+              </span>{" "}
+              de los estudiantes.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -144,9 +150,8 @@ export default function controlSecciones() {
         <SkeletonCard />
       ) : (
         <CardGridSetion
-          SIG={SIG}
           dataSet={sections}
-          availableStudents={students}
+          availableStudents={students.data}
           period={period}
         />
       )}

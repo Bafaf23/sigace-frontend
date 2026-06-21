@@ -74,7 +74,7 @@ export default function GestionEstudiantesPage() {
   if (loading) return <Loading />;
 
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
-console.log(students)
+  console.log(students);
   return (
     <>
       <div className="flex flex-col gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -223,43 +223,49 @@ console.log(students)
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center justify-center gap-2">
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
-                  onClick={(e) => loading && e.preventDefault()}
-                  target="_blank"
-                >
-                  <button
-                    type="button"
-                    disabled={loading}
-                    title="Descargar Planilla de Inscripción"
-                    className="flex items-center justify-center p-2 rounded-lg bg-cyan-600 text-white transition-all hover:bg-cyan-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                {/* btn descargar comprobamte de inscripcion */}
+                {student.year_name && student.section_name ? (
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
+                    onClick={(e) => loading && e.preventDefault()}
+                    target="_blank"
                   >
-                    {loading ? (
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    ) : (
-                      <Icon icon={faClipboardList} className="w-4 h-4" />
-                    )}
-                  </button>
-                </Link>
+                    <Button
+                      type="button"
+                      disabled={loading}
+                      title="Descargar Planilla de Inscripción"
+                      classNameBtn="flex items-center justify-center p-1 rounded-lg bg-cyan-600 text-white transition-all hover:bg-cyan-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                    >
+                      {loading ? (
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      ) : (
+                        <Icon icon={faClipboardList} className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </Link>
+                ) : (
+                  ""
+                )}
 
+                {/* Notas Certificadas */}
                 <Link
                   href={`#`}
                   onClick={() =>
-                    alert(`Este esta opcion no esta disponible por el moneto`)
+                    alert(`Este esta opcion no esta disponible por el momento`)
                   }
                 >
-                  <button
+                  <Button
                     type="button"
                     disabled={loading}
                     title="Descargar las notas Certificadas"
-                    className="flex items-center justify-center p-2 rounded-lg bg-orange-500 text-white transition-all hover:bg-orange-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                    classNameBtn="flex items-center justify-center p-1 rounded-lg bg-orange-500 text-white transition-all hover:bg-orange-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
                   >
                     {loading ? (
                       <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     ) : (
                       <Icon icon={faAward} className="w-4 h-4" />
                     )}
-                  </button>
+                  </Button>
                 </Link>
               </div>
             </td>

@@ -17,17 +17,14 @@ export default function FormSection({ onSuccess }) {
   const [years, setYears] = useState([]);
 
   const { user } = useAuth();
-
-  const SIG = user.user.SIG;
-
   const id_period = user.user.id_period;
+
   const [formData, setFormData] = useState({
     name: "",
     teacherId: "",
     yearId: "",
     capacity: 35,
     period: "",
-    SIG: SIG,
     id_period: id_period,
   });
 
@@ -43,7 +40,7 @@ export default function FormSection({ onSuccess }) {
   ];
 
   useEffect(() => {
-    getTeachersAll(SIG, id_period).then((data) => {
+    getTeachersAll().then((data) => {
       setTeachers(
         data.map((teacher) => ({
           value: teacher.id_teacher,
@@ -51,8 +48,8 @@ export default function FormSection({ onSuccess }) {
         })),
       );
     });
-    getYears(SIG).then((data) => setYears(data));
-  }, [SIG]);
+    getYears().then((data) => setYears(data));
+  }, []);
   console.log(teachers);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,10 +66,10 @@ export default function FormSection({ onSuccess }) {
       return;
     }
 
-    const result = await createSection(
-      { ...formData, capacity: Number(formData.capacity) },
-      
-    );
+    const result = await createSection({
+      ...formData,
+      capacity: Number(formData.capacity),
+    });
 
     if (!result.success) {
       toast.error(
@@ -91,7 +88,6 @@ export default function FormSection({ onSuccess }) {
       yearId: "",
       capacity: 35,
       period: "",
-      SIG,
     });
     onSuccess?.();
     setLoading(false);
@@ -103,14 +99,14 @@ export default function FormSection({ onSuccess }) {
         <Selector
           options={years.map((year) => ({ value: year.id, label: year.name }))}
           name={"yearId"}
-          label={"Seleciona un año"}
+          label={"Seleciona un Año"}
           onChange={(e) => handleUpdate("yearId", e.target.value)}
           value={formData.yearId}
         />
         <Selector
           options={sectionOptions}
           name={"name"}
-          label={"Selecciona la sección"}
+          label={"Selecciona una Nomenclatura"}
           onChange={(e) => handleUpdate("name", e.target.value)}
           value={formData.name}
         />

@@ -18,7 +18,6 @@ export default function CardGridSetion({
   dataSet = [],
   availableStudents = [],
   period,
-  SIG,
 }) {
   if (!dataSet || dataSet.length === 0)
     return (
@@ -46,7 +45,6 @@ export default function CardGridSetion({
 
         return (
           <CardSecction
-            SIG={SIG}
             id={section.id}
             key={section.id}
             grade={section.year_name}

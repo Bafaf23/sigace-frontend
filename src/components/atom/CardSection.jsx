@@ -16,7 +16,6 @@ import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 
 export default function CardSecction({
-  SIG,
   id,
   grade,
   identifier,
@@ -118,7 +117,7 @@ export default function CardSecction({
       <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 bg-slate-50 p-3 md:justify-around dark:border-slate-800 dark:bg-slate-700">
         {/* Enlace de descarga interactivo */}
         <Link
-          href={`${process.env.NEXT_PUBLIC_API_URL}/reports/sectionList/${SIG}/${id_section}`}
+          href={`${process.env.NEXT_PUBLIC_API_URL}/reports/sectionList/${id_section}`}
           download={`Lista_${grade}_${identifier}.pdf`}
           onClick={(e) => {
             if (!puedeDescargar) e.preventDefault();
@@ -142,7 +141,7 @@ export default function CardSecction({
           ) : (
             <>
               <Icon icon={faPrint} className="w-4 h-4" />
-              <span>Ver lista</span>
+              <span>Imprimir lista</span>
             </>
           )}
         </Link>
