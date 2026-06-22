@@ -30,20 +30,16 @@ export default function NotasPage() {
 
   const { user } = useAuth();
 
-  const SIG = user?.user.SIG;
   const id = user?.user.id;
   console.log(section);
   useEffect(() => {
-    if (!user?.user?.SIG) return;
-
     const fetchGrades = async () => {
       try {
         setLoading(true);
 
         const idStudent = user.user.id;
-        const SIG = user.user.SIG;
 
-        const response = await getGrade(idStudent, SIG);
+        const response = await getGrade(idStudent);
         const lapseActive = await getLapseActive();
 
         const listaMaterias = response?.subjects || [];
@@ -78,11 +74,11 @@ export default function NotasPage() {
   }, [user]);
 
   const handlePrint = () => {
-    if (!SIG || !id || !section.sectionId) {
+    if (!id || !section.sectionId) {
       toast.error("Información de sección incompleta para generar la boleta.");
       return;
     }
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${SIG}/${id}/${section.sectionId}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${id}/${section.sectionId}`;
 
     window.open(url, "_blank", "noopener,noreferrer");
   };

@@ -225,6 +225,8 @@ export default function GestionEstudiantesPage() {
               <div className="flex items-center justify-center gap-2">
                 {/* btn descargar comprobamte de inscripcion */}
                 {student.year_name && student.section_name ? (
+                  ""
+                ) : (
                   <Link
                     href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
                     onClick={(e) => loading && e.preventDefault()}
@@ -243,8 +245,6 @@ export default function GestionEstudiantesPage() {
                       )}
                     </Button>
                   </Link>
-                ) : (
-                  ""
                 )}
 
                 {/* Notas Certificadas */}

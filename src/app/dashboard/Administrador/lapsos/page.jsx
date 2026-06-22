@@ -18,11 +18,11 @@ import { startLapse } from "@/services/lapse/stardLapse";
 import { faCalendar, faCheck, faBook } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-
+import { Calendar } from "lucide-react";
 
 /**
  * TODO: Realizar comprobaciones de lapsos: no se puede crear mas de tres lapos en un periodo academico.
- * @returns 
+ * @returns
  */
 export default function LapsoPage() {
   const { user } = useAuth();
@@ -84,12 +84,13 @@ export default function LapsoPage() {
 
       <section className="p-3">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-slate-500">
-              Periodo actual:
-            </h2>
-            <div className="text-xl font-bold text-indigo-500 bg-indigo-500/10 rounded-md p-2 px-4 border border-indigo-500/20">
-              {period?.name || "No hay periodo actual"}
+          <div className="flex items-center gap-3 bg-slate-50 border border-slate-100 p-2 pl-4 pr-2 rounded-xl shadow-sm">
+            <span className="text-sm font-semibold text-slate-500 tracking-wide uppercase">
+              Período Escolar
+            </span>
+            <div className="flex items-center gap-2 text-sm font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg p-1.5 px-3 shadow-sm shadow-indigo-100/50">
+              <Calendar className="w-4 h-4 text-indigo-500" />
+              <span>{period?.name || "No activo"}</span>
             </div>
           </div>
 
@@ -113,8 +114,7 @@ export default function LapsoPage() {
                 </Button>
               )}
 
-              {/* Botón modificado: Eliminada la restricción de lapses.length === 0 para permitir añadir lapsos uno por uno */}
-              {period?.is_active ? (
+              {period?.is_active && lapses.length < 3 ? (
                 <Button
                   icon={faCalendar}
                   classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
@@ -124,8 +124,6 @@ export default function LapsoPage() {
                 </Button>
               ) : null}
             </div>
-
-            {/* MODAL 1: Formulario para ingresar datos del Lapso Unitario */}
             <Modal
               title={"Crear Nuevo Lapso / Momento"}
               isOpen={isModalCreateLapseOpen}
@@ -133,7 +131,7 @@ export default function LapsoPage() {
             >
               <FormCreateLapse
                 formDataLapse={formDataLapse}
-                setFormDataLapse={setFormDataLapse} // 👈 CORRECCIÓN CRUCIAL: Mismo nombre de Prop que espera el componente hijo
+                setFormDataLapse={setFormDataLapse}
                 onSubmit={() => {
                   setIsModalCreateLapseOpen(false);
                   setIsModalCreateLapseOpenConfir(true);
@@ -148,7 +146,6 @@ export default function LapsoPage() {
                 setIsModalCreateLapseOpenConfir(false);
               }}
               title="Confirmar Registro de Lapso"
-              // CORRECCIÓN: Texto adaptado a la creación uno por uno
               message={`¿Estás seguro de querer registrar el lapso "${formDataLapse.nameLapse}" para este año escolar?`}
               onConfirm={async () => {
                 const data = await createLapse(formDataLapse);
@@ -201,7 +198,6 @@ export default function LapsoPage() {
               variant="info"
             />
 
-            {/* MODAL 4: Confirmación para finalizar el periodo */}
             <ConfirmAtionModal
               isOpen={isModalEndPeriodOpen}
               onCancel={() => setIsModalEndPeriodOpen(false)}

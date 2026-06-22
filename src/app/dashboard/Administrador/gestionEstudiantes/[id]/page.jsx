@@ -157,8 +157,12 @@ export default function StudentRecords() {
       </Button>
 
       {/* Modal Edit */}
-      <Modal isOpen={isOpen} onClose={()=>setIsOpen(!isOpen)} title={"Editar Informacion del Estudiante"}>
-        <FormInscrip mode={"edit"} student={student}/>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(!isOpen)}
+        title={"Editar Informacion del Estudiante"}
+      >
+        <FormInscrip mode={"edit"} student={student} />
       </Modal>
 
       {/* HEADER DEL ESTUDIANTE */}
@@ -243,7 +247,7 @@ export default function StudentRecords() {
                 Año
               </label>
               <span className="text-sm font-bold text-white uppercase block mt-0.5">
-                {student.year_name || "Sin Asignar"}
+                {student.name_year || "Sin Asignar"}
               </span>
             </div>
             <div>
@@ -251,7 +255,7 @@ export default function StudentRecords() {
                 Sección
               </label>
               <span className="text-sm font-bold text-white uppercase block mt-0.5">
-                {student.section_name || "Sin Asignar"}
+                {student.name_section || "Sin Asignar"}
               </span>
             </div>
           </div>

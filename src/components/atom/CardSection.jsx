@@ -1,19 +1,17 @@
 "use client";
 
+import axios from "axios";
 import Button from "../atom/Button";
 import Icon from "../atom/Icon";
 import FormAssignStudent from "../organism/FormAssignStudent";
 import Modal from "../organism/Modal";
-import ReporteImprimiblePorSeccion from "@/docs/ReporteImprimiblePorSeccion";
 import {
   faUsers,
   faChalkboardUser,
   faUserPlus,
   faPrint,
 } from "@fortawesome/free-solid-svg-icons";
-import { usePDF } from "@react-pdf/renderer";
-import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 
 export default function CardSecction({
   id,
@@ -29,44 +27,52 @@ export default function CardSecction({
   sectionStudents,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [loadingType, setLoadingType] = useState(null); // 'lista' | 'consolidado' | null
   const isFull = current >= max;
 
-  // 1. Consolidamos la lista de estudiantes de forma segura
   const listaEstudiantes = students || sectionStudents || [];
 
-  // 2. Serializamos la lista a un string para tener una dependencia ultra estable
-  const EstudiantesClave = JSON.stringify(listaEstudiantes);
+  // Función genérica para descargar archivos usando Axios
+  const handleDescargarPdf = async (endpoint, fileName, type) => {
+    if (listaEstudiantes.length === 0) return;
 
-  // 3. MEMORIZAMOS EL DOCUMENTO COMPLETO: Esto es lo que evita el error de "changed size"
-  const documentoPdf = useMemo(() => {
-    // Si la data básica no ha cargado, devolvemos null para no romper el render inicial
-    if (!grade || !identifier) return null;
+    setLoadingType(type);
+    try {
+      const token = localStorage.getItem("token"); // O de donde extraigas el JWT
 
-    return (
-      <ReporteImprimiblePorSeccion
-        students={listaEstudiantes}
-        section={identifier}
-        institution="U.E.N Juana de Escalona"
-        year={grade}
-        teacher={teacher || "No asignado"}
-      />
-    );
-    // Solo se recalcula el objeto si cambia el string de los Estudiantes o la info de la sección
-  }, [EstudiantesClave, grade, identifier, teacher]);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
+        {
+          withCredentials: true,
+          responseType: "blob", // 🔥 CRÍTICO: Indica a Axios que procese la respuesta como binaria
+          headers: {
+            Authorization: `Bearer ${token}`, // Envía el token al backend protegido de SIGACE
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
-  // 4. Inicializamos el hook usePDF de forma limpia sin argumentos iniciales
-  const [instance, updateInstance] = usePDF();
+      // 🔥 CORRECCIÓN: Axios guarda el blob directamente en res.data
+      const blob = res.data;
+      const url = window.URL.createObjectURL(blob);
 
-  // 5. Manejamos la actualización del blob de forma totalmente controlada
-  useEffect(() => {
-    if (!documentoPdf) return;
+      // Creamos un enlace temporal en el DOM y lo cliqueamos por software
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
 
-    updateInstance(documentoPdf);
-  }, [documentoPdf, updateInstance]);
-
-  // Auxiliar para saber si el botón de impresión debe estar activo o no
-  const puedeDescargar =
-    !instance.loading && instance.url && listaEstudiantes.length > 0;
+      // Limpieza del DOM
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("❌ Error descargando el reporte con Axios:", error);
+      alert("No se pudo generar el PDF. Verifica tu conexión o sesión.");
+    } finally {
+      setLoadingType(null);
+    }
+  };
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md dark:border-slate-800 dark:bg-slate-900">
@@ -115,20 +121,23 @@ export default function CardSecction({
 
       {/* Footer de Acciones */}
       <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 bg-slate-50 p-3 md:justify-around dark:border-slate-800 dark:bg-slate-700">
-        {/* Enlace de descarga interactivo */}
-        <Link
-          href={`${process.env.NEXT_PUBLIC_API_URL}/reports/sectionList/${id_section}`}
-          download={`Lista_${grade}_${identifier}.pdf`}
-          onClick={(e) => {
-            if (!puedeDescargar) e.preventDefault();
-          }}
+        {/* Botón 1: Imprimir Lista de la Sección */}
+        <button
+          onClick={() =>
+            handleDescargarPdf(
+              `/reports/sectionList/${id_section}`,
+              `Lista_${grade}_${identifier}.pdf`,
+              "lista",
+            )
+          }
+          disabled={listaEstudiantes.length === 0 || loadingType !== null}
           className={`flex items-center justify-center gap-2 p-2 px-3 rounded-lg text-sm font-medium text-white transition-all active:scale-95 ${
-            !puedeDescargar
+            listaEstudiantes.length === 0
               ? "bg-slate-400 cursor-not-allowed opacity-70"
               : "bg-cyan-600 hover:bg-cyan-700"
           }`}
         >
-          {instance.loading ? (
+          {loadingType === "lista" ? (
             <>
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               <span>Generando...</span>
@@ -144,7 +153,41 @@ export default function CardSecction({
               <span>Imprimir lista</span>
             </>
           )}
-        </Link>
+        </button>
+
+        {/* Botón 2: Imprimir Consolidado de Notas (Acta) */}
+        <button
+          onClick={() =>
+            handleDescargarPdf(
+              `/reports/noteSheet/${id_section}`,
+              `Consolidado_${grade}_${identifier}.pdf`,
+              "consolidado",
+            )
+          }
+          disabled={listaEstudiantes.length === 0 || loadingType !== null}
+          className={`flex items-center justify-center gap-2 p-2 px-3 rounded-lg text-sm font-medium text-white transition-all active:scale-95 ${
+            listaEstudiantes.length === 0
+              ? "bg-slate-400 cursor-not-allowed opacity-70"
+              : "bg-orange-600 hover:bg-orange-700"
+          }`}
+        >
+          {loadingType === "consolidado" ? (
+            <>
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <span>Generando...</span>
+            </>
+          ) : listaEstudiantes.length === 0 ? (
+            <>
+              <Icon icon={faPrint} className="w-4 h-4" />
+              <span>Sección vacía</span>
+            </>
+          ) : (
+            <>
+              <Icon icon={faPrint} className="w-4 h-4" />
+              <span>Imprimir Consolidado</span>
+            </>
+          )}
+        </button>
 
         {/* Botón de inscripción */}
         {availableStudents.length > 0 && (
@@ -157,7 +200,7 @@ export default function CardSecction({
           </Button>
         )}
 
-        {/* Modal */}
+        {/* Modal de Inscripción */}
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}

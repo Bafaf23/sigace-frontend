@@ -35,13 +35,40 @@ export default function FormCargaPV({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await createEvaluation(formData);
+
     if (response.error) {
       toast.error(response.error);
       return;
     }
-    const created = response.data ?? response.evaluation ?? response;
-    if (onSuccess && created && !created.error) onSuccess(created);
-    toast.success("Evaluación creada exitosamente");
+
+    const newId = response?.result?.id;
+    if (onSuccess && newId) {
+      // 🌟 EL TRUCO: Creamos el objeto completo fusionando los inputs con el nuevo ID
+      const evaluation = {
+        id: newId, // ID único para la clave (key) de React y borrados
+        date: formData.date,
+        referent_teorical: formData.referent_teorical,
+        activity: formData.activity,
+        technical: formData.technical, // Asegúrate de mapear bien si usas 'technical' o 'technique'
+        instrument: formData.instrument,
+        porcentage: formData.porcentage, // Mantiene el porcentaje escrito
+      };
+
+      // 2. Enviamos el objeto completamente estructurado al componente Padre
+      onSuccess(evaluation);
+      toast.success(response.message);
+
+      setFormData({
+        date: "",
+        referent_teorical: "",
+        activity: "",
+        technical: "",
+        instrument: "",
+        porcentage: "",
+        id_load_academic: idLoadAcademic,
+        id_lapse: idLapseActive,
+      });
+    }
   };
 
   return (

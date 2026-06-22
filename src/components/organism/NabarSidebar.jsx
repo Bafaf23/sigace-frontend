@@ -42,11 +42,11 @@ export const menuLink = {
       label: "Cargas de Notas",
       href: `/dashboard/Profesor/cargarNotas`,
     },
-    {
+    /* {
       icon: faUserCheck,
       label: "Asistencias",
       href: `/dashboard/Profesor/asistencia`,
-    },
+    }, */
   ],
   Estudiante: [
     {
@@ -58,6 +58,11 @@ export const menuLink = {
       icon: faListCheck,
       label: "Mis Notas",
       href: "/dashboard/Estudiante/notas",
+    },
+    {
+      icon: faGraduationCap,
+      label: "Mi record Academico",
+      href: "/dashboard/Estudiante/record",
     },
   ],
   Administrador: [
@@ -169,8 +174,9 @@ export default function NavbarSidebar() {
           icon={faSignOutAlt}
           onClick={() => handleLogout()}
           classNameBtn={`flex items-center gap-3 w-full text-gray-600/70 p-2 hover:bg-red-500/50 hover:text-red-900 rounded-lg transition-all text-md dark:text-slate-500 dark:hover:bg-red-300/50 dark:hover:text-red-600`}
-          children={"Cerrar Sesion"}
-        ></Button>
+        >
+          {"Cerrar Sesion"}
+        </Button>
       </div>
     </aside>
   );

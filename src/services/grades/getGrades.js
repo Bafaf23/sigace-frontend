@@ -5,10 +5,10 @@ import axios from "axios";
  * @param {number} idLoadAcademic - ID de la carga académica
  * @returns {Promise<Array|{error: string}>}
  */
-export const getGrades = async (idLoadAcademic) => {
+export const getGrades = async (idLoadAcademic, id_lapse) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/grades/getGrade/${idLoadAcademic}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/grades/getGrade/${idLoadAcademic}?id_lapse=${id_lapse}`,
       {
         withCredentials: true,
         headers: {

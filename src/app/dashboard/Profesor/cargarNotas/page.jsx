@@ -34,8 +34,6 @@ export default function CargarNotas() {
   // Interruptor para volver a pedir las notas a la BD cuando se registre una nueva
   const [refreshNotas, setRefreshNotas] = useState(false);
 
-  const SIG = user?.user?.SIG;
-
   const activeLapse = lapses.find(
     (lapse) =>
       lapse.is_active === true ||
@@ -50,10 +48,7 @@ export default function CargarNotas() {
     const loadPantallaInicial = async () => {
       try {
         setLoadingPantalla(true);
-        const cargaResponse = await getLoadAcademic(
-          user.user.id_user,
-          user?.user.SIG,
-        );
+        const cargaResponse = await getLoadAcademic();
         setSubjects(Array.isArray(cargaResponse) ? cargaResponse : []);
       } catch (error) {
         console.error("Error al cargar los datos de la pantalla:", error);
@@ -66,10 +61,8 @@ export default function CargarNotas() {
 
   // Carga de Lapsos de la escuela
   useEffect(() => {
-    if (!SIG) return;
-
     const fetchLapses = async () => {
-      const data = await getLapses(SIG);
+      const data = await getLapses();
       if (data.error) {
         toast.error(data.error);
         return;
@@ -78,12 +71,12 @@ export default function CargarNotas() {
     };
 
     fetchLapses();
-  }, [SIG]);
+  }, []);
 
   // Sincronización de datos de la materia en paralelo
   useEffect(() => {
     const idLoadAcademic = selectedSubject?.id_load_academic;
-    if (!idLoadAcademic || !SIG) {
+    if (!idLoadAcademic) {
       setNotesData([]);
       setEstudiantesDisponibles([]);
       setActivities([]);
@@ -96,7 +89,7 @@ export default function CargarNotas() {
         const idSection = selectedSubject?.id_section;
         const [gradesRes, studentsRes, activitiesRes] = await Promise.all([
           getGrades(idLoadAcademic),
-          idSection ? getStudentSection(idSection, SIG) : Promise.resolve([]),
+          idSection ? getStudentSection(idSection) : Promise.resolve([]),
           lapses.length > 0
             ? Promise.all(
                 lapses.map(async (lapso) => {
@@ -172,7 +165,7 @@ export default function CargarNotas() {
     };
 
     fetchMateriaData();
-  }, [selectedSubject?.id_load_academic, SIG, lapses, refreshNotas]);
+  }, [selectedSubject?.id_load_academic, lapses, refreshNotas]);
 
   if (loading || loadingPantalla) return <Loading />;
 
@@ -194,7 +187,7 @@ export default function CargarNotas() {
               <Selector
                 options={subjects.map((subject) => ({
                   value: subject.code_subject,
-                  label: `${subject.subject_name} - ${subject.year_name}`,
+                  label: `${subject.subject_name} - ${subject.year_name} "${subject.section_name}"`,
                 }))}
                 name="materia"
                 label="Materia"

@@ -20,17 +20,13 @@ export default function TeachersPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [loadAcademic, setLoadAcademic] = useState([]);
-  const [dataLoading, setDataLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    // Evitamos llamar a la API si el usuario aún no se ha cargado en el contexto
-    if (!user?.user?.id_user) return;
-
     const fetchLoadAcademic = async () => {
       try {
         setDataLoading(true);
-        const id = Number(user?.user.id_user);
-        const data = await getLoadAcademic(id, user?.user.SIG);
+        const data = await getLoadAcademic();
         if (data?.error) {
           toast.error(data.error);
           return;
@@ -45,7 +41,7 @@ export default function TeachersPage() {
     };
 
     fetchLoadAcademic();
-  }, [user]);
+  }, []);
 
   // Primero validamos la carga de la autenticación
   if (authLoading) return <Loading />;

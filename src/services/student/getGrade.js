@@ -2,15 +2,13 @@ import axios from "axios";
 
 /**
  * Obtiene las actividades con las notas de cada materia del estudiante en la sección inscrito.
- * @param {number} id_section - ID de la sección del Estudiante
  * @param {number} id_student - ID del estudiante
- * @param {string} SIG - Código SIG de la institución
  */
 
-export async function getGrade(id_student, SIG) {
+export async function getGrade(id_student) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/subjects/getSubjectSecction/student/${id_student}/${SIG}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/subjects/getSubjectSecction/student/${id_student}`,
       {
         withCredentials: true,
         headers: {

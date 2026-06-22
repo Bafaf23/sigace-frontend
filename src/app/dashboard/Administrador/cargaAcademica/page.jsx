@@ -16,7 +16,6 @@ import { useState, useEffect, useCallback } from "react";
 export default function CargaAcademicaPage() {
   const { user } = useAuth();
 
-  const SIG = user?.user?.SIG;
   const id_period = user?.user?.id_period;
 
   const [isOpen, setisOpen] = useState(false);
@@ -27,13 +26,13 @@ export default function CargaAcademicaPage() {
   const [sections, setSections] = useState([]);
 
   const loadCatalogData = useCallback(() => {
-    if (!SIG ) return;
+    if (!id_period) return;
     setLoading(true);
     Promise.all([
-      getTeachersAll(SIG, id_period),
-      getSection(SIG, id_period),
-      getSubjects(SIG),
-      getLoad({ SIG }),
+      getTeachersAll(),
+      getSection(id_period),
+      getSubjects(),
+      getLoad(),
     ])
       .then(([teachersData, sectionsData, subjectsData, loadData]) => {
         setTeachers(teachersData);
@@ -47,13 +46,12 @@ export default function CargaAcademicaPage() {
       .finally(() => {
         setLoading(false);
       });
-  }, [SIG]);
+  }, [id_period]);
 
   useEffect(() => {
     loadCatalogData();
   }, [loadCatalogData]);
 
-  console.log(teachers)
   return (
     <div>
       <div className="flex flex-col justify-between items-center gap-3 md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -77,7 +75,6 @@ export default function CargaAcademicaPage() {
           subjects={subjects}
           teachers={teachers}
           sections={sections}
-          SIG={SIG}
           id_period={id_period}
         />
       </Modal>

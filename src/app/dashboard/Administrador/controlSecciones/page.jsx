@@ -81,7 +81,7 @@ export default function controlSecciones() {
     loadSections();
     loadStudents();
   }, [loadSections, loadStudents]);
-  console.log(students);
+
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">

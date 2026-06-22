@@ -24,7 +24,7 @@ const getEstudianteId = (al) => String(al.id ?? al.tuition_number ?? "");
 
 export default function FormCargaNotas({
   listaEstudiantesSinNotas = [],
-  activities = [], // Recibe las actividades del lapso activo
+  activities = [],
   onSave,
   onCancel,
 }) {
@@ -67,12 +67,12 @@ export default function FormCargaNotas({
 
     const result = await createGrade(formData);
 
-    if (result.success === false || result.error) {
-      toast.error(result.message || result.error);
+    if (result.success === false) {
+      toast.error(result.message);
       return;
     }
 
-    toast.success(result.message || "Calificación guardada");
+    toast.success(result.message);
     onSave?.();
 
     setEstudianteSeleccionado(null);

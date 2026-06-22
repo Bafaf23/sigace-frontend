@@ -19,12 +19,11 @@ export default function CardLapse({
 }) {
   const [isConfirmClose, setIsConfirmClose] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  // 1. Determinar el estado visual del lapso
-  const isCurrent = lapse.is_active === true || lapse.is_active === 1;
+
+  const isCurrent = lapse.is_active === 1;
   const isPast = !isCurrent && new Date(lapse.end_date) < new Date();
   const isFuture = !isCurrent && new Date(lapse.start_date) > new Date();
 
-  // 2. Formatear fechas de forma amigable (Ej: 15 de Sep, 2026)
   const formatFecha = (fechaStr) => {
     return new Date(fechaStr).toLocaleDateString("es-VE", {
       day: "numeric",

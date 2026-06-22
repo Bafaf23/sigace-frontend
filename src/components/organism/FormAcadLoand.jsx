@@ -10,7 +10,6 @@ export default function FormAcadLoand({
   subjects,
   teachers,
   sections,
-  SIG,
   id_period,
   onSuccess,
 }) {
@@ -18,7 +17,6 @@ export default function FormAcadLoand({
     subjectId: "",
     teacherId: "",
     sectionId: "",
-    SIG: SIG,
     id_period: id_period,
   });
   const [loanding, setLoanding] = useState(false);
@@ -31,7 +29,6 @@ export default function FormAcadLoand({
         !formData.subjectId ||
         !formData.teacherId ||
         !formData.sectionId ||
-        !formData.SIG ||
         !formData.id_period
       ) {
         toast.error("Por favor, rellena todos los campos");
@@ -52,7 +49,6 @@ export default function FormAcadLoand({
         subjectId: "",
         teacherId: "",
         sectionId: "",
-        SIG: SIG,
         id_period: id_period,
       });
 

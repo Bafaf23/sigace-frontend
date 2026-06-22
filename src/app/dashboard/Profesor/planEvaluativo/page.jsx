@@ -24,7 +24,6 @@ import {
   faWrench,
   faPercentage,
   faClock,
-  faEdit,
   faEllipsis,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -42,13 +41,17 @@ export default function PlanEvaluativo() {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [lapses, setLapses] = useState([]);
 
-  const SIG = user?.user?.SIG;
+  // Calcular el lapso activo de forma memorizada en cada renderizado
+  const activeLapse = lapses.find(
+    (lapse) => lapse.is_active === true || lapse.is_active === 1,
+  );
 
+  // 1. Cargar carga académica inicial
   useEffect(() => {
     if (!user?.user?.id) return;
 
     const fetchLoadAcademic = async () => {
-      const data = await getLoadAcademic(user?.user?.id_user, user?.user.SIG);
+      const data = await getLoadAcademic();
       if (data.error) {
         toast.error(data.error);
         return;
@@ -60,13 +63,14 @@ export default function PlanEvaluativo() {
     };
 
     fetchLoadAcademic();
-  }, [user]);
+  }, [user?.user?.id]); // Modificado para depender de la ID segura del usuario
 
+  // 2. Cargar lapsos académicos
   useEffect(() => {
-    if (!SIG) return;
+    if (!user?.user?.id) return;
 
     const fetchLapses = async () => {
-      const data = await getLapses(SIG);
+      const data = await getLapses();
       if (data.error) {
         toast.error(data.error);
         return;
@@ -75,21 +79,25 @@ export default function PlanEvaluativo() {
     };
 
     fetchLapses();
-  }, [SIG]);
+  }, [user?.user?.id]);
 
+  // 3. Cargar evaluaciones (Sincronizado de forma segura con la materia Y el lapso)
   useEffect(() => {
     const idLoadAcademic = selectedSubject?.id_load_academic;
-    if (!idLoadAcademic) {
+    const idLapse = activeLapse?.id;
+
+    if (!idLoadAcademic || !idLapse) {
       setEvaluations([]);
       return;
     }
 
     const fetchEvaluations = async () => {
-      const data = await getEvaluation(idLoadAcademic, activeLapse.id);
+      const data = await getEvaluation(idLoadAcademic, idLapse);
       if (data.error) {
         toast.error(data.error);
         return;
       }
+
       const list = Array.isArray(data)
         ? data
         : Array.isArray(data?.data)
@@ -101,24 +109,26 @@ export default function PlanEvaluativo() {
     };
 
     fetchEvaluations();
-  }, [selectedSubject?.id_load_academic]);
+  }, [selectedSubject?.id_load_academic, activeLapse?.id]);
 
   const handleDeleteEvaluation = async () => {
+    if (!evaluation?.id) return;
     const response = await deleteEvaluation(evaluation.id);
     if (response.error) {
       toast.error(response.error);
       return;
     }
-    toast.success(response.message);
+    toast.success(response.message || "Evaluación eliminada correctamente.");
     setEvaluations((prev) => prev.filter((eva) => eva?.id !== evaluation?.id));
   };
 
   if (loading) return <Loading />;
-  console.log(evaluations);
+
   const role = user?.user?.role ?? user?.role;
   if (!user || role !== "Profesor") {
     return <AccessDenied />;
   }
+
   const porcentajeTotal = evaluations
     .filter(Boolean)
     .reduce(
@@ -126,17 +136,12 @@ export default function PlanEvaluativo() {
       0,
     );
 
-  const activeLapse = lapses.find(
-    (lapse) => lapse.is_active === true || lapse.is_active === 1,
-  );
-
-  console.log(activeLapse);
-
   const handleEvaluationCreated = (newEvaluation) => {
     if (!newEvaluation) return;
     setEvaluations((prev) => [...prev.filter(Boolean), newEvaluation]);
     setIsModalOpen(false);
   };
+
   return (
     <>
       <div className="flex flex-col items-start justify-between md:flex-row">
@@ -144,9 +149,7 @@ export default function PlanEvaluativo() {
         <div className="p-3">
           {porcentajeTotal < 100 && (
             <Button
-              classNameBtn={
-                "bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
-              }
+              classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
               icon={faPlus}
               onClick={() => {
                 setEvaluation({});
@@ -223,13 +226,13 @@ export default function PlanEvaluativo() {
                 Periodo
               </span>
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                {user?.user?.period}
+                {user?.user?.period || "N/A"}
                 {activeLapse ? ` — ${activeLapse.name}` : ""}
               </span>
             </div>
           </div>
 
-          {/* Tarjeta: Porcentaje Total (Dinámica) */}
+          {/* Tarjeta: Porcentaje Total */}
           <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all col-span-2 lg:col-span-1">
             <div
               className={`p-2 rounded-lg flex items-center justify-center transition-colors ${
@@ -256,62 +259,37 @@ export default function PlanEvaluativo() {
             </div>
           </div>
         </div>
+
         <TableInsti
           data={evaluations}
           titelTable={[
-            {
-              name: "Fecha",
-              icon: faCalendar,
-            },
-
-            {
-              name: "Referente Teórico",
-              icon: faBook,
-            },
-            {
-              name: "Estrategia / Actividad",
-              icon: faListCheck,
-            },
-            {
-              name: "Técnica",
-              icon: faWrench,
-            },
-            {
-              name: "Instrumento",
-              icon: faFile,
-            },
-
-            {
-              name: "Porcentaje",
-              icon: faPercentage,
-            },
-            {
-              name: "Acciones",
-              icon: faEllipsis,
-            },
+            { name: "Fecha", icon: faCalendar },
+            { name: "Referente Teórico", icon: faBook },
+            { name: "Estrategia / Actividad", icon: faListCheck },
+            { name: "Técnica", icon: faWrench },
+            { name: "Instrumento", icon: faFile },
+            { name: "Porcentaje", icon: faPercentage },
+            { name: "Acciones", icon: faEllipsis },
           ]}
           renderTableRows={(row) => (
+            // 🌟 CORREGIDO: Usar row.id como key única de la fila de evaluación
             <tr
-              key={row.id_load_academic}
+              key={row.id || row.id_evaluation}
               className="transition-colors text-slate-500 hover:bg-slate-50/50"
             >
               <td className="px-4 py-4 text-center font-medium text-cyan-600">
                 {row.date ? new Date(row.date).toLocaleDateString() : ""}
               </td>
-
               <td className="px-4 py-4">{row.referent_teorical}</td>
               <td className="px-4 py-4">{row.activity}</td>
               <td className="px-4 py-4">{row.technical}</td>
               <td className="px-4 py-4">{row.instrument}</td>
-
               <td className="px-4 py-4 text-orange-600 font-bold text-center">
                 {row.porcentage ?? row.percentage}%
               </td>
               <td className="px-4 py-4 text-center flex gap-1 justify-center">
                 <Button
-                  classNameBtn={
-                    "p-2 rounded-md text-slate-500 font-bold cursor-pointer flex items-center gap-1 hover:text-red-600 w-8 h-8"
-                  }
+                  classNameBtn="p-2 rounded-md text-slate-500 font-bold cursor-pointer flex items-center gap-1 hover:text-red-600 w-8 h-8"
                   icon={faTrash}
                   onClick={() => {
                     setEvaluation(row);
@@ -323,6 +301,7 @@ export default function PlanEvaluativo() {
           )}
         />
       </div>
+
       <ConfirmAtionModal
         isOpen={isConfirmActionModalOpen}
         onCancel={() => setIsConfirmActionModalOpen(false)}

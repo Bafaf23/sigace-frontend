@@ -45,6 +45,9 @@ export default function ListSubjects({ dataSubjects, onSubjectDeleted }) {
                   Código
                 </th>
                 <th className="px-6 py-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
+                  Abreviatura
+                </th>
+                <th className="px-6 py-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                   Materia
                 </th>
                 <th className="px-6 py-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
@@ -65,6 +68,11 @@ export default function ListSubjects({ dataSubjects, onSubjectDeleted }) {
                   <td className="px-6 py-4">
                     <span className="inline-flex items-center rounded-md bg-cyan-50 px-2 py-1 text-xs font-bold text-cyan-700 ring-1 ring-cyan-700/10 ring-inset dark:bg-cyan-400/10 dark:text-cyan-400">
                       {subject.code_subject || "S/C"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-bold text-indigo-700 ring-1 ring-indigo-700/10 ring-inset dark:bg-indigo-400/10 dark:text-indigo-400">
+                      {subject.abbreviation || "S/C"}
                     </span>
                   </td>
                   <td className="px-6 py-4">

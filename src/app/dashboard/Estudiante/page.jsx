@@ -21,13 +21,12 @@ export default function DashboardStudentPage() {
   const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
-    // Si el usuario aún no ha cargado, no hacemos la petición todavía
     if (!user?.user?.id) return;
 
     const fetchSection = async () => {
       try {
         setDataLoading(true);
-        const result = await getGrade(user.user.id, user.user.SIG);
+        const result = await getGrade(user.user.id);
         setSectionData(result);
       } catch (error) {
         console.error("Error al obtener el grado/sección:", error);
@@ -75,7 +74,7 @@ export default function DashboardStudentPage() {
         <div className="col-span-2">
           <InfoCard
             label="Periodo Escolar"
-            value={user?.user?.period ?? user?.period ?? "No asignado"}
+            value={user?.user?.period ?? "No asignado"}
             icon={faCalendarCheck}
             colorClass="bg-cyan-500/50 text-cyan-600"
             description="Este es el periodo escolar en el que estás actualmente. (Un periodo es un año)"
