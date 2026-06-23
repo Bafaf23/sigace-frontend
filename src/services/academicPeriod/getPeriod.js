@@ -16,7 +16,7 @@ export const getPeriod = async () => {
         },
       },
     );
-    return { periodActive: response.data.periodActive ?? null };
+    return response.data;
   } catch (error) {
     const message = error.response?.data?.message;
     // Sin periodo activo: estado normal, no es error de red/servidor

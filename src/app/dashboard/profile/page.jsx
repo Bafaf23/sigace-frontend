@@ -14,6 +14,7 @@ import {
   faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 function displayOrUnset(value) {
   if (value == null || value === "") return "No asignado";
@@ -22,13 +23,14 @@ function displayOrUnset(value) {
 
 export default function ProfilePage() {
   const [user, setUser] = useState({});
+  const { logout } = useAuth();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getProfile = async () => {
       setLoading(true);
       const data = await getInfoProfile();
-      setUser(data);
+      setUser(data.data);
       setLoading(false);
     };
     getProfile();
@@ -39,7 +41,7 @@ export default function ProfilePage() {
   }
 
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
-  console.log(user)
+  console.log(user);
   return (
     <div className="mx-auto w-full max-w-5xl p-4 md:p-6 animate-fade-in">
       {/* HEADER PRINCIPAL - ESTILO DASHBOARD */}
@@ -225,7 +227,7 @@ export default function ProfilePage() {
         <Button
           icon={faRightFromBracket}
           classNameBtn="w-full bg-slate-100 dark:bg-slate-800 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 font-semibold rounded-2xl p-3.5 flex items-center justify-center gap-2 border border-slate-200/50 dark:border-slate-700/30 transition-all duration-200"
-          onClick={() => handleLogout()}
+          onClick={() => logout()}
         >
           <span>Cerrar sesión</span>
         </Button>

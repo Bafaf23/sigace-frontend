@@ -42,13 +42,13 @@ export default function NotasPage() {
         const response = await getGrade(idStudent);
         const lapseActive = await getLapseActive();
 
-        const listaMaterias = response?.subjects || [];
-        const yearName = response?.year || "";
-        const sectionName = response?.section || "";
-        const sectionId = response?.section_id || null;
+        const listaMaterias = response?.data.subjects || [];
+        const yearName = response?.data.year || "";
+        const sectionName = response?.data.section || "";
+        const sectionId = response?.data.section_id || null;
 
         setSubjects(listaMaterias);
-        setLapse(lapseActive);
+        setLapse(lapseActive.data);
         setSection({
           yearName: yearName,
           sectionName: sectionName,

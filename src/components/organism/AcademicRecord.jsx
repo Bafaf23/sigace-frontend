@@ -1,124 +1,239 @@
-"use client";
-import Icon from "../atom/Icon";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 
-export default function AcademicRecord({ recordData = [] }) {
-  // Manejamos un estado para saber qué año escolar está expandido (por defecto el primero)
-  const [activeYearIndex, setActiveYearIndex] = useState(0);
+// =========================================================================
+// MOCK DATA EXPANDIDO (Incluye el array 'evaluations' para cada lapso)
+// =========================================================================
+const mockAcademicRecords = [
+  {
+    school_year: "Año Escolar 2025 - 2026",
+    year_level: "4to Año de Bachillerato",
+    section: "A",
+    subjects: [
+      {
+        subject_name: "Matemáticas",
+        final_grade: 16,
+        lapses: [
+          {
+            number: 1,
+            grade: 14,
+            evaluations: [
+              { name: "Examen I: Funciones", grade: 12, percentage: 30 },
+              { name: "Taller Grupal: Matrices", grade: 16, percentage: 35 },
+              {
+                name: "Defensa de Cuaderno y Participación",
+                grade: 14,
+                percentage: 35,
+              },
+            ],
+          },
+          {
+            number: 2,
+            grade: 18,
+            evaluations: [
+              { name: "Prueba Corta: Ecuaciones", grade: 20, percentage: 25 },
+              { name: "Examen II: Trigonometría", grade: 18, percentage: 50 },
+              { name: "Trabajo Práctico", grade: 16, percentage: 25 },
+            ],
+          },
+          {
+            number: 3,
+            grade: 15,
+            evaluations: [
+              {
+                name: "Proyecto Final de Geometría",
+                grade: 15,
+                percentage: 60,
+              },
+              { name: "Evaluación Continua", grade: 15, percentage: 40 },
+            ],
+          },
+        ],
+      },
+      {
+        subject_name: "Física",
+        final_grade: 8,
+        lapses: [
+          {
+            number: 1,
+            grade: 8,
+            evaluations: [
+              {
+                name: "Examen I: Movimiento Variado",
+                grade: 6,
+                percentage: 40,
+              },
+              { name: "Informe de Laboratorio 1", grade: 10, percentage: 30 },
+              { name: "Prueba Escrita", grade: 9, percentage: 30 },
+            ],
+          },
+          {
+            number: 2,
+            grade: 7,
+            evaluations: [
+              { name: "Examen II: Dinámica", grade: 5, percentage: 50 },
+              { name: "Informe de Laboratorio 2", grade: 12, percentage: 30 },
+              { name: "Talleres en clase", grade: 6, percentage: 20 },
+            ],
+          },
+          {
+            number: 3,
+            grade: 9,
+            evaluations: [
+              { name: "Prueba Escrita Final", grade: 9, percentage: 70 },
+              { name: "Apreciación Docente", grade: 10, percentage: 30 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
-  if (!recordData || recordData.length === 0) {
-    return (
-      <div className="text-center py-10 bg-slate-50 border border-dashed border-slate-200 rounded-2xl mt-3">
-        <p className="text-sm font-medium text-slate-500">
-          No hay antecedentes académicos registrados para este estudiante.
-        </p>
-      </div>
-    );
-  }
+export default function RecordAcademico() {
+  const [selectedPeriod, setSelectedPeriod] = useState(0);
+
+  // Estado para controlar qué lapso está abierto en qué materia.
+  // Ejemplo de clave: "Matemáticas-1" (Materia-Lapso)
+  const [openLapso, setOpenLapso] = useState(null);
+
+  const period = mockAcademicRecords[selectedPeriod];
+
+  const toggleLapso = (materiaName, lapIndex) => {
+    const key = `${materiaName}-${lapIndex}`;
+    setOpenLapso(openLapso === key ? null : key);
+  };
 
   return (
-    <div className="space-y-4 w-full">
-      <div className="flex flex-col gap-3 mt-3">
-        {recordData.map((period, index) => {
-          const isOpen = activeYearIndex === index;
+    <div className="w-full space-y-6 dark:bg-slate-950">
+      {/* Selector de Período */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div>
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+            Récord Académico de Evaluaciones
+          </h2>
+          <p className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
+            {period.year_level} — Sección &quot;{period.section}&quot;
+          </p>
+        </div>
+        <select
+          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer"
+          value={selectedPeriod}
+          onChange={(e) => setSelectedPeriod(Number(e.target.value))}
+        >
+          {mockAcademicRecords.map((rec, index) => (
+            <option key={index} value={index}>
+              {rec.school_year}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Lista de Materias */}
+      <div className="grid grid-cols-1 gap-6">
+        {period.subjects.map((subject, idx) => {
+          const isAplazado = subject.final_grade < 10;
 
           return (
             <div
-              key={index}
-              className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all duration-200"
+              key={idx}
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden"
             >
-              {/* BOTÓN O CABECERA DEL AÑO ESCOLAR */}
-              <button
-                onClick={() => setActiveYearIndex(isOpen ? -1 : index)}
-                className="w-full flex justify-between items-center p-4 bg-slate-50 hover:bg-slate-100/70 transition-colors text-left"
-              >
-                <div>
-                  <span className="text-xs font-black text-cyan-600 uppercase tracking-wide">
-                    {period.school_year}
-                  </span>
-                  <h3 className="text-sm font-bold text-slate-700 uppercase mt-0.5">
-                    {period.year_level} —{" "}
-                    <span className="text-slate-500">
-                      Sección "{period.section}"
-                    </span>
+              {/* Header Materia */}
+              <div className="bg-slate-50/70 dark:bg-slate-800/40 px-6 py-4 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full ${isAplazado ? "bg-red-500 animate-pulse" : "bg-indigo-500"}`}
+                  />
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-200 text-base">
+                    {subject.subject_name}
                   </h3>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm bg-slate-200 text-slate-700 font-bold px-2 py-0.5 rounded-full">
-                    {period.subjects?.length || 0} Materias
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    Definitiva
                   </span>
-                  <Icon
-                    icon={faChevronDown}
-                    className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-                  />
+                  <span
+                    className={`text-base font-bold px-3 py-1 rounded-xl border ${
+                      isAplazado
+                        ? "bg-red-50 text-red-600 border-red-200 dark:bg-red-950/30"
+                        : "bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/30"
+                    }`}
+                  >
+                    {String(subject.final_grade).padStart(2, "0")}
+                  </span>
                 </div>
-              </button>
+              </div>
 
-              {/* TABLA DE CALIFICACIONES (CONTENIDO COLAPSABLE) */}
-              {isOpen && (
-                <div className="border-t border-slate-100 overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="bg-slate-50/50 text-slate-500 uppercase text-sm font-black tracking-wider border-b border-slate-200">
-                        <th className="p-3">Asignatura</th>
-                        <th className="p-3 text-center">Monento 1</th>
-                        <th className="p-3 text-center">Monento 2</th>
-                        <th className="p-3 text-center">Monento 3</th>
-                        <th className="p-3 text-center bg-cyan-50/40 text-cyan-800">
-                          Definitiva
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {period.subjects &&
-                        period.subjects.map((sub, sIdx) => {
-                          const finalGrade = parseFloat(sub.final_grade || 0);
-                          const isPassed = finalGrade >= 10; // Nota mínima aprobatoria en Venezuela
+              {/* Grid de los 3 Lapsos */}
+              <div className="p-5 space-y-4">
+                <p className="text-xs text-slate-400 font-medium mb-1">
+                  Presiona un lapso para expandir el detalle de tareas y
+                  exámenes:
+                </p>
 
-                          return (
-                            <tr
-                              key={sIdx}
-                              className="border-b border-slate-100 hover:bg-slate-50/30 transition-colors"
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {subject.lapses.map((lapso, lapIdx) => {
+                    const isLapAplazado = lapso.grade < 10;
+                    const isCurrentOpen =
+                      openLapso === `${subject.subject_name}-${lapIdx}`;
+
+                    return (
+                      <div
+                        key={lapIdx}
+                        className="flex flex-col border border-slate-100 dark:border-slate-800/60 rounded-xl bg-slate-50/50 dark:bg-slate-900/30 overflow-hidden"
+                      >
+                        {/* Botón Encabezado de Lapso */}
+                        <button
+                          onClick={() =>
+                            toggleLapso(subject.subject_name, lapIdx)
+                          }
+                          className={`w-full text-left p-4 flex justify-between items-center transition-colors hover:bg-slate-100/70 dark:hover:bg-slate-800/50 ${isCurrentOpen ? "bg-indigo-50/40 dark:bg-indigo-950/20" : ""}`}
+                        >
+                          <div>
+                            <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+                              Lapso {lapso.number}
+                            </span>
+                            <span
+                              className={`text-sm font-bold ${isLapAplazado ? "text-red-500" : "text-slate-700 dark:text-slate-300"}`}
                             >
-                              <td className="p-3 text-sm font-bold text-slate-700 uppercase">
-                                {sub.subject_name}
-                              </td>
-                              <td className="p-3 text-sm text-center text-slate-600">
-                                {sub.lap_1 !== null
-                                  ? String(sub.lap_1).padStart(2, "0")
-                                  : "—"}
-                              </td>
-                              <td className="p-3  text-sm text-center text-slate-600">
-                                {sub.lap_2 !== null
-                                  ? String(sub.lap_2).padStart(2, "0")
-                                  : "—"}
-                              </td>
-                              <td className="p-3 text-sm text-center text-slate-600">
-                                {sub.lap_3 !== null
-                                  ? String(sub.lap_3).padStart(2, "0")
-                                  : "—"}
-                              </td>
-                              <td className="p-3 text-center bg-cyan-50/20">
+                              {String(lapso.grade).padStart(2, "0")} pts
+                            </span>
+                          </div>
+                          <span className="text-slate-400 font-medium transition-transform text-xs">
+                            {isCurrentOpen ? "▲ Ocultar" : "▼ Ver Notas"}
+                          </span>
+                        </button>
+
+                        {/* Contenido Desplegable (Actividades del Lapso) */}
+                        {isCurrentOpen && (
+                          <div className="bg-white dark:bg-slate-900/60 p-4 border-t border-slate-100 dark:border-slate-800 space-y-3 flex-1">
+                            {lapso.evaluations.map((evalu, evalIdx) => (
+                              <div
+                                key={evalIdx}
+                                className="flex justify-between items-start text-xs border-b border-slate-50 dark:border-slate-800/40 pb-2 last:border-none last:pb-0"
+                              >
+                                <div className="space-y-0.5 max-w-[75%]">
+                                  <p className="font-medium text-slate-700 dark:text-slate-300 wrap-break-word">
+                                    {evalu.name}
+                                  </p>
+                                  <p className="text-slate-400 font-normal">
+                                    Valor: {evalu.percentage}%
+                                  </p>
+                                </div>
                                 <span
-                                  className={`text-sm font-black px-2 py-0.5 rounded ${
-                                    isPassed
-                                      ? "text-emerald-700 bg-emerald-50 border border-emerald-100"
-                                      : "text-red-700 bg-red-50 border border-red-100"
-                                  }`}
+                                  className={`font-semibold shrink-0 px-1.5 py-0.5 rounded ${evalu.grade < 10 ? "text-red-500 bg-red-50 dark:bg-red-950/20" : "text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800"}`}
                                 >
-                                  {sub.final_grade !== null
-                                    ? String(sub.final_grade).padStart(2, "0")
-                                    : "—"}
+                                  {String(evalu.grade).padStart(2, "0")} pts
                                 </span>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
             </div>
           );
         })}

@@ -22,46 +22,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Form } from "lucide-react";
-
-// Data estática de prueba para el Récord Académico
-/* const academicDataMock = [
-  {
-    school_year: "Periodo 2025-2026",
-    year_level: "2do Año",
-    section: "B",
-    subjects: [
-      {
-        subject_name: "Matemáticas",
-        lap_1: 14,
-        lap_2: 16,
-        lap_3: 15,
-        final_grade: 15,
-      },
-      {
-        subject_name: "Castellano",
-        lap_1: 18,
-        lap_2: 17,
-        lap_3: 19,
-        final_grade: 18,
-      },
-    ],
-  },
-  {
-    school_year: "Periodo 2024-2025",
-    year_level: "1er Año",
-    section: "A",
-    subjects: [
-      {
-        subject_name: "Matemáticas",
-        lap_1: 10,
-        lap_2: 11,
-        lap_3: 9,
-        final_grade: 10,
-      },
-    ],
-  },
-]; */
+import axios from "axios"; // 👈 IMPORTANTE: Añadido para evitar el ReferenceError
 
 export default function StudentRecords() {
   const { id } = useParams();
@@ -81,7 +42,6 @@ export default function StudentRecords() {
         setLoading(true);
 
         const studentPromise = getStudentByI(id);
-
         const recordPromise = getRecordStudent(id);
 
         const [resStudent, dataRecord] = await Promise.all([
@@ -90,15 +50,14 @@ export default function StudentRecords() {
         ]);
 
         if (resStudent) {
-          const dataStudent = resStudent;
-          setStudent(dataStudent);
+          setStudent(resStudent.data);
         }
 
         if (dataRecord) {
           setRecordStudent(dataRecord);
         }
 
-        // 2. Obtener materias pendientes (arrastre)
+        // Obtener materias pendientes (arrastre) del backend de SIGACE
         try {
           const resPending = await axios.get(
             `${process.env.NEXT_PUBLIC_API_URL}/reports/pending-subjects/${id}`,
@@ -145,7 +104,7 @@ export default function StudentRecords() {
       </section>
     );
   }
-
+  console.log(student);
   return (
     <div className="max-w-7xl mx-auto p-5 space-y-6">
       <Button
@@ -160,7 +119,7 @@ export default function StudentRecords() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(!isOpen)}
-        title={"Editar Informacion del Estudiante"}
+        title={"Editar Información del Estudiante"}
       >
         <FormInscrip mode={"edit"} student={student} />
       </Modal>

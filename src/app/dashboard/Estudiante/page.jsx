@@ -27,7 +27,7 @@ export default function DashboardStudentPage() {
       try {
         setDataLoading(true);
         const result = await getGrade(user.user.id);
-        setSectionData(result);
+        setSectionData(result.data);
       } catch (error) {
         console.error("Error al obtener el grado/sección:", error);
       } finally {
@@ -36,7 +36,7 @@ export default function DashboardStudentPage() {
     };
 
     fetchSection();
-  }, [user]); // Se ejecuta cada vez que 'user' cambia (pasa de undefined a cargado)
+  }, [user]);
 
   // Primero esperamos a que el contexto de autenticación termine
   if (authLoading) return <Loading />;
@@ -49,7 +49,7 @@ export default function DashboardStudentPage() {
 
   // Si la autenticación ya pasó, pero aún estamos buscando los datos de la sección en la API
   if (dataLoading) return <Loading />;
-
+  console.log(sectionData);
   return (
     <div className="animate-in fade-in duration-500 h-full">
       <HeaderDashbord user={user} />

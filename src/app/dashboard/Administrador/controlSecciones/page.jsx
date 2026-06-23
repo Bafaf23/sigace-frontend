@@ -12,56 +12,66 @@ import { getSection } from "@/services/section/getSection";
 import { getStudenNotEnrollment } from "@/services/student/getStudenNotEnrollment";
 import { getStudentSection } from "@/services/student/getStudentSection";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, startTransition } from "react";
 
-export default function controlSecciones() {
+// Corregido: Inicial con mayúscula para cumplir con la especificación de componentes React
+export default function ControlSecciones() {
   const { user } = useAuth();
   const [sections, setSections] = useState([]);
-  const [isOpen, setIsopen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [students, setStudents] = useState([]);
+
+  // Separamos los estados de carga para evitar colisiones de estados y parpadeos en la UI
+  const [sectionsLoading, setSectionsLoading] = useState(true);
+  const [studentsLoading, setStudentsLoading] = useState(true);
 
   const period = user?.user?.id_period;
 
+  // Recupera los estudiantes que aún no pertenecen a ninguna sección
   const loadStudents = useCallback(() => {
     if (!period) return;
-    setLoading(true);
+    setStudentsLoading(true);
+
     getStudenNotEnrollment({ id_period: period })
-      .then((data) => {
-        setStudents(data);
+      .then((res) => {
+        // Validación defensiva: Extrae .data si viene estructurado, o el array fallback
+        const studentDataList = res?.data ?? res ?? [];
+        setStudents(studentDataList);
       })
       .catch((err) =>
-        console.error("Error al cargar Estudiantes no inscritos:", err),
+        console.error(
+          "❌ [SIGACE UI]: Error al cargar estudiantes no inscritos:",
+          err,
+        ),
       )
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setStudentsLoading(false));
   }, [period]);
 
+  // Recupera las secciones y anida concurrentemente sus listas de alumnos
   const loadSections = useCallback(() => {
     if (!period) return;
-    setLoading(true);
+    setSectionsLoading(true);
 
     getSection(period)
-      .then(async (seccionesData) => {
+      .then(async (res) => {
+        const seccionesData = res?.data ?? res ?? [];
         if (!Array.isArray(seccionesData)) return;
 
         const seccionesConEstudiantes = await Promise.all(
           seccionesData.map(async (seccion) => {
             try {
-              // Ajusta los parámetros de getStudentSection según requiera tu servicio
-              const EstudiantesDeLaSeccion = await getStudentSection(
-                seccion.id,
-              );
+              const studentsRes = await getStudentSection(seccion.id);
+              const estudiantesDeLaSeccion =
+                studentsRes?.data ?? studentsRes ?? [];
 
               return {
                 ...seccion,
-                sectionStudents: EstudiantesDeLaSeccion || [],
-                current: EstudiantesDeLaSeccion?.length || 0,
+                sectionStudents: estudiantesDeLaSeccion,
+                current: estudiantesDeLaSeccion.length,
               };
             } catch (error) {
               console.error(
-                `Error cargando Estudiantes de la sección ${seccion.id}:`,
+                `❌ [SIGACE UI]: Error cargando estudiantes de sección ${seccion.id}:`,
                 error,
               );
               return { ...seccion, sectionStudents: [], current: 0 };
@@ -69,54 +79,59 @@ export default function controlSecciones() {
           }),
         );
 
-        setSections(seccionesConEstudiantes);
+        startTransition(() => {
+          setSections(seccionesConEstudiantes);
+        });
       })
-      .catch((err) => console.error("Error al cargar secciones:", err))
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch((err) =>
+        console.error("❌ [SIGACE UI]: Error al cargar secciones:", err),
+      )
+      .finally(() => setSectionsLoading(false));
   }, [period]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadSections();
     loadStudents();
   }, [loadSections, loadStudents]);
 
+  // La UI muestra el Skeleton solo si las secciones principales siguen pendientes de red
+  const isGlobalLoading = sectionsLoading;
+
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:justify-between">
-        <HeaderDashbord titelPage={"control de Secciones"} />
-        <div className="p-3 hidden md:block lg:block">
+    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out">
+      <div className="flex flex-col md:flex-row md:justify-between items-center mb-4">
+        <HeaderDashbord titelPage={"Control de Secciones"} />
+        <div className="p-3 hidden md:block">
           <Button
-            onClick={() => setIsopen(!isOpen)}
+            onClick={() => setIsOpen(true)}
             icon={faPlus}
-            classNameBtn={
-              "bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
-            }
+            classNameBtn="bg-indigo-600 hover:bg-indigo-700 transition-all p-2.5 rounded-xl text-slate-50 font-semibold cursor-pointer flex items-center gap-2 text-sm shadow-md shadow-indigo-500/10"
           >
-            {"Crear seccion"}
+            Crear sección
           </Button>
         </div>
       </div>
 
       <Modal
-        title={"Crea una nueva seccion"}
+        title="Crea una nueva sección"
         isOpen={isOpen}
-        onClose={() => setIsopen(!isOpen)}
+        onClose={() => setIsOpen(false)}
       >
         <FormSection
           onSuccess={() => {
             loadSections();
-            setIsopen(false);
+            setIsOpen(false);
           }}
         />
       </Modal>
 
+      {/* Banner Informativo con Estilo Premium Glassmorphism */}
       <div className="p-3">
-        <div className="flex items-start gap-3 bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20">
+        <div className="flex items-start gap-3 bg-indigo-500/10 p-4 rounded-2xl border border-indigo-500/20 backdrop-blur-md">
           <Icon
             icon={faInfoCircle}
-            className="text-indigo-500 text-xl mt-0.5 shrink-0"
+            className="text-indigo-600 dark:text-indigo-400 text-xl mt-0.5 shrink-0"
           />
           <div className="space-y-1">
             <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -134,24 +149,26 @@ export default function controlSecciones() {
         </div>
       </div>
 
-      <div className="md:hidden lg:hidden p-3 w-full">
+      {/* Botón de acción para entornos Mobile */}
+      <div className="md:hidden p-3 w-full">
         <Button
-          onClick={() => setIsopen(!isOpen)}
+          onClick={() => setIsOpen(true)}
           icon={faPlus}
-          classNameBtn={
-            "bg-indigo-500 p-4 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1 w-full"
-          }
+          classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-4 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full shadow-lg shadow-indigo-500/20"
         >
-          {"Crear seccion"}
+          Crear sección
         </Button>
       </div>
 
-      {loading ? (
-        <SkeletonCard />
+      {/* Renderizado Condicional Seguro */}
+      {isGlobalLoading ? (
+        <div className="p-3">
+          <SkeletonCard />
+        </div>
       ) : (
         <CardGridSetion
           dataSet={sections}
-          availableStudents={students.data}
+          availableStudents={students}
           period={period}
         />
       )}
