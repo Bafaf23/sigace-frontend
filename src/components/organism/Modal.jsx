@@ -1,4 +1,3 @@
-// components/organism/Modal.jsx
 "use client";
 
 import Button from "../atom/Button";
@@ -31,9 +30,12 @@ export default function Modal({
       window.addEventListener("keydown", handleKeyDown);
     }
 
-    // Limpieza al desmontar o cerrar
+    // MEJORA: Limpieza estricta
     return () => {
-      document.body.style.overflow = "unset";
+      // Si el componente se desmonta mientras está abierto, nos aseguramos de devolver el scroll
+      if (isOpen) {
+        document.body.style.overflow = "unset";
+      }
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
@@ -47,9 +49,9 @@ export default function Modal({
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      {/* CAPA DE FONDO (Backdrop) - Desenfoque sutil y transición suave */}
+      {/* CAPA DE FONDO (Backdrop) - Se removieron clases de transición nativas css fijas que no se ejecutan sin estados de React */}
       <div
-        className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm transition-opacity duration-300 ease-out"
+        className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -57,7 +59,7 @@ export default function Modal({
       {/* CONTENEDOR DE LA VENTANA (Modal Shell) */}
       <div
         ref={modalRef}
-        className={`relative w-full ${maxWidth} transform overflow-hidden rounded-3xl bg-white p-6 shadow-2xl transition-all duration-300 ease-out dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 animate-in fade-in zoom-in-95`}
+        className={`relative w-full ${maxWidth} transform overflow-hidden rounded-3xl bg-white p-6 shadow-2xl transition-all dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 animate-in fade-in zoom-in-95 duration-200`}
       >
         {/* CABECERA (Header) */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/60">
@@ -69,6 +71,7 @@ export default function Modal({
           </h3>
           <Button
             icon={faTimes}
+            // MEJORA: Asegurar que el botón tenga type="button" interno en tu Atomo para que no intente hacer submit si el modal está dentro de un <form>
             classNameBtn="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             onClick={onClose}
             aria-label="Cerrar modal"
@@ -76,7 +79,8 @@ export default function Modal({
         </div>
 
         {/* CUERPO DEL CONTENIDO (Children) */}
-        <div className="mt-4 overflow-y-auto max-h-[calc(100vh-12rem)]">
+        {/* MEJORA: Se agrega 'pr-2' para que la barra de scroll vertical (cuando aparezca) no pise el texto de tus formularios o reportes */}
+        <div className="mt-4 overflow-y-auto max-h-[calc(100vh-12rem)] pr-2 scrollbar-thin">
           {children}
         </div>
       </div>

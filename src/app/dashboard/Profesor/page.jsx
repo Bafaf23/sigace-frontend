@@ -31,7 +31,7 @@ export default function TeachersPage() {
           toast.error(data.error);
           return;
         }
-        setLoadAcademic(data);
+        setLoadAcademic(data.data);
       } catch (error) {
         console.error("Error al cargar la carga académica:", error);
         toast.error("Error al conectar con el servidor");

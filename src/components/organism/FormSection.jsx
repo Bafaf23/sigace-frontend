@@ -42,15 +42,15 @@ export default function FormSection({ onSuccess }) {
   useEffect(() => {
     getTeachersAll().then((data) => {
       setTeachers(
-        data.map((teacher) => ({
+        data.data.map((teacher) => ({
           value: teacher.id_teacher,
           label: `${teacher.document} - ${teacher.name} ${teacher.last_name}`,
         })),
       );
     });
-    getYears().then((data) => setYears(data));
+    getYears().then((data) => setYears(data.data));
   }, []);
-  console.log(teachers);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

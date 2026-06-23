@@ -30,7 +30,7 @@ export default function UsuariosPage() {
   console.log(users);
   useEffect(() => {
     getUsers().then((data) => {
-      setUsers(data);
+      setUsers(data.data);
     });
   }, []);
 

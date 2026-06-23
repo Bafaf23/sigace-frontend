@@ -87,14 +87,14 @@ export default function LapsoPage() {
   const canCreateMoreLapses = validLapsesCount < 3;
   console.log(period);
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out">
+    <div className="">
       {/* Encabezado e Interfaz Centralizada */}
-      <section className="flex flex-col gap-3 sm:flex-row sm:justify-between items-center mb-4 p-1">
+      <section className="flex flex-col gap-3 sm:flex-row sm:justify-between items-center mb-4 p-1 -z-10">
         <HeaderDashbord titelPage="Configuración de Lapsos" />
       </section>
 
       {/* Panel Superior Informativo y Controles Operativos */}
-      <section className="p-3">
+      <section className="p-3 -z-20">
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center bg-slate-500/5 backdrop-blur-md border border-slate-500/10 p-4 rounded-2xl">
           <div className="flex items-center gap-3">
             <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
@@ -137,113 +137,107 @@ export default function LapsoPage() {
               </Button>
             )}
           </div>
-
-          {/* Formulario Modal: Registro de Nuevo Lapso */}
-          <Modal
-            title="Crear Nuevo Lapso / Momento"
-            isOpen={isModalCreateLapseOpen}
-            onClose={() => setIsModalCreateLapseOpen(false)}
-          >
-            <FormCreateLapse
-              formDataLapse={formDataLapse}
-              setFormDataLapse={setFormDataLapse}
-              onSubmit={() => {
-                setIsModalCreateLapseOpen(false);
-                setIsModalCreateLapseOpenConfir(true);
-              }}
-            />
-          </Modal>
-
-          {/* Confirmación Transicional de Guardado de Lapso */}
-          <ConfirmAtionModal
-            isOpen={isModalCreateLapseOpenConfir}
-            onCancel={() => setIsModalCreateLapseOpenConfir(false)}
-            title="Confirmar Registro de Lapso"
-            message={`¿Estás seguro de querer aperturar el lapso "${formDataLapse.nameLapse}"? Este cambio habilitará la planificación docente.`}
-            onConfirm={async () => {
-              try {
-                await createLapse(formDataLapse);
-                toast.success("Lapso registrado correctamente");
-                setFormDataLapse({ nameLapse: "", dateStart: "", dateEnd: "" });
-                await fetchLapses();
-              } catch (err) {
-                toast.error(
-                  err.response?.data?.message ||
-                    "No se pudo registrar el lapso",
-                );
-              } finally {
-                setIsModalCreateLapseOpenConfir(false);
-              }
-            }}
-            variant="warning"
-          />
-
-          {/* Formulario Modal: Configuración inicial de Año Escolar */}
-          <Modal
-            isOpen={isModalOpen}
-            title="Iniciar un Periodo Académico"
-            onClose={() => setIsModalOpen(false)}
-          >
-            <FormAcademicPeriod
-              formData={formData}
-              setformData={setFormData}
-              onSubmit={() => {
-                setIsModalOpen(false);
-                setIsModalConfirmPeriodOpen(true);
-              }}
-            />
-          </Modal>
-
-          {/* Confirmación Transicional: Inicio de Período */}
-          <ConfirmAtionModal
-            isOpen={isModalConfirmPeriodOpen}
-            onCancel={() => setIsModalConfirmPeriodOpen(false)}
-            title="Iniciar período institucional"
-            message="¿Estás seguro de querer iniciar este año escolar? El proceso creará la matriz base de matrícula y es irreversible."
-            onConfirm={async () => {
-              try {
-                await createPeriod(formData);
-                toast.success("Periodo académico iniciado correctamente");
-                await fetchPeriod();
-              } catch (err) {
-                toast.error(
-                  err.response?.data?.message || "Error al iniciar año escolar",
-                );
-              } finally {
-                setIsModalConfirmPeriodOpen(false);
-              }
-            }}
-            variant="info"
-          />
-
-          {/* Confirmación Transicional: Cierre de Período */}
-          <ConfirmAtionModal
-            isOpen={isModalEndPeriodOpen}
-            onCancel={() => setIsModalEndPeriodOpen(false)}
-            title="Finalizar periodo lectivo"
-            message="¿Estás seguro de querer clausurar este año escolar? Este proceso consolidará las actas definitivas y no se podrán alterar notas."
-            onConfirm={async () => {
-              try {
-                await endAcademicPeriod();
-                toast.success(
-                  "Periodo escolar finalizado y bloqueado con éxito",
-                );
-                await fetchPeriod();
-                await fetchLapses();
-              } catch (err) {
-                toast.error(
-                  err.response?.data?.message ||
-                    "Error al clausurar el período",
-                );
-              } finally {
-                setIsModalEndPeriodOpen(false);
-              }
-            }}
-            variant="danger"
-          />
         </div>
       </section>
+      {/* Formulario Modal: Registro de Nuevo Lapso */}
+      <Modal
+        title="Crear Nuevo Lapso / Momento"
+        isOpen={isModalCreateLapseOpen}
+        onClose={() => setIsModalCreateLapseOpen(false)}
+      >
+        <FormCreateLapse
+          formDataLapse={formDataLapse}
+          setFormDataLapse={setFormDataLapse}
+          onSubmit={() => {
+            setIsModalCreateLapseOpen(false);
+            setIsModalCreateLapseOpenConfir(true);
+          }}
+        />
+      </Modal>
 
+      {/* Confirmación Transicional de Guardado de Lapso */}
+      <ConfirmAtionModal
+        isOpen={isModalCreateLapseOpenConfir}
+        onCancel={() => setIsModalCreateLapseOpenConfir(false)}
+        title="Confirmar Registro de Lapso"
+        message={`¿Estás seguro de querer aperturar el lapso "${formDataLapse.nameLapse}"? Este cambio habilitará la planificación docente.`}
+        onConfirm={async () => {
+          try {
+            await createLapse(formDataLapse);
+            toast.success("Lapso registrado correctamente");
+            setFormDataLapse({ nameLapse: "", dateStart: "", dateEnd: "" });
+            await fetchLapses();
+          } catch (err) {
+            toast.error(
+              err.response?.data?.message || "No se pudo registrar el lapso",
+            );
+          } finally {
+            setIsModalCreateLapseOpenConfir(false);
+          }
+        }}
+        variant="warning"
+      />
+
+      {/* Formulario Modal: Configuración inicial de Año Escolar */}
+      <Modal
+        isOpen={isModalOpen}
+        title="Iniciar un Periodo Académico"
+        onClose={() => setIsModalOpen(false)}
+      >
+        <FormAcademicPeriod
+          formData={formData}
+          setformData={setFormData}
+          onSubmit={() => {
+            setIsModalOpen(false);
+            setIsModalConfirmPeriodOpen(true);
+          }}
+        />
+      </Modal>
+
+      {/* Confirmación Transicional: Inicio de Período */}
+      <ConfirmAtionModal
+        isOpen={isModalConfirmPeriodOpen}
+        onCancel={() => setIsModalConfirmPeriodOpen(false)}
+        title="Iniciar período institucional"
+        message="¿Estás seguro de querer iniciar este año escolar? El proceso creará la matriz base de matrícula y es irreversible."
+        onConfirm={async () => {
+          try {
+            await createPeriod(formData);
+            toast.success("Periodo académico iniciado correctamente");
+            await fetchPeriod();
+          } catch (err) {
+            toast.error(
+              err.response?.data?.message || "Error al iniciar año escolar",
+            );
+          } finally {
+            setIsModalConfirmPeriodOpen(false);
+          }
+        }}
+        variant="info"
+      />
+
+      {/* Confirmación Transicional: Cierre de Período */}
+      <ConfirmAtionModal
+        isOpen={isModalEndPeriodOpen}
+        onCancel={() => setIsModalEndPeriodOpen(false)}
+        title="Finalizar periodo lectivo"
+        message="¿Estás seguro de querer clausurar este año escolar? Este proceso consolidará las actas definitivas y no se podrán alterar notas."
+        onConfirm={async () => {
+          try {
+            await endAcademicPeriod();
+            toast.success("Periodo escolar finalizado y bloqueado con éxito");
+            await fetchPeriod();
+            await fetchLapses();
+          } catch (err) {
+            toast.error(
+              err.response?.data?.message || "Error al clausurar el período",
+            );
+          } finally {
+            setIsModalEndPeriodOpen(false);
+          }
+        }}
+        variant="danger"
+      />
       {/* Grilla Central de Visualización de Estados */}
       <section className="p-3">
         {validLapsesCount > 0 ? (

@@ -29,7 +29,8 @@ export default function InstitucionesPage() {
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   useEffect(() => {
-    getSchools().then((data) => setInstitutions(data));
+    getSchools().then((data) => setInstitutions(data.data));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(false);
   }, []);
 

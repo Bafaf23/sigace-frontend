@@ -56,16 +56,16 @@ export default function PlanEvaluativo() {
         toast.error(data.error);
         return;
       }
-      setSubjects(data);
-      if (data.length > 0) {
-        setSelectedSubject(data[0]);
+      setSubjects(data.data);
+
+      if (data.data.length > 0) {
+        setSelectedSubject(data.data[0]);
       }
     };
 
     fetchLoadAcademic();
   }, [user?.user?.id]); // Modificado para depender de la ID segura del usuario
 
-  // 2. Cargar lapsos académicos
   useEffect(() => {
     if (!user?.user?.id) return;
 
@@ -75,18 +75,18 @@ export default function PlanEvaluativo() {
         toast.error(data.error);
         return;
       }
-      setLapses(Array.isArray(data) ? data : []);
+      setLapses(data.data);
     };
 
     fetchLapses();
   }, [user?.user?.id]);
 
-  // 3. Cargar evaluaciones (Sincronizado de forma segura con la materia Y el lapso)
   useEffect(() => {
     const idLoadAcademic = selectedSubject?.id_load_academic;
     const idLapse = activeLapse?.id;
 
     if (!idLoadAcademic || !idLapse) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setEvaluations([]);
       return;
     }
@@ -98,13 +98,7 @@ export default function PlanEvaluativo() {
         return;
       }
 
-      const list = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.data)
-          ? data.data
-          : Array.isArray(data?.evaluations)
-            ? data.evaluations
-            : [];
+      const list = data.data;
       setEvaluations(list.filter(Boolean));
     };
 

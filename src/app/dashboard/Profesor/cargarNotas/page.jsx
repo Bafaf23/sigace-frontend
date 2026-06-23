@@ -30,8 +30,6 @@ export default function CargarNotas() {
   const [EstudiantesDisponibles, setEstudiantesDisponibles] = useState([]);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [activities, setActivities] = useState([]);
-
-  // Interruptor para volver a pedir las notas a la BD cuando se registre una nueva
   const [refreshNotas, setRefreshNotas] = useState(false);
 
   const activeLapse = lapses.find(
@@ -49,7 +47,7 @@ export default function CargarNotas() {
       try {
         setLoadingPantalla(true);
         const cargaResponse = await getLoadAcademic();
-        setSubjects(Array.isArray(cargaResponse) ? cargaResponse : []);
+        setSubjects(cargaResponse?.data ?? []);
       } catch (error) {
         console.error("Error al cargar los datos de la pantalla:", error);
       } finally {
@@ -59,15 +57,17 @@ export default function CargarNotas() {
     loadPantallaInicial();
   }, [user?.user?.id]);
 
-  // Carga de Lapsos de la escuela
+  // Carga de Lapsos de la escuela (CORREGIDO)
   useEffect(() => {
     const fetchLapses = async () => {
-      const data = await getLapses();
-      if (data.error) {
-        toast.error(data.error);
+      const response = await getLapses();
+      if (response?.error) {
+        toast.error(response.error);
         return;
       }
-      setLapses(Array.isArray(data) ? data : []);
+      // Accedemos a response.data que contiene el arreglo real de Momentos de SIGACE
+      const rawLapses = response?.data ?? response;
+      setLapses(Array.isArray(rawLapses) ? rawLapses : []);
     };
 
     fetchLapses();
@@ -76,6 +76,7 @@ export default function CargarNotas() {
   // Sincronización de datos de la materia en paralelo
   useEffect(() => {
     const idLoadAcademic = selectedSubject?.id_load_academic;
+
     if (!idLoadAcademic) {
       setNotesData([]);
       setEstudiantesDisponibles([]);
@@ -83,20 +84,22 @@ export default function CargarNotas() {
       return;
     }
 
+    let isMounted = true;
+
     const fetchMateriaData = async () => {
       setLoadingNotes(true);
       try {
         const idSection = selectedSubject?.id_section;
+
         const [gradesRes, studentsRes, activitiesRes] = await Promise.all([
           getGrades(idLoadAcademic),
           idSection ? getStudentSection(idSection) : Promise.resolve([]),
-          lapses.length > 0
+          lapses && lapses.length > 0
             ? Promise.all(
                 lapses.map(async (lapso) => {
                   const res = await getEvaluation(idLoadAcademic, lapso.id);
                   const rawList = Array.isArray(res) ? res : (res?.data ?? []);
 
-                  // 🛡️ FILTRO ANTIDUPLICADOS: Filtramos por el ID único de la actividad
                   const uniqueList = rawList.filter(
                     (item, index, self) =>
                       self.findIndex((t) => t.id === item.id) === index,
@@ -111,7 +114,9 @@ export default function CargarNotas() {
             : Promise.resolve([]),
         ]);
 
-        // 1. Procesar notas: la API devuelve un array plano de calificaciones
+        if (!isMounted) return;
+
+        // 1. Procesar notas
         const emptyGradesByLapse = lapses.map((lapso) => ({
           id: lapso.id,
           id_lapse: lapso.id,
@@ -143,7 +148,7 @@ export default function CargarNotas() {
           );
         }
 
-        // 2. Procesar Estudiantes de la Sección
+        // 2. Procesar Estudiantes
         if (studentsRes?.error) {
           toast.error(studentsRes.error);
         } else {
@@ -154,18 +159,28 @@ export default function CargarNotas() {
           );
         }
 
-        // 3. Guardar Evaluaciones ya limpias y sin duplicados
+        // 3. Guardar Evaluaciones
         setActivities(activitiesRes);
       } catch (error) {
         console.error("Error cargando datos de la sección:", error);
-        toast.error("Hubo un problema al sincronizar la información");
+        if (isMounted)
+          toast.error("Hubo un problema al sincronizar la información");
       } finally {
-        setLoadingNotes(false);
+        if (isMounted) setLoadingNotes(false);
       }
     };
 
     fetchMateriaData();
-  }, [selectedSubject?.id_load_academic, lapses, refreshNotas]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    selectedSubject?.id_load_academic,
+    selectedSubject?.id_section,
+    refreshNotas,
+    JSON.stringify(lapses?.map((l) => l.id)),
+  ]);
 
   if (loading || loadingPantalla) return <Loading />;
 
@@ -173,7 +188,7 @@ export default function CargarNotas() {
   if (!user || role !== "Profesor") {
     return <AccessDenied />;
   }
-  console.log(notesData);
+
   return (
     <>
       <div className="flex flex-col items-start justify-between md:flex-row">
@@ -224,7 +239,10 @@ export default function CargarNotas() {
                     activities.find((a) => a.id_lapse === activeLapse?.id)
                       ?.list ?? []
                   }
-                  onSave={() => setRefreshNotas((prev) => !prev)}
+                  onSave={() => {
+                    setRefreshNotas((prev) => !prev);
+                    setIsModalOpen(false); // Cierra automáticamente el modal tras guardar exitosamente
+                  }}
                   onCancel={() => setIsModalOpen(false)}
                 />
               </Modal>
@@ -234,7 +252,10 @@ export default function CargarNotas() {
 
         {loadingNotes ? (
           <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 border-dashed bg-slate-100/50 p-6 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-900/50">
-            <Icon icon={faInfoCircle} className="text-2xl text-slate-500" />
+            <Icon
+              icon={faInfoCircle}
+              className="text-2xl text-slate-500 animate-pulse"
+            />
             Cargando notas...
           </div>
         ) : (

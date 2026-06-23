@@ -21,7 +21,6 @@ export default function ControlSecciones() {
   const [isOpen, setIsOpen] = useState(false);
   const [students, setStudents] = useState([]);
 
-  // Separamos los estados de carga para evitar colisiones de estados y parpadeos en la UI
   const [sectionsLoading, setSectionsLoading] = useState(true);
   const [studentsLoading, setStudentsLoading] = useState(true);
 
