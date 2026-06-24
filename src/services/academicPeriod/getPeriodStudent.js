@@ -1,14 +1,13 @@
 import axios from "axios";
 
 /**
- ** Obtiene el récord académico histórico de un estudiante por su ID
+ ** Obienen todos las periodos academicos recoridos de un estudiante en el colegio
  * @param {number} idStudent - id de estudiante
- * @param {number} idPeriod - id del perido escolar
  */
-export async function getRecordStudent(idStudent, idPeriod) {
+export async function getPeriodStudent(idStudent) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/students/getRecordStudent/${idStudent}/${idPeriod}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/periodStudent/${idStudent}`,
       {
         withCredentials: true,
         headers: {

@@ -78,6 +78,7 @@ export default function CargarNotas() {
     const idLoadAcademic = selectedSubject?.id_load_academic;
 
     if (!idLoadAcademic) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setNotesData([]);
       setEstudiantesDisponibles([]);
       setActivities([]);
@@ -179,7 +180,7 @@ export default function CargarNotas() {
     selectedSubject?.id_load_academic,
     selectedSubject?.id_section,
     refreshNotas,
-    JSON.stringify(lapses?.map((l) => l.id)),
+    lapses,
   ]);
 
   if (loading || loadingPantalla) return <Loading />;

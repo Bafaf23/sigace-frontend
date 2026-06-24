@@ -20,6 +20,7 @@ import {
   faEdit,
   faSocks,
 } from "@fortawesome/free-solid-svg-icons";
+import { getPeriodStudent } from "@/services/academicPeriod/getPeriodStudent";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios"; // 👈 IMPORTANTE: Añadido para evitar el ReferenceError
@@ -31,7 +32,7 @@ export default function StudentRecords() {
   const [student, setStudent] = useState(null);
   const [pendingSubjects, setPendingSubjects] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [recordStudent, setRecordStudent] = useState([]);
+  const [periodStudent, setPeriodStudent] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,18 +44,19 @@ export default function StudentRecords() {
 
         const studentPromise = getStudentByI(id);
         const recordPromise = getRecordStudent(id);
+        const perioidStudentPromise = getPeriodStudent(id);
 
-        const [resStudent, dataRecord] = await Promise.all([
+        const [resStudent, dataPeriodStudnet] = await Promise.all([
           studentPromise,
-          recordPromise,
+          perioidStudentPromise,
         ]);
 
         if (resStudent) {
           setStudent(resStudent.data);
         }
 
-        if (dataRecord) {
-          setRecordStudent(dataRecord);
+        if (dataPeriodStudnet) {
+          setPeriodStudent(dataPeriodStudnet.data[0]);
         }
 
         // Obtener materias pendientes (arrastre) del backend de SIGACE
@@ -104,7 +106,7 @@ export default function StudentRecords() {
       </section>
     );
   }
-  console.log(student);
+  console.log(periodStudent);
   return (
     <div className="max-w-7xl mx-auto p-5 space-y-6">
       <Button
@@ -362,7 +364,9 @@ export default function StudentRecords() {
               </p>
             </div>
           </div>
-          {recordStudent && <AcademicRecord recordData={recordStudent} />}
+          {periodStudent && (
+            <AcademicRecord periodStudent={periodStudent} idStudent={id} />
+          )}
         </div>
       </section>
     </div>
