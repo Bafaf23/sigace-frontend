@@ -189,7 +189,7 @@ export default function RecordAcademico({ periodStudent, idStudent }) {
                                     className="flex justify-between items-start text-xs border-b border-slate-50 dark:border-slate-800/40 pb-2 last:border-none last:pb-0"
                                   >
                                     <div className="space-y-0.5 max-w-[75%]">
-                                      <p className="font-medium text-slate-700 dark:text-slate-300 break-words">
+                                      <p className="font-medium text-slate-700 dark:text-slate-300 wrap-break-word">
                                         {evalu.name}
                                       </p>
                                       <p className="text-slate-400 font-normal">
