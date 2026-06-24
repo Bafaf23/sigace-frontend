@@ -19,12 +19,8 @@ export default function FormSubject({ onSuccess }) {
 
   useEffect(() => {
     getYears().then((data) => {
-      if (data && Array.isArray(data)) {
-        const sorted = data.sort((a, b) =>
-          a.name.localeCompare(b.name, undefined, { numeric: true }),
-        );
-
-        const formattedYears = sorted.map((year) => ({
+      if (data.data) {
+        const formattedYears = data.data.map((year) => ({
           value: year.id,
           label: year.name,
         }));
@@ -38,8 +34,10 @@ export default function FormSubject({ onSuccess }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (name === "year_id") {
       // Buscamos en la lista qué texto corresponde al ID seleccionado
-      const textoSeleccionado = years.find(y => y.value == value)?.label;
-      console.log(`ID guardado en el estado: ${value} ➡️ Corresponde a: ${textoSeleccionado}`);
+      const textoSeleccionado = years.find((y) => y.value == value)?.label;
+      console.log(
+        `ID guardado en el estado: ${value} ➡️ Corresponde a: ${textoSeleccionado}`,
+      );
     }
   };
 
