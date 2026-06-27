@@ -1,72 +1,67 @@
-# 🎓 SIGACE
+# 🎓 SIGACE — Frontend
 
-### Sistema Inteligente de Gestión Académica y control de Estudios
+### Sistema Inteligente de Gestión Académica y Control de Estudios
 
-**SIGACE** es una solución integral diseñada para la automatización de procesos administrativos y académicos en instituciones educativas. Permite centralizar la información de estudiantes, docentes y representantes bajo una arquitectura segura y escalable.
+**SIGACE** es una solución integral diseñada para la automatización de procesos administrativos y académicos en instituciones educativas. Esta aplicación web centraliza la información de estudiantes, docentes y representantes bajo una interfaz moderna, intuitiva, responsiva y de alta fidelidad visual.
+
+---
+
+## 🚨 En construcción 🏗️👷🚧
+
+El frontend se encuentra en desarrollo activo y migración de vistas. Los módulos de inscripciones, control de estudios y reportes automatizados se están acoplando progresivamente con los servicios de la API REST.
 
 ---
 
 ## ✨ Funcionalidades principales
 
-- **Gestión de inscripciones:** 📝 registro de Estudiantes en periodos académicos.
-- **control de calificaciones:** 📊 notas por lapsos, asignaturas y secciones.
-- **Gestión de usuarios:** 👥 roles para administradores, docentes, estudiantes y representantes.
-- **Reportes:** 📄 boletas y listados en PDF (p. ej. `@react-pdf/renderer`).
-- **Datos académicos:** 🔗 grados, secciones y carga docente enlazados con la API del backend.
+* **Gestión de Inscripciones:** 📝 Procesos de matriculación y registro de estudiantes por periodos académicos.
+* **Control de Calificaciones:** 📊 Carga y visualización de notas estructuradas por lapsos, asignaturas y secciones.
+* **Gestión de Usuarios y Accesos:** 👥 Vistas y paneles adaptados según el rol (Administradores, Docentes, Estudiantes y Representantes).
+* **Reportes Académicos:** 📄 Generación e impresión de boletas, constancias y listados en PDF de forma nativa desde el cliente.
+* **Sincronización en Tiempo Real:** 🔗 Consumo eficiente de datos académicos (grados, secciones, carga docente) mediante la API del backend.
+
+---
 
 ## 🛠️ Stack tecnológico
 
-- **Framework:** ⚡ [Next.js](https://nextjs.org/) 16 (App Router)
-- **UI:** ⚛️ [React](https://react.dev/) 19
-- **Estilos:** 🎨 [Tailwind CSS](https://tailwindcss.com/) 4
-- **Iconos:** ✨ [Font Awesome](https://fontawesome.com/) (React), [Lucide](https://lucide.dev/)
-- **Notificaciones:** 🔔 [react-hot-toast](https://react-hot-toast.com/)
-- **Cookies:** 🍪 [js-cookie](https://github.com/js-cookie/js-cookie)
-- **Lenguaje:** 📜 [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript)
-- **Autenticación:** 🔐 JWT / sesión gestionada por la API del backend
+### Core y Renderizado
+* **Next.js 16 (App Router):** Estructura basada en carpetas con soporte nativo para Server Components, layouts compartidos y optimización de rutas.
+* **React 19:** Biblioteca base para interfaces dinámicas, optimizada mediante el nuevo compilador nativo de React.
 
-El frontend consume una API externa; la persistencia (p. ej. MySQL) vive en el servidor, no en este repositorio.
+### Interfaz de Usuario (UI/UX)
+* **Tailwind CSS v4:** Motor de estilos en cascada de última generación para un diseño minimalista, fluido y enfocado en el modo oscuro.
+* **Iconografía Dinámica:** Combinación flexible de **Font Awesome 7 (React)** y **Lucide React** para micro-interacciones y consistencia visual.
+* **React Hot Toast:** Sistema de notificaciones e indicadores emergentes para flujos de acción.
 
-## 📦 Requisitos
+### Comunicación y Estado Local
+* **Axios:** Cliente HTTP para la comunicación con la API externa del backend.
+* **JS Cookie:** Gestión y almacenamiento seguro de cookies en el navegador para la persistencia del estado de autenticación.
 
-- [Node.js](https://nodejs.org/) 20 LTS o superior (recomendado para Next.js 16)
+---
 
-## 🚀 Instalación y desarrolelo
+## 📋 Requisitos previos
+
+Asegúrate de tener instalado en tu entorno de desarrollo:
+- [Node.js](https://nodejs.org/) (v20 LTS o superior recomendado para compatibilidad óptima con Next.js 16)
+- Gestor de paquetes `npm` (incluido por defecto con Node.js)
+
+---
+
+## 🚀 Instalación y desarrollo
+
+Sigue estos pasos para clonar y ejecutar el proyecto localmente:
 
 ```bash
+# 1. Clonar el repositorio
+git clone [https://github.com/Bafaf23/sigace.git](https://github.com/Bafaf23/sigace.git)
+cd sigace
+
+# 2. Instalar las dependencias del proyecto
 npm install
+
+# 3. Configurar el entorno local
+# Crea un archivo .env.local en la raíz del proyecto para definir las URLs de tu API
+# Ejemplo: NEXT_PUBLIC_API_URL=http://localhost:3001
+
+# 4. Iniciar el servidor de desarrollo
 npm run dev
-```
-
-Abre [http://localhost:3000](http://localhost:3000) en el navegador. 🌐
-
-### 📋 Otros scripts
-
-| Comando         | Descripción               |
-| --------------- | ------------------------- |
-| `npm run dev`   | Servidor de desarrolelo   |
-| `npm run build` | Compilación de producción |
-| `npm run start` | Servidor tras `build`     |
-| `npm run lint`  | ESLint                    |
-
-Configura las variables de entorno que exija tu API (por ejemplo URL base y claves) en un archivo `.env.local` en la raíz del proyecto, según la documentación del backend.
-
-## 📁 Estructura del proyecto (resumen)
-
-```text
-src/
-├── app/                    # Rutas y layouts (App Router)
-│   ├── (auth)/             # Login, registro, inscripción
-│   └── dashboard/          # Paneles por role (admin, docentes, estudiantes, etc.)
-├── components/
-│   ├── atom/               # Componentes pequeños reutilizables
-│   ├── molecules/          # Composiciones de átomos
-│   └── organism/           # Formularios y bloques de página
-├── context/                # React context (p. ej. auth, tema)
-├── services/               # Llamadas HTTP, PDF y utilidades de API
-└── globals.css             # Estilos globales y Tailwind
-```
-
-## 📜 Licencia
-
-Desarrolelado por _Bryant_, todos los derechos reservados.
