@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getSection } from "@/services/section/getSection";
 import { getStudenNotEnrollment } from "@/services/student/getStudenNotEnrollment";
 import { getStudentSection } from "@/services/student/getStudentSection";
+import { getPreinscription } from "@/services/student/getPreinscription";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useCallback, startTransition } from "react";
 
@@ -20,6 +21,7 @@ export default function ControlSecciones() {
   const [sections, setSections] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [students, setStudents] = useState([]);
+  const [studentsPre, setStudentsPre] = useState([]);
 
   const [sectionsLoading, setSectionsLoading] = useState(true);
   const [studentsLoading, setStudentsLoading] = useState(true);
@@ -42,8 +44,19 @@ export default function ControlSecciones() {
           "❌ [SIGACE UI]: Error al cargar estudiantes no inscritos:",
           err,
         ),
-      )
-      .finally(() => setStudentsLoading(false));
+      );
+
+    getPreinscription({ id_period: period })
+      .then((data) => {
+        setStudentsPre(data.data[0]);
+      })
+      .catch((err) =>
+        console.error(
+          "❌ [SIGACE UI]: Error al cargar estudiantes no inscritos:",
+          err,
+        ),
+      );
+    setStudentsLoading(false);
   }, [period]);
 
   // Recupera las secciones y anida concurrentemente sus listas de alumnos
@@ -169,6 +182,7 @@ export default function ControlSecciones() {
           dataSet={sections}
           availableStudents={students}
           period={period}
+          preinscriptionStudent={studentsPre}
         />
       )}
     </div>
