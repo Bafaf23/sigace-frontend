@@ -1,13 +1,13 @@
 import axios from "axios";
 
 /**
- * Obtiene las materias del sistema desde el backend.
+ * Obtiene las materias pendientes de un estudiante
  * @returns {Promise<Array<Object>>}
  */
-export async function getSubjects() {
+export async function getSubjectPending(id_student) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/subjects/get`,
+      `${process.env.NEXT_PUBLIC_API_URL}/subjects/getSubjectPending/${id_student}`,
       {
         withCredentials: true,
         headers: {

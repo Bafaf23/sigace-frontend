@@ -21,9 +21,9 @@ import {
   faSocks,
 } from "@fortawesome/free-solid-svg-icons";
 import { getPeriodStudent } from "@/services/academicPeriod/getPeriodStudent";
+import { getSubjectPending } from "@/services/subject/getSubjectPending";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import axios from "axios"; // 👈 IMPORTANTE: Añadido para evitar el ReferenceError
+import { useState, useEffect } from "react";
 
 export default function StudentRecords() {
   const { id } = useParams();
@@ -45,11 +45,19 @@ export default function StudentRecords() {
         const studentPromise = getStudentByI(id);
         const recordPromise = getRecordStudent(id);
         const perioidStudentPromise = getPeriodStudent(id);
+        const getPendingSubejtc = getSubjectPending(id);
 
-        const [resStudent, dataPeriodStudnet] = await Promise.all([
-          studentPromise,
-          perioidStudentPromise,
-        ]);
+        const [resStudent, dataPeriodStudnet, dataSubejcPending, dataRecord] =
+          await Promise.all([
+            studentPromise,
+            perioidStudentPromise,
+            getPendingSubejtc,
+            recordPromise,
+          ]);
+
+        if (dataRecord) {
+          setStudent(dataRecord.data);
+        }
 
         if (resStudent) {
           setStudent(resStudent.data);
@@ -59,20 +67,8 @@ export default function StudentRecords() {
           setPeriodStudent(dataPeriodStudnet.data[0]);
         }
 
-        // Obtener materias pendientes (arrastre) del backend de SIGACE
-        try {
-          const resPending = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/reports/pending-subjects/${id}`,
-          );
-          if (resPending.data) {
-            setPendingSubjects(resPending.data.subjects || []);
-          }
-        } catch (pendingError) {
-          console.warn(
-            "⚠️ No se pudieron obtener materias pendientes:",
-            pendingError.message,
-          );
-          setPendingSubjects([]);
+        if (dataSubejcPending) {
+          setPendingSubjects(dataSubejcPending.data.pending[0]);
         }
       } catch (error) {
         console.error("❌ Error al cargar expediente del estudiante:", error);
@@ -277,7 +273,7 @@ export default function StudentRecords() {
                       >
                         <td className="p-3">
                           <p className="text-xs font-bold text-slate-700 uppercase">
-                            {subject.subject_name}
+                            {subject.name}
                           </p>
                           <p className="text-[9px] text-slate-400 font-medium">
                             Asignatura del año anterior
