@@ -18,6 +18,7 @@ export default function CardGridSetion({
   dataSet = [],
   availableStudents = [],
   period,
+  preinscriptionStudent = [],
 }) {
   if (!dataSet || dataSet.length === 0)
     return (
@@ -56,6 +57,7 @@ export default function CardGridSetion({
             period={period}
             id_section={section.id}
             sectionStudents={section.sectionStudents || []}
+            preinscriptionStudent={preinscriptionStudent}
           />
         );
       })}

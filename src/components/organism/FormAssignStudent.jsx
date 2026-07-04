@@ -1,6 +1,7 @@
 import Button from "../atom/Button";
 import Selector from "../atom/Selector";
 import { createEnrollment } from "@/services/enrollment/createEnrollment";
+import { updateInscrip } from "@/services/enrollment/updateInscrip";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -10,6 +11,7 @@ export default function FormAssignStudent({
   period,
   id_section,
   onSuccess,
+  mode = "inscrip",
 }) {
   const [loading, setLoading] = useState(false);
   const [dataForm, setDataForm] = useState({
@@ -27,15 +29,25 @@ export default function FormAssignStudent({
     }
 
     setLoading(true);
+    if (mode === "inscrip") {
+      const result = await createEnrollment(dataForm);
 
-    const result = await createEnrollment(dataForm);
-
-    if (result.error) {
-      toast.error(result.error);
-      setLoading(false);
-      return;
+      if (result.error) {
+        toast.error(result.error);
+        setLoading(false);
+        return;
+      }
+      toast.success("Estudiante asignado con éxito");
+    } else {
+      const result = await updateInscrip(dataForm);
+      if (result.error) {
+        toast.error(result.error);
+        setLoading(false);
+        return;
+      }
+      toast.success("Estudiante asignado con éxito");
     }
-    toast.success("Estudiante asignado con éxito");
+
     setDataForm({
       id_student: "",
       id_section: id_section,

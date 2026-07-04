@@ -135,19 +135,21 @@ export default function GestionEstudiantesPage() {
       </Modal>
 
       {/* Filtros y Métricas Rápidas */}
-      <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-500/5 backdrop-blur-md border border-slate-500/10 rounded-2xl mb-4">
-        <div className="w-full sm:max-w-md">
-          <Search
-            placeholder="Buscar por cédula o nombre..."
-            search={search}
-            setSearch={setSearch}
-            onSearch={handleSearch}
-          />
+      <section className="p-4">
+        <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-500/5 backdrop-blur-md border border-slate-500/10 rounded-2xl mb-4">
+          <div className="w-full sm:max-w-md">
+            <Search
+              placeholder="Buscar por cédula o nombre..."
+              search={search}
+              setSearch={setSearch}
+              onSearch={handleSearch}
+            />
+          </div>
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-500/10 px-3 py-1.5 rounded-xl border border-slate-500/10 whitespace-nowrap">
+            Matrícula: {filteredStudents.length} de {students.length}
+          </p>
         </div>
-        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-500/10 px-3 py-1.5 rounded-xl border border-slate-500/10 whitespace-nowrap">
-          Matrícula: {filteredStudents.length} de {students.length}
-        </p>
-      </div>
+      </section>
 
       {/* Renderizado de Estructura de Datos */}
       {dataLoading ? (
@@ -242,7 +244,7 @@ export default function GestionEstudiantesPage() {
               </td>
               <td className="px-6 py-4">
                 <div className="flex flex-col gap-1">
-                  {student.id_year ? (
+                  {student.id_year || student.year ? (
                     <span className="text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 w-fit">
                       {student.year}
                     </span>

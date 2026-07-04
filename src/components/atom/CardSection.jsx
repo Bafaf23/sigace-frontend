@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
 import Button from "../atom/Button";
 import Icon from "../atom/Icon";
 import FormAssignStudent from "../organism/FormAssignStudent";
@@ -25,48 +24,17 @@ export default function CardSection({
   max,
   availableStudents = [],
   period,
+  preinscriptionStudent = [],
   id_section,
   students,
   sectionStudents,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenPre, setIsOpenPre] = useState(false);
   const [loadingType, setLoadingType] = useState(null); // 'lista' | 'consolidado' | null
 
   const isFull = current >= max;
   const listaEstudiantes = students || sectionStudents || [];
-
-  const handleDescargarPdf = async (endpoint, fileName, type) => {
-    if (listaEstudiantes.length === 0) return;
-
-    setLoadingType(type);
-    try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-
-      toast.success("Descarga iniciada correctamente.");
-    } catch (error) {
-      console.error("❌ Error descargando el reporte:", error);
-      toast.error("No se pudo generar el documento. Verifica tu conexión.");
-    } finally {
-      setLoadingType(null);
-    }
-  };
 
   return (
     <div className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
@@ -154,6 +122,14 @@ export default function CardSection({
             <Icon icon={faUserPlus} className="mr-2" /> Inscribir Estudiante
           </Button>
         )}
+        {preinscriptionStudent.length > 0 && (
+          <Button
+            onClick={() => setIsOpenPre(true)}
+            classNameBtn="w-full text-xs font-medium text-slate-500 hover:text-green-600 py-1"
+          >
+            <Icon icon={faUserPlus} className="mr-2" /> Añadir a esta Seccion
+          </Button>
+        )}
       </div>
 
       <Modal
@@ -165,6 +141,19 @@ export default function CardSection({
           students={availableStudents}
           period={period}
           id_section={id_section}
+        />
+      </Modal>
+      {/* Modal de preinscripcion */}
+      <Modal
+        isOpen={isOpenPre}
+        onClose={() => setIsOpenPre(false)}
+        title="Inscribir Estudiante"
+      >
+        <FormAssignStudent
+          students={preinscriptionStudent}
+          period={period}
+          id_section={id_section}
+          mode="preInscrip"
         />
       </Modal>
     </div>
