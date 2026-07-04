@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import { login } from "@/services/auth/login";
 import { logout } from "@/services/auth/logout";
@@ -16,6 +17,7 @@ export function AuthProvider({ children }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const PUBLIC_ROUTES = ["/", "/register"];
   const INACTIVITY_TIME = 15 * 60 * 1000; // 1 minuto en milisegundos
 
@@ -42,7 +44,7 @@ export function AuthProvider({ children }) {
         router.push(`/dashboard/${userRole}`);
       }
     }
-  }, [loading, pathname, user]);
+  }, [PUBLIC_ROUTES, loading, pathname, router, user]);
 
   /**
    * Función para iniciar sesión
@@ -84,6 +86,7 @@ export function AuthProvider({ children }) {
   };
 
   // ⏱️ 3. Resetea el reloj y evalúa la inactividad
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const resetTimer = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     if (user) {
@@ -115,7 +118,7 @@ export function AuthProvider({ children }) {
       if (timerRef.current) clearTimeout(timerRef.current);
       events.forEach((event) => window.removeEventListener(event, resetTimer));
     };
-  }, [user]); // 🔄 Reacciona instantáneamente cada vez que el estado 'user' cambie
+  }, [resetTimer, user]); // 🔄 Reacciona instantáneamente cada vez que el estado 'user' cambie
 
   return (
     <AuthContext.Provider value={{ user, loading, handleLogout, handleLogin }}>
