@@ -4,11 +4,6 @@
 
 **SIGACE** es una solución integral diseñada para la automatización de procesos administrativos y académicos en instituciones educativas. Esta aplicación web centraliza la información de estudiantes, docentes y representantes bajo una interfaz moderna, intuitiva, responsiva y de alta fidelidad visual.
 
----
-
-## 🚨 En construcción 🏗️👷🚧
-
-El frontend se encuentra en desarrollo activo y migración de vistas. Los módulos de inscripciones, control de estudios y reportes automatizados se están acoplando progresivamente con los servicios de la API REST.
 
 ---
 
@@ -42,8 +37,7 @@ El frontend se encuentra en desarrollo activo y migración de vistas. Los módul
 ## 📋 Requisitos previos
 
 Asegúrate de tener instalado en tu entorno de desarrollo:
-- [Node.js](https://nodejs.org/) (v20 LTS o superior recomendado para compatibilidad óptima con Next.js 16)
-- Gestor de paquetes `npm` (incluido por defecto con Node.js)
+- [Node.js](https://nodejs.org/)
 
 ---
 

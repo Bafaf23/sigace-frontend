@@ -3,6 +3,7 @@ import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import TableInsti from "@/components/molecules/TableInsti";
+import Banner from "@/components/atom/Banner";
 import { useAuth } from "@/context/AuthContext";
 import { getApproved } from "@/services/enrollment/getApproved";
 import {
@@ -12,6 +13,7 @@ import {
   faUser,
   faGraduationCap,
   faCircleInfo,
+  faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { approved } from "@/services/enrollment/Approved";
@@ -88,23 +90,14 @@ export default function PromocionesPage() {
       <HeaderDashbord titelPage="Promoción" />
 
       <div className="p-4">
-        <section className="p-4">
-          <div className="p-4 bg-cyan-50 border border-cyan-200 rounded-2xl flex items-start gap-3 shadow-sm">
-            <Icon
-              icon={faCircleInfo}
-              className="text-xl text-cyan-600 mt-0.5 shrink-0"
-            />
-            <div>
-              <h6 className="font-bold text-cyan-800 text-sm md:text-base">
-                Nota Informativa
-              </h6>
-              <p className="font-medium text-cyan-950 text-xs md:text-sm mt-0.5 leading-relaxed">
-                En este módulo estarán listados todos los estudiantes que
+        <section className="mb-4">
+          <Banner
+            icon={faInfo}
+            titel="Nota Informativa"
+            message=" En este módulo estarán listados todos los estudiantes que
                 cumplen con el mínimo aprobatorio para ser promovidos al
-                siguiente año superior.
-              </p>
-            </div>
-          </div>
+                siguiente año superior."
+          />
         </section>
 
         <div className="flex justify-end mb-4">
@@ -122,8 +115,8 @@ export default function PromocionesPage() {
         <div>
           {loading ? (
             <p className="text-cyan-700 font-medium">Cargando...</p>
-          ) : students.data.length === 0 ? ( // 4. CORRECCIÓN: Eliminado el encadenamiento opcional innecesario
-            <p className="text-slate-500 text-center py-10 bg-white rounded-2xl border border-slate-100 shadow">
+          ) : students.data.length === 0 ? (
+            <p className="text-slate-500 text-center py-10 bg-slate-100 rounded-2xl border border-slate-300 border-dashed">
               No hay estudiantes aptos para promoción en este periodo. Una vez
               finalizado el periodo académico este módulo estará activo.
             </p>

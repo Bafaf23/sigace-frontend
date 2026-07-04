@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-export default function FormRegister({ user, mode }) {
+export default function FormRegister({ user, mode, onSuccess }) {
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
   // data de usuario para el registro de usuarios para el sistema con role por defecto teacher.
@@ -25,7 +25,7 @@ export default function FormRegister({ user, mode }) {
     last_name: user?.last_name || "",
     email: user?.email || "",
     phone: user?.phone || "",
-    role_id: Number(3), // id del rol (3 solo profesores)
+    role_id: Number(3),
   });
 
   const handleChange = (e) => {
@@ -63,19 +63,24 @@ export default function FormRegister({ user, mode }) {
       toast.error("El teléfono no es válido");
       return;
     }
+    let response = null;
 
     if (mode !== "edit") {
-      const response = await createUser(data);
+      response = await createUser(data);
     } else {
-      const response = await updateUser(data);
+      response = await updateUser(data);
     }
 
-    if (response.error) {
+    if (response && response.success === true) {
+      console.log(response);
+      toast.success(response.message);
       setLoading(false);
-      toast.error(response.error);
-      return;
+
+      // Ejecutamos el callback que cierra el modal en el padre
+      onSuccess?.();
     } else {
-      toast.success("Usuario creado correctamente");
+      setLoading(false);
+      toast.error(response?.message || "Ocurrió un error inesperado");
     }
   }
   return (
@@ -88,7 +93,6 @@ export default function FormRegister({ user, mode }) {
             mode={mode}
           />
         )}
-
 
         <div className="mt-8 flex justify-between border-t border-gray-100 pt-6">
           {passed === 1 ? (

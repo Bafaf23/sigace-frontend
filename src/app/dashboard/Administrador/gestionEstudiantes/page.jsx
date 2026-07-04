@@ -267,7 +267,7 @@ export default function GestionEstudiantesPage() {
               <td className="px-6 py-4">
                 <div className="flex items-center gap-2">
                   {/* Comprobante de inscripción directo a la API del Back */}
-                  {!student.year_name && !student.section_name && (
+                  {student.year && student.section && (
                     <Link
                       href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
                       target="_blank"

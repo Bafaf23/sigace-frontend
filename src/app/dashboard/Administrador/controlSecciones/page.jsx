@@ -4,6 +4,7 @@ import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import SkeletonCard from "@/components/atom/SkeletonCard";
 import CardGridSetion from "@/components/molecules/CardGridSetion";
+import Banner from "@/components/atom/Banner";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import FormSection from "@/components/organism/FormSection";
 import Modal from "@/components/organism/Modal";
@@ -12,7 +13,11 @@ import { getSection } from "@/services/section/getSection";
 import { getStudenNotEnrollment } from "@/services/student/getStudenNotEnrollment";
 import { getStudentSection } from "@/services/student/getStudentSection";
 import { getPreinscription } from "@/services/student/getPreinscription";
-import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faInfo,
+  faInfoCircle,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useCallback, startTransition } from "react";
 
 // Corregido: Inicial con mayúscula para cumplir con la especificación de componentes React
@@ -139,27 +144,13 @@ export default function ControlSecciones() {
       </Modal>
 
       {/* Banner Informativo con Estilo Premium Glassmorphism */}
-      <div className="p-3">
-        <div className="flex items-start gap-3 bg-indigo-500/10 p-4 rounded-2xl border border-indigo-500/20 backdrop-blur-md">
-          <Icon
-            icon={faInfoCircle}
-            className="text-indigo-600 dark:text-indigo-400 text-xl mt-0.5 shrink-0"
-          />
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-              En este módulo puedes{" "}
-              <span className="font-semibold text-indigo-600 dark:text-indigo-400">
-                crear y gestionar
-              </span>{" "}
-              las secciones de tu institución, así como realizar el proceso de{" "}
-              <span className="font-semibold text-indigo-600 dark:text-indigo-400">
-                inscripción y asignación
-              </span>{" "}
-              de los estudiantes.
-            </p>
-          </div>
-        </div>
-      </div>
+      <section className="p-4">
+        <Banner
+          icon={faInfo}
+          titel="Informacion de interes"
+          message="En este módulo puedes crear y gestionar las secciones de tu institución, así como realizar el proceso de  inscripción y asignación  de los estudiantes."
+        />
+      </section>
 
       {/* Botón de acción para entornos Mobile */}
       <div className="md:hidden p-3 w-full">
