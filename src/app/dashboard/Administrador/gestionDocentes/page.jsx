@@ -1,11 +1,13 @@
 "use client";
 
 import Loading from "@/app/loading";
+import Icon from "@/components/atom/Icon";
 import Button from "@/components/atom/Button";
 import SkeletonCard from "@/components/atom/SkeletonCard";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Search from "@/components/molecules/Serch";
+import Banner from "@/components/atom/Banner";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormRegister from "@/components/organism/FormRegister";
 import Modal from "@/components/organism/Modal";
@@ -18,6 +20,7 @@ import {
   faPhone,
   faInfoCircle,
   faBuilding,
+  faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useCallback, startTransition } from "react";
 
@@ -107,12 +110,18 @@ export default function GestionDocentesPage() {
         <FormRegister
           mode="create"
           onSuccess={() => {
-            loadTeachers(true); // Refresco silencioso en segundo plano sin parpadeos bruscos
             setIsOpen(false);
+            loadTeachers(true);
           }}
         />
       </Modal>
-
+      <section className="p-4">
+        <Banner
+          icon={faInfo}
+          titel="¿Necesitas actualizar el estatus de un docente?"
+          message="Para modificar la disponibilidad o el estado activo/inactivo de la nómina, por favor contacta a soporte técnico"
+        />
+      </section>
       {/* Botón de Acción para Entornos Móviles */}
       <div className="md:hidden p-3 w-full">
         <Button
