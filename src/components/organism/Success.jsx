@@ -6,15 +6,14 @@ import {
   faHome,
   faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import PlanillaInscripsion from "@/docs/PlanillaInscripsion";
 
 export default function Success({ data }) {
   const [isClient, setIsCliente] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsCliente(true);
   }, []);
 
@@ -61,23 +60,7 @@ export default function Success({ data }) {
         {/* Acciones */}
         <div className="space-y-3">
           {isClient ? (
-            <PDFDownloadLink
-              key={data?.user?.dni || data?.user?.document}
-              document={<PlanillaInscripsion data={data} />}
-              fileName={`Planilla_${data?.user?.dni || data?.user?.document || "inscripcion"}.pdf`}
-              className="flex w-full items-center justify-center gap-3 rounded-xl bg-cyan-600 py-4 font-bold text-white transition-all hover:bg-indigo-700 active:scale-95 disabled:cursor-wait disabled:opacity-70"
-            >
-              {({ loading, error }) => (
-                <>
-                  <Icon icon={faFilePdf} />
-                  {loading
-                    ? "Generando PDF..."
-                    : error
-                      ? "Error al generar PDF"
-                      : "Descargar Planilla PDF"}
-                </>
-              )}
-            </PDFDownloadLink>
+            {}
           ) : (
             <div className="w-full animate-pulse border border-dashed border-slate-400 rounded-xl py-4 bg-slate-100" />
           )}
