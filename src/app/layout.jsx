@@ -1,36 +1,19 @@
 import "@/globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { Toaster } from "react-hot-toast";
 
 config.autoAddCss = false;
 
 export const metadata = {
-  title: {
-    template: "Sigace | %s",
-    default: "Sigace - Gestión Escolar",
-  },
-  description: "Sistema de control de Estudios para Liceos",
+  title: "SIGACE — Control de estudios inteligente",
+  description:
+    "Plataforma para inscripción, notas y reportes académicos en instituciones educativas.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className="scrolel-smooth">
-      <body className="bg-gray-100 transition dark:bg-slate-800">
-        <main className="flex min-h-screen items-center justify-center">
-          {children}
-        </main>
-
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{
-            className:
-              "rounded-xl border border-slate-100 shadow-lg font-medium",
-            duration: 4000,
-          }}
-        />
-      </body>
+    <html lang="es" className="h-full antialiased scroll-smooth">
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

@@ -27,7 +27,7 @@ export default function FormForgot() {
 
     try {
       setLoading(true);
-      
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/forgotPassword`,
         { email: formData.email },
@@ -55,7 +55,7 @@ export default function FormForgot() {
     <div className="w-full max-w-md px-5 md:py-0">
       {/* Botón para volver al login */}
       <Links
-        direction="/"
+        direction="/login"
         className="group mb-8 inline-flex items-center gap-2 text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400"
         label={"Volver al inicio de sesión"}
         classNameIcon={"transition-transform group-hover:-translate-x-1 "}

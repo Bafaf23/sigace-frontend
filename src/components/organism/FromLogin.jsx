@@ -60,7 +60,7 @@ export default function FromLogin() {
     <div className="w-full max-w-md px-5 md:py-0">
       {/* Botón para volver */}
       <Links
-        direction="https://sigce-page.vercel.app"
+        direction="/"
         className="group mb-8 inline-flex items-center gap-2 text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400"
         label={"Volver al inicio"}
         classNameIcon={"transition-transform group-hover:-translate-x-1 "}
@@ -110,6 +110,7 @@ export default function FromLogin() {
             icon={faKey}
             type="submit"
             disabled={loading}
+            // eslint-disable-next-line react/no-children-prop
             children={loading ? "Verificando..." : "Iniciar Sesión"}
           ></Button>
         </form>

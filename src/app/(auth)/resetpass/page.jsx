@@ -20,8 +20,6 @@ function ResetPasswordContent() {
     } else {
       setStep(1);
     }
-
-    // 2. Apagamos la carga una vez determinado el paso correcto
     setLoadinp(false);
   }, [searchParams]);
 
