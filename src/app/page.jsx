@@ -1,10 +1,17 @@
-import FromLogin from "@/components/organism/FromLogin";
+import About from "@/components/organism/About";
+import Footer from "@/components/organism/Footer";
+import Header from "@/components/organism/Header";
+import Hero from "@/components/organism/Hero";
+import Plans from "@/components/organism/Plans";
 
-export const metadata = {
-  title: "SIGACE - Iniciar Sesión",
-  description: "Inicia sesión en SIGACE para acceder a la plataforma",
-};
-
-export default function LoginPage() {
-  return <FromLogin />;
+export default function Home() {
+  return (
+    <main className="min-h-full flex flex-col">
+      <Header />
+      <Hero />
+      <About />
+      <Plans />
+      <Footer />
+    </main>
+  );
 }
