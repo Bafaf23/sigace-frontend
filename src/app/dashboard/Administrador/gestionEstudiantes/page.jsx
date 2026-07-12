@@ -169,8 +169,8 @@ export default function GestionEstudiantesPage() {
           titelTable={[
             { name: "Número de Matrícula", icon: faIdCard },
             { name: "Nombre y Apellido", icon: faUser },
-            { name: "Edad / Género", icon: faCalendar },
-            { name: "Contacto Alumno", icon: faUser },
+            { name: "Nacimiento / Género", icon: faCalendar },
+            { name: "Contacto", icon: faUser },
             { name: "Representante Legal", icon: faUserTie },
             { name: "Grado y Sección", icon: faBook },
             { name: "Acciones", icon: faClipboardList },
@@ -190,7 +190,7 @@ export default function GestionEstudiantesPage() {
                     {student.tuition_number}
                   </Link>
                   <span
-                    className={`text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full w-fit ${student.status === "Activo" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"}`}
+                    className={`text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full w-fit ${student.condition === "Nuevo Ingreso" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"}`}
                   >
                     {student.condition}
                   </span>
