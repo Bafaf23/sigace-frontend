@@ -15,22 +15,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className="scrolel-smooth">
-      <body className="bg-gray-100 transition dark:bg-slate-800">
-        <main className="flex min-h-screen items-center justify-center">
-          {children}
-        </main>
+    <div className="bg-gray-100 transition dark:bg-slate-800">
+      <main className="flex min-h-screen items-center justify-center">
+        {children}
+      </main>
 
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{
-            className:
-              "rounded-xl border border-slate-100 shadow-lg font-medium",
-            duration: 4000,
-          }}
-        />
-      </body>
-    </html>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          className: "rounded-xl border border-slate-100 shadow-lg font-medium",
+          duration: 4000,
+        }}
+      />
+    </div>
   );
 }

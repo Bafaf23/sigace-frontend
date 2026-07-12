@@ -17,18 +17,16 @@ export const metadata = {
 
 export default function DashboardLayout({ children }) {
   return (
-    <>
-      <AuthProvider>
-        <div className="flex flex-1 gap-2">
-          <NavbarSidebar />
-          <div className="h-screen flex flex-col w-full">
-            <main className="flex flex-col overflow-hidden overflow-y-auto scrolel-smooth h-full w-full">
-              {children}
-            </main>
-            <NavMovil />
-          </div>
+    <AuthProvider>
+      <div className="flex flex-1 gap-2 bg-gray-100 ">
+        <NavbarSidebar />
+        <div className="h-screen flex flex-col w-full">
+          <main className="flex flex-col overflow-hidden overflow-y-auto scrolel-smooth h-full w-full">
+            {children}
+          </main>
+          <NavMovil />
         </div>
-      </AuthProvider>
-    </>
+      </div>
+    </AuthProvider>
   );
 }
