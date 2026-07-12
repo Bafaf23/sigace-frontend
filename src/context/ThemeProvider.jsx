@@ -7,6 +7,7 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState();
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(savedTheme);
     document.documentElement.classList.toggle("dark", savedTheme === "dark");
   }, []);

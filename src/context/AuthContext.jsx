@@ -6,8 +6,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
-// Opcional, por si quieres avisarle al usuario
-
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -18,10 +16,9 @@ export function AuthProvider({ children }) {
   const pathname = usePathname();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const PUBLIC_ROUTES = ["/", "/register"];
-  const INACTIVITY_TIME = 15 * 60 * 1000; // 1 minuto en milisegundos
+  const PUBLIC_ROUTES = ["/login", "/register"];
+  const INACTIVITY_TIME = 15 * 60 * 1000;
 
-  // 1. Cargar usuario inicial desde sessionStorage
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
@@ -30,15 +27,13 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  // 2. Sistema de Redirecciones (Guardianes de Rutas)
   useEffect(() => {
     if (loading) return;
     const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
     if (!user && !isPublicRoute) {
-      router.push("/");
+      router.push("/login");
     } else if (user && isPublicRoute) {
-      // 🛡️ Safe navigation por si la estructura del objeto varía
       const userRole = user?.user?.role || user?.role;
       if (userRole) {
         router.push(`/dashboard/${userRole}`);
@@ -70,7 +65,6 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error("Error en el flujo de logout del servidor:", error);
     } finally {
-      // Limpieza absoluta pase lo que pase con la petición de red
       if (timerRef.current) clearTimeout(timerRef.current);
       sessionStorage.clear();
       setUser(null);
@@ -80,12 +74,10 @@ export function AuthProvider({ children }) {
           id: "inactivity-alert",
         });
       }
-
-      router.push("/");
+      router.push("/login");
     }
   };
 
-  // ⏱️ 3. Resetea el reloj y evalúa la inactividad
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const resetTimer = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -95,7 +87,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // 🕵️‍♂️ 4. ¡EL BLOQUE FALTANTE! Escuchadores de actividad en el navegador
   useEffect(() => {
     const events = [
       "mousedown",
@@ -106,19 +97,15 @@ export function AuthProvider({ children }) {
     ];
 
     if (user) {
-      // Arranca el reloj apenas el usuario se loguea o refresca la página
       resetTimer();
-
-      // Vincula los eventos para capturar clics, teclado o scroll en el liceo
       events.forEach((event) => window.addEventListener(event, resetTimer));
     }
 
-    // 🧹 Cleanup: Remueve los listeners si el usuario se desloguea voluntariamente
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
       events.forEach((event) => window.removeEventListener(event, resetTimer));
     };
-  }, [resetTimer, user]); // 🔄 Reacciona instantáneamente cada vez que el estado 'user' cambie
+  }, [resetTimer, user]);
 
   return (
     <AuthContext.Provider value={{ user, loading, handleLogout, handleLogin }}>
