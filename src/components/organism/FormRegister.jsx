@@ -13,10 +13,11 @@ import {
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-export default function FormRegister({ user, mode, onSuccess }) {
+export default function FormRegister({ user, mode, onSuccess, role }) {
+  console.log("Rol actual:", role);
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
-  // data de usuario para el registro de usuarios para el sistema con role por defecto teacher.
+
   const [data, setData] = useState({
     id: user?.id || "",
     typeDocuement: user?.typeDocuement || "V-",
@@ -25,6 +26,7 @@ export default function FormRegister({ user, mode, onSuccess }) {
     last_name: user?.last_name || "",
     email: user?.email || "",
     phone: user?.phone || "",
+    SIG: user?.SIG || "",
     role_id: Number(3),
   });
 
@@ -36,15 +38,13 @@ export default function FormRegister({ user, mode, onSuccess }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-
-    /* validar los campos obligatorios */
+    console.log(data);
     if (!data.email) {
       setLoading(false);
-      toast.error("Los campos no pueden estar vacios");
+      toast.error("Los campos no pueden estar vacíos");
       return;
     }
 
-    /* validar los campos del formulario */
     if (!validate(patterns.email, data.email)) {
       setLoading(false);
       toast.error("El correo electrónico no es válido");
@@ -63,6 +63,7 @@ export default function FormRegister({ user, mode, onSuccess }) {
       toast.error("El teléfono no es válido");
       return;
     }
+
     let response = null;
 
     if (mode !== "edit") {
@@ -72,21 +73,20 @@ export default function FormRegister({ user, mode, onSuccess }) {
     }
 
     if (response && response.success === true) {
-      console.log(response);
       toast.success(response.message);
       setLoading(false);
-
-      // Ejecutamos el callback que cierra el modal en el padre
       onSuccess?.();
     } else {
       setLoading(false);
       toast.error(response?.message || "Ocurrió un error inesperado");
     }
   }
+
   return (
     <div className="space-y-4">
       <form onSubmit={handleSubmit}>
-        {passed == 1 && (
+        {/* PASO 1: Datos de usuario globales */}
+        {passed === 1 && (
           <DataUserRegister
             data={data}
             manejoCambio={handleChange}
@@ -94,39 +94,49 @@ export default function FormRegister({ user, mode, onSuccess }) {
           />
         )}
 
+        {/* PASO 2: Solo si es SuperAdmin y está en el paso 2 */}
+        {passed === 2 && role === "SuperAdmin" && (
+          <DataSchoolRegister
+            data={data}
+            manejoCambio={handleChange}
+            mode={mode}
+          />
+        )}
+
         <div className="mt-8 flex justify-between border-t border-gray-100 pt-6">
+          {/* Botón Anterior: solo se muestra si pasamos del paso 1 */}
           {passed === 1 ? (
             <div></div>
           ) : (
             <Button
               icon={faLeftLong}
               onClick={() => setPassed((p) => Math.max(1, p - 1))}
-              classNameBtn={`text-slate-400 hover:text-slate-600 font-medium`}
+              classNameBtn="text-slate-400 hover:text-slate-600 font-medium"
             >
-              {"Anterior"}
+              Anterior
             </Button>
           )}
 
-          {passed < 1 ? (
+          {/* Gestión de botones Siguiente vs Registrar */}
+          {passed === 1 && role === "SuperAdmin" ? (
             <Button
               icon={faRightLong}
-              onClick={() => setPassed((p) => Math.min(2, p + 1))}
+              type="button" // Evita que dispare el submit del formulario antes de tiempo
+              onClick={() => setPassed(2)}
               classNameBtn="rounded-lg bg-indigo-600 px-8 py-2 font-bold text-white transition-all hover:bg-indigo-700 active:scale-95 group flex items-center gap-3"
               classNameIcon="group-hover:translate-x-1 transition-transform duration-300"
             >
               Siguiente
             </Button>
           ) : (
-            <>
-              <Button
-                icon={faUserPlus}
-                type="submit"
-                disabled={loading}
-                classNameBtn="rounded-lg bg-green-600 px-8 py-2 font-bold text-white transition-all hover:bg-green-700 disabled:bg-slate-300 flex items-center gap-2 shadow-lg shadow-green-100"
-              >
-                {loading ? "Procesando..." : "Registrar"}
-              </Button>
-            </>
+            <Button
+              icon={faUserPlus}
+              type="submit"
+              disabled={loading}
+              classNameBtn="rounded-lg bg-green-600 px-8 py-2 font-bold text-white transition-all hover:bg-green-700 disabled:bg-slate-300 flex items-center gap-2 shadow-lg shadow-green-100"
+            >
+              {loading ? "Procesando..." : "Registrar"}
+            </Button>
           )}
         </div>
       </form>
