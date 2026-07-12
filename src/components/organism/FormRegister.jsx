@@ -64,21 +64,21 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
       return;
     }
 
-    let response = null;
+    let response;
 
     if (mode !== "edit") {
       response = await createUser(data);
     } else {
       response = await updateUser(data);
     }
-
-    if (response && response.success === true) {
+    console.log(response);
+    if (response.success === true) {
       toast.success(response.message);
       setLoading(false);
       onSuccess?.();
     } else {
+      toast.error(response.message);
       setLoading(false);
-      toast.error(response?.message || "Ocurrió un error inesperado");
     }
   }
 
