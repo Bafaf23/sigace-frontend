@@ -7,13 +7,13 @@ export default function DataSchoolRegister({ data, manejoCambio }) {
   const [roles, setRoles] = useState([]);
   useEffect(() => {
     getSchools().then((data) => {
-      setSchools(data);
+      setSchools(data.data);
       getRoles().then((data) => {
-        setRoles(data);
+        setRoles(data.data);
       });
     });
   }, []);
-  console.log(roles)
+
   return (
     <div className="animate-fade-in space-y-4">
       <div className="flex flex-col gap-4">

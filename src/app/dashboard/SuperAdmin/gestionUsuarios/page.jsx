@@ -21,13 +21,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function UsuariosPage() {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [users, setUsers] = useState([]);
-  console.log(users);
+
   useEffect(() => {
     getUsers().then((data) => {
       setUsers(data.data);
@@ -51,7 +53,7 @@ export default function UsuariosPage() {
             onClose={() => setIsOpen(false)}
             title="Crear Usuario"
           >
-            <FormRegister mode="create" />
+            <FormRegister mode="create" role={user?.user.role} />
           </Modal>
         </div>
       </div>

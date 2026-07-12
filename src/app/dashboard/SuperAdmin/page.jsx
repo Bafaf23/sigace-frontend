@@ -15,8 +15,8 @@ export default function SuperAdminPage() {
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
-    getUsers().then((data) => setUsuarios(data));
-    getSchools().then((data) => setInstituciones(data));
+    getUsers().then((data) => setUsuarios(data.data));
+    getSchools().then((data) => setInstituciones(data.data));
   }, []);
 
   if (loading) return <Loading />;
