@@ -23,7 +23,7 @@ function displayOrUnset(value) {
 
 export default function ProfilePage() {
   const [user, setUser] = useState({});
-  const { logout } = useAuth();
+  const { handleLogout } = useAuth();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -65,15 +65,14 @@ export default function ProfilePage() {
               <span className="bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-0.5 rounded-full capitalize text-xs">
                 {user?.role || "Usuario"}
               </span>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span className="text-slate-500 text-xs">{user?.email}</span>
+              <span className="text-slate-300 dark:text-slate-700 hidden md:block">
+                •
+              </span>
+              <span className="text-slate-500 text-xs hidden md:block">
+                {user?.email}
+              </span>
             </p>
           </div>
-        </div>
-        <div className="flex items-center gap-2 self-end sm:self-center">
-          <button className="p-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/50 shadow-sm">
-            <Icon icon={faBell} className="text-xl" />
-          </button>
         </div>
       </header>
 
@@ -226,8 +225,8 @@ export default function ProfilePage() {
       <div className="mt-6 lg:hidden">
         <Button
           icon={faRightFromBracket}
-          classNameBtn="w-full bg-slate-100 dark:bg-slate-800 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 font-semibold rounded-2xl p-3.5 flex items-center justify-center gap-2 border border-slate-200/50 dark:border-slate-700/30 transition-all duration-200"
-          onClick={() => logout()}
+          classNameBtn="w-full bg-slate-200 dark:bg-slate-800 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 font-semibold rounded-2xl p-3.5 flex items-center justify-center gap-2 border border-slate-200/50 dark:border-slate-700/30 transition-all duration-200"
+          onClick={() => handleLogout()}
         >
           <span>Cerrar sesión</span>
         </Button>
