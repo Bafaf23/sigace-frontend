@@ -2,6 +2,7 @@
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import Banner from "@/components/atom/Banner";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormRegister from "@/components/organism/FormRegister";
 import Modal from "@/components/organism/Modal";
@@ -14,17 +15,20 @@ import {
   faEllipsis,
   faPhone,
   faBuilding,
-  faInfoCircle,
   faTrash,
   faEdit,
+  faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import Search from "@/components/molecules/Serch";
 import { useAuth } from "@/context/AuthContext";
 
 export default function UsuariosPage() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [appliedFilter, setAppliedFilter] = useState("");
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [users, setUsers] = useState([]);
@@ -43,15 +47,33 @@ export default function UsuariosPage() {
     });
   };
 
+  useEffect(() => {
+    if (search.trim() === "") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAppliedFilter("");
+    }
+  }, [search]);
+
+  const filteredUsers = users.filter((user) => {
+    const cedulaStr = String(user?.document || "");
+    const nameStr = String(user?.name || "");
+    const completeTerm = `${cedulaStr} ${nameStr}`.toLowerCase();
+
+    return completeTerm.includes(appliedFilter.toLowerCase().trim());
+  });
+
+  const handleSearch = () => {
+    setAppliedFilter(search);
+  };
   return (
-    <div className="">
+    <div>
       <div className="flex flex-col md:flex-row md:justify-between">
         <HeaderDashbord titelPage={"Gestion de Usuarios"} />
         <div className="p-3">
           <Button
             onClick={() => setIsOpen(true)}
             icon={faPlus}
-            classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
+            classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-4 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full shadow-lg shadow-indigo-500/20"
           >
             Crear Usuario
           </Button>
@@ -72,18 +94,21 @@ export default function UsuariosPage() {
         </div>
       </div>
       <div className="p-3">
-        <div className="border border-cyan-200 bg-cyan-50 p-4 rounded-xl flex items-center gap-2">
-          <Icon icon={faInfoCircle} className="text-cyan-600 text-xl" />
-          <p className="text-sm text-cyan-600 leading-relaxed">
-            Al crear un nuevo usuario sus credenciales de inicio de session se
-            enviaran por{" "}
-            <span className="font-bold text-cyan-800 uppercase">
-              correo electrónico
-            </span>{" "}
-            de forma automática.
-          </p>
-        </div>
+        <Banner
+          icon={faInfo}
+          titel="Usuarios Nuevos"
+          message="Al crear un nuevo usuario sus credenciales de inicio de session se enviaran por correo electrónico de forma automática."
+        />
       </div>
+      <div className="p-3 sm:max-w-md w-full">
+        <Search
+          setSearch={setSearch}
+          search={search}
+          onSearch={handleSearch}
+          placeholder="Cedula o Nombre..."
+        />
+      </div>
+
       <TableInsti
         titelTable={[
           { name: "ID/Rol", icon: faUserTag },
@@ -93,7 +118,7 @@ export default function UsuariosPage() {
           { name: "Institución", icon: faBuilding },
           { name: "Acciones", icon: faEllipsis },
         ]}
-        data={users}
+        data={filteredUsers}
         renderTableRows={(user) => (
           <tr
             key={user.id}
@@ -199,16 +224,16 @@ export default function UsuariosPage() {
                     Institución
                   </span>
                   {user.school ? (
-                    <>
-                      <span className="font-mono font-semibold text-slate-700">
+                    <div>
+                      <span className=" font-semibold text-slate-700">
                         {user.school.name}
                       </span>
-                      <span className="text-slate-500 group-hover:text-cyan-600 transition-colors">
+                      <span className="text-slate-500 group-hover:text-cyan-600 transition-colors ml-3">
                         {user.school.SIG}
                       </span>
-                    </>
+                    </div>
                   ) : (
-                    <span className="font-mono font-semibold text-slate-700">
+                    <span className=" font-semibold text-slate-700">
                       SIGACE
                     </span>
                   )}
