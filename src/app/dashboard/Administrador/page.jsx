@@ -48,9 +48,9 @@ export default function AdminPage() {
             getSubjects(),
             getSection(user.user.id_period),
           ]);
-
+        const students = await getStudents();
         // Adaptación defensiva: lee .data si viene de la API unificada, o el array directo si el service lo mapea
-        /*  const studentsList = studentsRes?.data; */
+        const studentsList = students?.data;
         const teachersList = teachersRes?.data;
         const subjectsList = subjectsRes?.data;
         const sectionsList = sectionsRes?.data;
@@ -63,7 +63,7 @@ export default function AdminPage() {
 
         // Actualizaciones de estado agrupadas con React 18 Transition para mantener fluida la UI
         startTransition(() => {
-          /*  setStudentCount(studentsList.length); */
+          setStudentCount(studentsList.length);
           setTeachersCount(teachersList.length);
           setSectionCount(sectionsList.length);
           setSubjectsCount(uniqueSubjects.length);

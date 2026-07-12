@@ -1,20 +1,26 @@
 "use client";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Button from "@/components/atom/Button";
-import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faEdit,
+  faTrash,
+  faInfo,
+} from "@fortawesome/free-solid-svg-icons";
 import TableInsti from "@/components/molecules/TableInsti";
 import Modal from "@/components/organism/Modal";
+import Banner from "@/components/atom/Banner";
 import { deleteSchool } from "@/services/school/deleteSchool";
 import { useState, useEffect } from "react";
 import { getSchools } from "@/services/school/getSchool";
 import Icon from "@/components/atom/Icon";
 import FormInstitucion from "@/components/organism/FormInstitucion";
+import Search from "@/components/molecules/Serch";
 import {
   faCode,
   faInstitution,
   faLocationDot,
   faPhone,
-  faInfoCircle,
   faIdCard,
   faTag,
   faBuilding,
@@ -26,6 +32,8 @@ export default function InstitucionesPage() {
   const [institutions, setInstitutions] = useState([]);
   const [editingInstitution, setEditingInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [appliedFilter, setAppliedFilter] = useState("");
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   useEffect(() => {
@@ -42,6 +50,25 @@ export default function InstitucionesPage() {
     });
   };
 
+  const filteredInstitutions = institutions.filter((institution) => {
+    const SIG = String(institution?.SIG || "");
+    const nameStr = String(institution?.name || "");
+    const completeTerm = `${SIG} ${nameStr}`.toLowerCase();
+
+    return completeTerm.includes(appliedFilter.toLowerCase().trim());
+  });
+  
+  useEffect(() => {
+    if (search.trim() === "") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAppliedFilter("");
+    }
+  }, [search]);
+
+  const handleSearch = () => {
+    setAppliedFilter(search);
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -50,7 +77,7 @@ export default function InstitucionesPage() {
           <Button
             onClick={() => setIsOpen(true)}
             icon={faPlus}
-            classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
+            classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-4 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full shadow-lg shadow-indigo-500/20"
           >
             Crear Institucion
           </Button>
@@ -69,8 +96,8 @@ export default function InstitucionesPage() {
         </div>
       </div>
 
-      <div className="p-4">
-        <div className="border border-amber-200 bg-amber-50 p-4 rounded-xl flex items-center gap-2">
+      <div className="p-3">
+        {/*  <div className="border border-amber-200 bg-amber-50 p-4 rounded-xl flex items-center gap-2">
           <Icon icon={faInfoCircle} className="text-amber-600 text-xl" />
           <p className="text-sm text-amber-600 leading-relaxed">
             Las instituciones de tipo <span className="font-bold">pública</span>{" "}
@@ -80,7 +107,20 @@ export default function InstitucionesPage() {
             </span>{" "}
             y el RIF del mismo.
           </p>
-        </div>
+        </div> */}
+        <Banner
+          icon={faInfo}
+          titel="Instituciones Públicas"
+          message="Las instituciones de tipo pública  tienen como razón social el nombre del Ministerio del Poder Popular para la Educación y el RIF del mismo."
+        />
+      </div>
+      <div className="p-3 sm:max-w-md w-full">
+        <Search
+          placeholder="Codigo SIG o Nombre..."
+          setSearch={setSearch}
+          onSearch={handleSearch}
+          search={search}
+        />
       </div>
 
       <TableInsti
@@ -259,7 +299,7 @@ export default function InstitucionesPage() {
             </div>
           </div>
         )}
-        data={institutions}
+        data={filteredInstitutions}
       />
 
       <Modal
