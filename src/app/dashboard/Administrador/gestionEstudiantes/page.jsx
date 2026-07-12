@@ -94,7 +94,7 @@ export default function GestionEstudiantesPage() {
       {/* Sección Superior: Header y Botón Crear */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 p-1">
         <HeaderDashbord titelPage="Gestión de Estudiantes" />
-        <div className="w-full sm:w-auto">
+        <div className="w-full sm:w-auto hidden md:block">
           <Button
             onClick={() => setIsOpent(true)}
             icon={faAdd}
@@ -133,7 +133,15 @@ export default function GestionEstudiantesPage() {
           }}
         />
       </Modal>
-
+      <div className="md:hidden p-3 w-full">
+        <Button
+          onClick={() => setIsOpent(true)}
+          icon={faAdd}
+          classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-4 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full shadow-lg shadow-indigo-500/20"
+        >
+          Crear Estudiante
+        </Button>
+      </div>
       {/* Filtros y Métricas Rápidas */}
       <section className="p-4">
         <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-500/5 backdrop-blur-md border border-slate-500/10 rounded-2xl mb-4">
@@ -312,14 +320,20 @@ export default function GestionEstudiantesPage() {
                 </div>
 
                 {/* En mobile ahora también dispara la descarga limpia directo de tu Back endpoint */}
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
-                  target="_blank"
-                >
-                  <button className="text-cyan-600 p-1.5 hover:bg-cyan-500/10 rounded-xl border border-cyan-500/10">
-                    <Icon icon={faClipboardList} className="w-3.5 h-3.5" />
-                  </button>
-                </Link>
+                {/* Comprobante de inscripción directo a la API del Back */}
+                {student.year && student.section && (
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_API_URL}/reports/planillaIns/${student.id}/${student.representative_id}`}
+                    target="_blank"
+                  >
+                    <Button
+                      title="Descargar Planilla"
+                      classNameBtn="text-cyan-600 p-1.5 hover:bg-cyan-500/10 rounded-xl border border-cyan-500/10"
+                    >
+                      <Icon icon={faClipboardList} className="w-3.5 h-3.5" />
+                    </Button>
+                  </Link>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600 dark:text-slate-400">
@@ -356,16 +370,16 @@ export default function GestionEstudiantesPage() {
               <div className="pt-1 flex justify-between items-center text-[11px]">
                 <div className="flex gap-1">
                   <span className="px-2 py-0.5 font-bold bg-indigo-500/10 text-indigo-600 rounded-md border border-indigo-500/10">
-                    {student.year_name || `${student.id_year || "?"}° Año`}
+                    {student.year || `?`}
                   </span>
                   <span className="px-2 py-0.5 font-bold bg-slate-500/10 text-slate-700 dark:text-slate-300 rounded-md">
-                    Sección {student.section_name || student.id_section || "?"}
+                    Sección {student.section || "?"}
                   </span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${student.status === "Activo" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"}`}
+                  className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${student.condition === "Nuevo Ingreso" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"}`}
                 >
-                  {student.status}
+                  {student.condition}
                 </span>
               </div>
             </div>
