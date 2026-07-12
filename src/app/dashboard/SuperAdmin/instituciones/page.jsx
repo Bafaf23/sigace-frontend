@@ -57,6 +57,13 @@ export default function InstitucionesPage() {
 
     return completeTerm.includes(appliedFilter.toLowerCase().trim());
   });
+  
+  useEffect(() => {
+    if (search.trim() === "") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAppliedFilter("");
+    }
+  }, [search]);
 
   const handleSearch = () => {
     setAppliedFilter(search);
@@ -107,7 +114,7 @@ export default function InstitucionesPage() {
           message="Las instituciones de tipo pública  tienen como razón social el nombre del Ministerio del Poder Popular para la Educación y el RIF del mismo."
         />
       </div>
-      <div className="p-3">
+      <div className="p-3 sm:max-w-md w-full">
         <Search
           placeholder="Codigo SIG o Nombre..."
           setSearch={setSearch}

@@ -27,7 +27,15 @@ export default function DashboardLayout({ children }) {
           </main>
           <NavMovil />
         </div>
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            className:
+              "rounded-xl border border-slate-100 shadow-lg font-medium",
+            duration: 4000,
+          }}
+        />
       </div>
     </AuthProvider>
   );
