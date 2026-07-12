@@ -13,7 +13,6 @@ import {
   faUserTag,
   faEllipsis,
   faPhone,
-  faLocationDot,
   faBuilding,
   faInfoCircle,
   faTrash,
@@ -36,6 +35,14 @@ export default function UsuariosPage() {
     });
   }, []);
 
+  const fetchUsers = () => {
+    getUsers().then((data) => {
+      if (data && data.data) {
+        setUsers(data.data);
+      }
+    });
+  };
+
   return (
     <div className="">
       <div className="flex flex-col md:flex-row md:justify-between">
@@ -53,7 +60,14 @@ export default function UsuariosPage() {
             onClose={() => setIsOpen(false)}
             title="Crear Usuario"
           >
-            <FormRegister mode="create" role={user?.user.role} />
+            <FormRegister
+              mode="create"
+              role={user?.user.role}
+              onSuccess={() => {
+                setIsOpen(false);
+                fetchUsers();
+              }}
+            />
           </Modal>
         </div>
       </div>

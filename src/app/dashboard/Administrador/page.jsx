@@ -30,7 +30,6 @@ export default function AdminPage() {
   const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
-    // Si no ha cargado el usuario o no pertenece un período lectivo, frenamos la petición
     if (!user?.user?.id_period) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (!authLoading) setDataLoading(false);
@@ -42,19 +41,19 @@ export default function AdminPage() {
         setDataLoading(true);
 
         // Despacho síncrono de promesas en el canal de red
-        const [studentsRes, teachersRes, subjectsRes, sectionsRes] =
+        const [/* studentsRes */ teachersRes, subjectsRes, sectionsRes] =
           await Promise.all([
-            getStudents(),
+            /* getStudents(), */
             getTeachersAll(),
             getSubjects(),
             getSection(user.user.id_period),
           ]);
 
         // Adaptación defensiva: lee .data si viene de la API unificada, o el array directo si el service lo mapea
-        const studentsList = studentsRes?.data ?? studentsRes ?? [];
-        const teachersList = teachersRes?.data ?? teachersRes ?? [];
-        const subjectsList = subjectsRes?.data ?? subjectsRes ?? [];
-        const sectionsList = sectionsRes?.data ?? sectionsRes ?? [];
+        /*  const studentsList = studentsRes?.data; */
+        const teachersList = teachersRes?.data;
+        const subjectsList = subjectsRes?.data;
+        const sectionsList = sectionsRes?.data;
 
         // Filtrado de asignaturas únicas por coincidencia de nombre estricta
         const uniqueSubjects = subjectsList.filter(
@@ -64,7 +63,7 @@ export default function AdminPage() {
 
         // Actualizaciones de estado agrupadas con React 18 Transition para mantener fluida la UI
         startTransition(() => {
-          setStudentCount(studentsList.length);
+          /*  setStudentCount(studentsList.length); */
           setTeachersCount(teachersList.length);
           setSectionCount(sectionsList.length);
           setSubjectsCount(uniqueSubjects.length);
@@ -82,10 +81,8 @@ export default function AdminPage() {
     fetchDashboardMetrics();
   }, [user, authLoading]);
 
-  // Si se está validando la sesión o resolviendo la red, renderizamos la pantalla de carga
   if (authLoading || dataLoading) return <Loading />;
 
-  // Validación estricta de rol administrativo para mitigar brechas de acceso
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
 
   return (

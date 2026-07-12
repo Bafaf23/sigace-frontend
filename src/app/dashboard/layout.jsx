@@ -4,6 +4,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import "@/globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Toaster } from "react-hot-toast";
 
 config.autoAddCss = false;
 
@@ -26,6 +27,7 @@ export default function DashboardLayout({ children }) {
           </main>
           <NavMovil />
         </div>
+        <Toaster position="top-right" reverseOrder={false} />
       </div>
     </AuthProvider>
   );

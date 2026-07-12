@@ -34,6 +34,14 @@ export default function InstitucionesPage() {
     setLoading(false);
   }, []);
 
+  const fechSchool = () => {
+    getSchools().then((data) => {
+      if (data.data) {
+        setInstitutions(data.data);
+      }
+    });
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -51,7 +59,12 @@ export default function InstitucionesPage() {
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
           >
-            <FormInstitucion />
+            <FormInstitucion
+              onSuccess={() => {
+                setIsOpen(false);
+                fechSchool();
+              }}
+            />
           </Modal>
         </div>
       </div>
