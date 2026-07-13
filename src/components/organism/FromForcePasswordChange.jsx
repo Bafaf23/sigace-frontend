@@ -26,6 +26,7 @@ export default function FromForcePasswordChange() {
 
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(parsedUser);
 
       // Extraemos el ID considerando tu estructura de datos segura
@@ -38,14 +39,14 @@ export default function FromForcePasswordChange() {
       setIsAuthenticated(true);
     } else {
       toast.error("No hay usuario en la sesión, por favor inicie sesión");
-      router.push("/");
+      router.push("/login");
     }
 
     // Apagamos la carga una sola vez al terminar de comprobar
     setLoading(false);
 
     // 🚨 Arreglo de dependencias vacío para evitar el bucle infinito
-  }, []);
+  }, [router]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -84,7 +85,7 @@ export default function FromForcePasswordChange() {
 
       toast.success("Contraseña cambiada correctamente");
       sessionStorage.removeItem("user");
-      router.push("/");
+      router.push("/login");
     } catch (error) {
       console.error(error);
       toast.error("Ocurrió un error inesperado al cambiar la contraseña");

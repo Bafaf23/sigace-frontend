@@ -82,7 +82,6 @@ export default function LapsoPage() {
     fetchLapses();
   }, [user, fetchPeriod, fetchLapses]);
 
-  // 🔥 TODO RESUELTO: Validación estricta para evitar la creación de un 4to momento educativo
   const validLapsesCount = Array.isArray(lapses) ? lapses.length : 0;
   const canCreateMoreLapses = validLapsesCount < 3;
   console.log(period);

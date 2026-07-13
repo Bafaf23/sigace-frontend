@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/app/loading";
+import axios from "axios";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
@@ -20,6 +21,7 @@ import toast from "react-hot-toast";
 export default function NotasPage() {
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingType, setLoadingType] = useState(null);
   const [section, setSection] = useState({
     yearName: "",
     sectionName: "",
@@ -29,15 +31,16 @@ export default function NotasPage() {
   const [generalAverage, setGeneralAverage] = useState("0.00");
 
   const { user } = useAuth();
+  const idPeiod = user?.user?.id_period;
+  const id = user?.user?.id;
 
-  const id = user?.user.id;
-  console.log(section);
   useEffect(() => {
     const fetchGrades = async () => {
       try {
         setLoading(true);
 
-        const idStudent = user.user.id;
+        const idStudent = user?.user?.id_user;
+        if (!idStudent) return; // Evitar llamadas si el usuario no ha cargado
 
         const response = await getGrade(idStudent);
         const lapseActive = await getLapseActive();
@@ -48,7 +51,7 @@ export default function NotasPage() {
         const sectionId = response?.data.section_id || null;
 
         setSubjects(listaMaterias);
-        setLapse(lapseActive.data);
+        setLapse(lapseActive.data || {});
         setSection({
           yearName: yearName,
           sectionName: sectionName,
@@ -65,6 +68,7 @@ export default function NotasPage() {
         }
       } catch (error) {
         console.error("❌ Error al cargar notas en el frontend:", error);
+        toast.error("No se pudo sincronizar el plan de notas");
       } finally {
         setLoading(false);
       }
@@ -73,14 +77,55 @@ export default function NotasPage() {
     fetchGrades();
   }, [user]);
 
-  const handlePrint = () => {
-    if (!id || !section.sectionId) {
-      toast.error("Información de sección incompleta para generar la boleta.");
-      return;
-    }
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${id}/${section.sectionId}`;
+  const handleDownload = async (url, type) => {
+    setLoadingType(type);
+    try {
+      const response = await axios.get(url, {
+        withCredentials: true,
+        responseType: "blob",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    window.open(url, "_blank", "noopener,noreferrer");
+      const blob = response.data;
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+
+      const nombreAño = section.yearName.replace(/\s+/g, "_");
+      const nombreSeccion = section.sectionName.replace(/\s+/g, "_");
+      a.download = `${type}_${nombreAño}_${nombreSeccion}_${new Date().getTime()}.pdf`;
+
+      document.body.appendChild(a);
+      a.click();
+
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+      toast.success("Boleta descargada correctamente");
+    } catch (error) {
+      console.error("Error al descargar reporte:", error);
+
+      if (
+        error.response &&
+        error.response.data &&
+        typeof error.response.data.text === "function"
+      ) {
+        try {
+          const textoError = await error.response.data.text();
+          const dataError = JSON.parse(textoError);
+          toast.error(dataError.message || "Error al generar el reporte");
+        } catch (parseError) {
+          toast.error("Error en el servidor al procesar el archivo");
+        }
+      } else {
+        toast.error(
+          "Hubo un fallo de conexión al intentar descargar el reporte",
+        );
+      }
+    } finally {
+      setLoadingType(null);
+    }
   };
 
   if (loading) return <Loading />;
@@ -92,10 +137,8 @@ export default function NotasPage() {
       <div className="p-3 mt-5">
         {/* Banner Informativo Premium */}
         <div className="flex items-start gap-3 p-4 bg-cyan-50/80 dark:bg-cyan-950/30 border border-cyan-200/60 dark:border-cyan-900/50 mb-5 rounded-xl backdrop-blur-sm shadow-sm">
-          {/* Icono Informativo */}
           <div className="p-1.5 bg-cyan-100 text-cyan-600 rounded-lg dark:bg-cyan-900/50 dark:text-cyan-400 mt-0.5 flex items-center justify-center shrink-0">
             <Icon icon={faClipboardList} className="text-sm" />
-            {/* 💡 Puedes cambiar faClipboardList por un icono de información como faInfoCircle si lo tienes importado */}
           </div>
 
           <div className="flex flex-col gap-0.5">
@@ -109,7 +152,8 @@ export default function NotasPage() {
             </p>
           </div>
         </div>
-        {/* Tarjetas Superiores Informativas //TODO:hacer las tarjetas componentes */}
+
+        {/* Tarjetas Superiores Informativas */}
         <div className="grid grid-cols-3 mb-4 gap-3">
           {/* Tarjeta: Periodo */}
           <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all">
@@ -125,7 +169,7 @@ export default function NotasPage() {
                   {user?.user?.period || "2025 - 2026"}
                 </span>
                 <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                  {lapse.name}
+                  {lapse?.name || "Cargando..."}
                 </span>
               </div>
             </div>
@@ -148,22 +192,28 @@ export default function NotasPage() {
             </div>
           </div>
 
+          {/* Botón de Impresión */}
           <div className="flex items-center justify-end">
-            <button
+            <Button
+              icon={faPrint}
+              disabled={loadingType !== null || !section.sectionId}
               type="button"
-              onClick={handlePrint}
-              className="bg-indigo-500 p-3 rounded-xl text-white font-medium flex gap-2 items-center cursor-pointer hover:bg-indigo-700 transition-colors w-fit shadow-sm"
+              onClick={() =>
+                handleDownload(
+                  `${process.env.NEXT_PUBLIC_API_URL}/reports/boleta/${id}/${section.sectionId}/${idPeiod}`,
+                  "Boleta",
+                )
+              }
+              classNameBtn="bg-indigo-500 rounded-xl text-white font-medium flex gap-2 justify-center items-center cursor-pointer hover:bg-indigo-700 transition-colors w-fit p-3 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Icon icon={faPrint} className="w-4 h-4" />
-              Imprimir Boleta
-            </button>
+              {"Imprimir Boleta"}
+            </Button>
           </div>
         </div>
 
-        {/* Mapeo de Materias (Opción 1) */}
+        {/* Mapeo de Materias */}
         {subjects && subjects.length > 0 ? (
           subjects.map((subject) => (
-            // 🌟 Inyectamos tu componente pasándole solo la materia con su data incrustada
             <TarjetaMateriaNotas key={subject.id} subject={subject} />
           ))
         ) : (

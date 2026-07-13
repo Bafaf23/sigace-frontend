@@ -26,7 +26,7 @@ export default function DashboardStudentPage() {
     const fetchSection = async () => {
       try {
         setDataLoading(true);
-        const result = await getGrade(user.user.id);
+        const result = await getGrade(user.user.id_user);
         setSectionData(result.data);
       } catch (error) {
         console.error("Error al obtener el grado/sección:", error);

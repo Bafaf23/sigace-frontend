@@ -5,10 +5,10 @@ import axios from "axios";
  * @param {number} idStudent - id de estudiante
  * @param {number} idPeriod - id del perido escolar
  */
-export async function getRecordStudent(idStudent, idPeriod) {
+export async function getRecordStudent(idStudent) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/students/getRecordStudent/${idStudent}/${idPeriod}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/students/getRecordStudent/${idStudent}`,
       {
         withCredentials: true,
         headers: {

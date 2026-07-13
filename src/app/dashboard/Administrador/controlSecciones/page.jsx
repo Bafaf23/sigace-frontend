@@ -13,11 +13,7 @@ import { getSection } from "@/services/section/getSection";
 import { getStudenNotEnrollment } from "@/services/student/getStudenNotEnrollment";
 import { getStudentSection } from "@/services/student/getStudentSection";
 import { getPreinscription } from "@/services/student/getPreinscription";
-import {
-  faInfo,
-  faInfoCircle,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faInfo, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useCallback, startTransition } from "react";
 
 // Corregido: Inicial con mayúscula para cumplir con la especificación de componentes React
