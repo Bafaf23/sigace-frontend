@@ -43,8 +43,8 @@ export default function Footer() {
         <hr className="hidden h-10 border border-amber-500 md:block" />
         <div className="flex items-center gap-2 ">
           <Link
-            href="https://instagram.com/sigace"
-            aria-label="Instagram de SIGACE"
+            href="https://instagram.com/bafaf03"
+            aria-label="Instagram"
             className="inline-flex"
           >
             <Icon
@@ -53,8 +53,8 @@ export default function Footer() {
             />
           </Link>
           <Link
-            href="https://linkedin.com/in/sigace"
-            aria-label="LinkedIn de SIGACE"
+            href="https://linkedin.com"
+            aria-label="LinkedIn"
             className="inline-flex"
           >
             <Icon
@@ -63,8 +63,8 @@ export default function Footer() {
             />
           </Link>
           <Link
-            href="https://whatsapp.com/sigace"
-            aria-label="WhatsApp de SIGACE"
+            href="https://whatsapp.com/+584241736193"
+            aria-label="WhatsApp"
             className="inline-flex"
           >
             <Icon
