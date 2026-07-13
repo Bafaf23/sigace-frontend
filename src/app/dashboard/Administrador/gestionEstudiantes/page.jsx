@@ -88,7 +88,6 @@ export default function GestionEstudiantesPage() {
 
   if (authLoading) return <Loading />;
   if (!user || user.user.role !== "Administrador") return <AccessDenied />;
-
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 ease-out">
       {/* Sección Superior: Header y Botón Crear */}
