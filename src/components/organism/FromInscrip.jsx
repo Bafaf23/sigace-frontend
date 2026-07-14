@@ -19,12 +19,12 @@ import toast from "react-hot-toast";
 import { createStudent } from "@/services/student/createStudent";
 import { updateStudent } from "@/services/student/updateStudent";
 
-export default function FormInscrip({ mode, student }) {
+export default function FormInscrip({ mode, student, onSuccess }) {
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    id_student: student?.id_student|| "",
+    id_student: student?.id_student || "",
     id_user: student?.id_user || "",
     documentType: "V-",
     document: student?.document || "",
@@ -43,7 +43,6 @@ export default function FormInscrip({ mode, student }) {
     previousSchoolCode: student?.previous_school_code || "",
     previousYear: student?.previous_year || "",
     previousSection: student?.previous_section || "",
-   
 
     year: student?.id_year || "",
     section: student?.id_section || "",
@@ -112,6 +111,7 @@ export default function FormInscrip({ mode, student }) {
       toast.error(result?.message || "Ocurrió un error.");
     } else {
       toast.success(result.message);
+      onSuccess?.();
     }
     setLoading(false);
   };
@@ -119,20 +119,27 @@ export default function FormInscrip({ mode, student }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
       {/* Banner modo edit*/}
-      {mode === "edit" && 
-       <div className="bg-cyan-50/50 border border-cyan-200 p-4 rounded-xl backdrop-blur-sm">
-       <p className="text-sm text-cyan-800 font-medium leading-relaxed">
-         <strong className="text-cyan-900 font-semibold">Nota:</strong> La condición y el estatus del estudiante se actualizarán de forma automática al final del periodo académico.
-       </p>
-       
-       <div className="mt-3 pt-3 border-t border-cyan-200/60 flex items-center gap-2">
-         <span className="text-xs font-semibold text-cyan-700 bg-cyan-100/50 px-2 py-0.5 rounded-md">Acción</span>
-         <p className="text-xs text-cyan-600 font-medium">
-           En caso de <span className="font-semibold text-cyan-800">Traslado</span> o <span className="font-semibold text-cyan-800">Retirado</span>, por favor contacte a soporte.
-         </p>
-       </div>
-     </div>
-      }
+      {mode === "edit" && (
+        <div className="bg-cyan-50/50 border border-cyan-200 p-4 rounded-xl backdrop-blur-sm">
+          <p className="text-sm text-cyan-800 font-medium leading-relaxed">
+            <strong className="text-cyan-900 font-semibold">Nota:</strong> La
+            condición y el estatus del estudiante se actualizarán de forma
+            automática al final del periodo académico.
+          </p>
+
+          <div className="mt-3 pt-3 border-t border-cyan-200/60 flex items-center gap-2">
+            <span className="text-xs font-semibold text-cyan-700 bg-cyan-100/50 px-2 py-0.5 rounded-md">
+              Acción
+            </span>
+            <p className="text-xs text-cyan-600 font-medium">
+              En caso de{" "}
+              <span className="font-semibold text-cyan-800">Traslado</span> o{" "}
+              <span className="font-semibold text-cyan-800">Retirado</span>, por
+              favor contacte a soporte.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* PASO 1: Datos Personales (Común para todos) */}
       {passed === 1 && (

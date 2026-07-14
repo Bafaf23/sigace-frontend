@@ -172,23 +172,25 @@ export default function CardSection({
             )}
           </button>
         </div>
+        <div className="flex">
+          {availableStudents.length > 0 && (
+            <Button
+              onClick={() => setIsOpen(true)}
+              classNameBtn="w-full text-sm font-medium text-slate-500 hover:text-green-600 py-1"
+            >
+              <Icon icon={faUserPlus} className="mr-2" /> Inscribir Estudiante
+            </Button>
+          )}
 
-        {availableStudents.length > 0 && (
-          <Button
-            onClick={() => setIsOpen(true)}
-            classNameBtn="w-full text-xs font-medium text-slate-500 hover:text-green-600 py-1"
-          >
-            <Icon icon={faUserPlus} className="mr-2" /> Inscribir Estudiante
-          </Button>
-        )}
-        {preinscriptionStudent.length > 0 && (
-          <Button
-            onClick={() => setIsOpenPre(true)}
-            classNameBtn="w-full text-xs font-medium text-slate-500 hover:text-green-600 py-1"
-          >
-            <Icon icon={faUserPlus} className="mr-2" /> Añadir a esta Seccion
-          </Button>
-        )}
+          {preinscriptionStudent.length > 0 && (
+            <Button
+              onClick={() => setIsOpenPre(true)}
+              classNameBtn="w-full text-sm font-medium text-slate-500 hover:text-green-600 py-1"
+            >
+              <Icon icon={faUserPlus} className="mr-2" /> Añadir a esta Seccion
+            </Button>
+          )}
+        </div>
       </div>
 
       <Modal
@@ -200,6 +202,9 @@ export default function CardSection({
           students={availableStudents}
           period={period}
           id_section={id_section}
+          onSuccess={() => {
+            setIsOpen(false);
+          }}
         />
       </Modal>
 
@@ -207,13 +212,16 @@ export default function CardSection({
       <Modal
         isOpen={isOpenPre}
         onClose={() => setIsOpenPre(false)}
-        title="Inscribir Estudiante"
+        title="Añadir a esta Seccion"
       >
         <FormAssignStudent
           students={preinscriptionStudent}
           period={period}
           id_section={id_section}
           mode="preInscrip"
+          onSuccess={() => {
+            setIsOpenPre(false);
+          }}
         />
       </Modal>
     </div>

@@ -7,7 +7,7 @@ config.autoAddCss = false;
 
 export const metadata = {
   title: {
-    template: "Sigace | %s",
+    template: "SIGACE | %s",
     default: "Sigace - Gestión Escolar",
   },
   description: "Sistema de control de Estudios para Liceos",

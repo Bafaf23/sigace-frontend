@@ -36,14 +36,13 @@ export default function FormCargaPV({
     e.preventDefault();
     const response = await createEvaluation(formData);
 
-    if (response.error) {
-      toast.error(response.error);
+    if (response.success === false) {
+      toast.error(response.message);
       return;
     }
 
     const newId = response?.result?.id;
     if (onSuccess && newId) {
-      // 🌟 EL TRUCO: Creamos el objeto completo fusionando los inputs con el nuevo ID
       const evaluation = {
         id: newId, // ID único para la clave (key) de React y borrados
         date: formData.date,
@@ -54,8 +53,7 @@ export default function FormCargaPV({
         porcentage: formData.porcentage, // Mantiene el porcentaje escrito
       };
 
-      // 2. Enviamos el objeto completamente estructurado al componente Padre
-      onSuccess(evaluation);
+      onSuccess?.(evaluation);
       toast.success(response.message);
 
       setFormData({
