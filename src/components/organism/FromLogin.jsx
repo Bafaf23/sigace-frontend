@@ -3,12 +3,9 @@ import Button from "@/components/atom/Button";
 import Input from "@/components/atom/Input";
 import InputPass from "@/components/atom/InputPass";
 import Links from "@/components/atom/Links";
+import VersionTag from "../atom/VersionTag";
 import { login } from "@/services/auth/login";
-import {
-  faKey,
-  faArrowLeft,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faKey, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -126,6 +123,9 @@ export default function FromLogin() {
               Contacta al administrador
             </span>
           </Link>
+          <div className="flex items-center justify-center mt-2">
+            <VersionTag />
+          </div>
         </p>
       </div>
     </div>
