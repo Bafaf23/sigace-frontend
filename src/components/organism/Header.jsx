@@ -26,7 +26,7 @@ export default function Header() {
           </nav>
           <Link
             href="/login"
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-3 text-xl font-bold text-white transition-all hover:bg-cyan-500 md:flex lg:flex"
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-cyan-600 px-3 py-2  font-bold text-white transition-all hover:bg-cyan-500 md:flex lg:flex"
           >
             <Icon icon={faRightToBracket} />
             <span className="whitespace-nowrap">Ir al sistema</span>
