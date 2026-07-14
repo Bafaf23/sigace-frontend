@@ -112,7 +112,7 @@ export default function FromLogin() {
           ></Button>
         </form>
 
-        <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
+        <section className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
           ¿No tienes acceso?,{" "}
           <Link
             href="https://wa.link/a6tg3m"
@@ -126,7 +126,7 @@ export default function FromLogin() {
           <div className="flex items-center justify-center mt-2">
             <VersionTag />
           </div>
-        </p>
+        </section>
       </div>
     </div>
   );

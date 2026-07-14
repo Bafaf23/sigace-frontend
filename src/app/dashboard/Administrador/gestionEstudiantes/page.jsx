@@ -111,6 +111,7 @@ export default function GestionEstudiantesPage() {
         onClose={() => setIsOpent(false)}
       >
         <FormInscrip
+          mode={"insc"}
           onSuccess={() => {
             loadStudents(true);
             setIsOpent(false);

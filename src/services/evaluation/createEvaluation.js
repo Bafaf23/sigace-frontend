@@ -20,6 +20,11 @@ export const createEvaluation = async (data) => {
     return response.data;
   } catch (error) {
     console.error("Error al crear la evaluación:", error);
-    return { error: error.response.data.message };
+    return {
+      success: false,
+      message:
+        error.response?.data?.message ||
+        "Cada evaluación individual debe poseer un porcentaje válido mayor a 0% y menor o igual a 100%.",
+    };
   }
 };

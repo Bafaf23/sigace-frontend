@@ -64,7 +64,7 @@ export default function PlanEvaluativo() {
     };
 
     fetchLoadAcademic();
-  }, [user?.user?.id]); // Modificado para depender de la ID segura del usuario
+  }, [user?.user?.id]);
 
   useEffect(() => {
     if (!user?.user?.id) return;
@@ -163,7 +163,10 @@ export default function PlanEvaluativo() {
             <FormCargaPV
               idLoadAcademic={selectedSubject?.id_load_academic}
               idLapseActive={activeLapse?.id}
-              onSuccess={handleEvaluationCreated}
+              onSuccess={(newEvalu) => {
+                handleEvaluationCreated(newEvalu);
+                setIsModalOpen(false);
+              }}
             />
           </Modal>
         </div>
