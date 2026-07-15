@@ -134,7 +134,7 @@ export default function NotasPage() {
     <main>
       <HeaderDashbord titelPage="Panel de Notas" />
 
-      <div className="p-3 mt-5">
+      <section className="p-3 mt-5">
         {/* Banner Informativo Premium */}
         <div className="flex items-start gap-3 p-4 bg-cyan-50/80 dark:bg-cyan-950/30 border border-cyan-200/60 dark:border-cyan-900/50 mb-5 rounded-xl backdrop-blur-sm shadow-sm">
           <div className="p-1.5 bg-cyan-100 text-cyan-600 rounded-lg dark:bg-cyan-900/50 dark:text-cyan-400 mt-0.5 flex items-center justify-center shrink-0">
@@ -154,7 +154,7 @@ export default function NotasPage() {
         </div>
 
         {/* Tarjetas Superiores Informativas */}
-        <div className="grid grid-cols-3 mb-4 gap-3">
+        <div className="grid md:grid-cols-3 mb-4 gap-3">
           {/* Tarjeta: Periodo */}
           <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all">
             <div className="p-2 bg-cyan-50 dark:bg-cyan-950/40 rounded-lg text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
@@ -217,11 +217,11 @@ export default function NotasPage() {
             <TarjetaMateriaNotas key={subject.id} subject={subject} />
           ))
         ) : (
-          <div className="text-center p-6 text-slate-400 dark:text-slate-500">
+          <div className="text-center p-6 text-slate-600 dark:text-slate-500 border bg-slate-200 border-slate-400 rounded-2xl border-dashed">
             Aún no hay materias registradas en tu sección.
           </div>
         )}
-      </div>
+      </section>
     </main>
   );
 }
