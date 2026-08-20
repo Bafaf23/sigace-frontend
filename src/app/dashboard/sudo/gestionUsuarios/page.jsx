@@ -65,18 +65,12 @@ export default function UsuariosPage() {
   const handleSearch = () => {
     setAppliedFilter(search);
   };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">
         <HeaderDashbord titelPage={"Gestion de Usuarios"} />
         <div className="p-3">
-          <Button
-            onClick={() => setIsOpen(true)}
-            icon={faPlus}
-            classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-4 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full shadow-lg shadow-indigo-500/20"
-          >
-            Crear Usuario
-          </Button>
           <Modal
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
@@ -100,13 +94,20 @@ export default function UsuariosPage() {
           message="Al crear un nuevo usuario sus credenciales de inicio de session se enviaran por correo electrónico de forma automática."
         />
       </div>
-      <div className="p-3 sm:max-w-md w-full">
+      <div className="p-3 w-full flex flex-col md:flex-row items-center justify-between gap-4">
         <Search
           setSearch={setSearch}
           search={search}
           onSearch={handleSearch}
           placeholder="Cedula o Nombre..."
         />
+        <Button
+          onClick={() => setIsOpen(true)}
+          icon={faPlus}
+          classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2  shadow-lg shadow-indigo-500/20"
+        >
+          Crear Usuario
+        </Button>
       </div>
 
       <TableInsti
@@ -127,7 +128,6 @@ export default function UsuariosPage() {
             <td className="px-6 py-4">
               <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
                 <span className="font-medium">{user.id}</span>
-                <span className="text-md text-slate-400">{user.role}</span>
               </div>
             </td>
             <td className="px-6 py-4">
@@ -140,6 +140,9 @@ export default function UsuariosPage() {
                 <span className="text-slate-500 ">{user.name}</span>
                 <span className="text-slate-500">{user.last_name}</span>
               </div>
+              <span className="text-md text-slate-400 capitalize">
+                {user.role}
+              </span>
             </td>
             <td className="px-6 py-4">
               <div className="flex flex-col group-hover:text-cyan-600 transition-colors">
@@ -180,7 +183,7 @@ export default function UsuariosPage() {
                   icon={faTrash}
                   classNameBtn="p-2 text-slate-400 transition-colors hover:text-red-600"
                   onClick={() =>
-                    deleteUser(user.id, user.role_id).then((data) => {
+                    deleteUser(user.id).then((data) => {
                       if (data.error) {
                         toast.error(data.error);
                       } else {
@@ -209,7 +212,7 @@ export default function UsuariosPage() {
                 </h3>
               </div>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${user.role === "SuperAdmin" ? "bg-green-50 text-green-600 dark:bg-green-950/30" : "bg-orange-50 text-orange-600 dark:bg-orange-950/30"}`}
+                className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${user.role === "sudo" ? "bg-green-50 text-green-600 dark:bg-green-950/30" : "bg-orange-50 text-orange-600 dark:bg-orange-950/30"}`}
               >
                 {user.role}
               </span>

@@ -41,7 +41,6 @@ export default function ProfilePage() {
   }
 
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
-  console.log(user);
   return (
     <div className="mx-auto w-full max-w-5xl p-4 md:p-6 animate-fade-in">
       {/* HEADER PRINCIPAL - ESTILO DASHBOARD */}
@@ -198,7 +197,7 @@ export default function ProfilePage() {
                 <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
                   Cargo Asignado
                 </span>
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase">
                   {displayOrUnset(user?.role)}
                 </p>
               </div>

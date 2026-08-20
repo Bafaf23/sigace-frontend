@@ -14,13 +14,12 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function FormRegister({ user, mode, onSuccess, role }) {
-  console.log("Rol actual:", role);
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
     id: user?.id || "",
-    typeDocuement: user?.typeDocuement || "V-",
+    typeDocuement: user?.typeDocuement || "V",
     document: user?.document || "",
     name: user?.name || "",
     last_name: user?.last_name || "",
@@ -71,7 +70,7 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
     } else {
       response = await updateUser(data);
     }
-    console.log(response);
+
     if (response.success === true) {
       toast.success(response.message);
       setLoading(false);
@@ -94,8 +93,8 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
           />
         )}
 
-        {/* PASO 2: Solo si es SuperAdmin y está en el paso 2 */}
-        {passed === 2 && role === "SuperAdmin" && (
+        {/* PASO 2: Solo si es sudo y está en el paso 2 */}
+        {passed === 2 && role === "sudo" && (
           <DataSchoolRegister
             data={data}
             manejoCambio={handleChange}
@@ -118,7 +117,7 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
           )}
 
           {/* Gestión de botones Siguiente vs Registrar */}
-          {passed === 1 && role === "SuperAdmin" ? (
+          {passed === 1 && role === "sudo" ? (
             <Button
               icon={faRightLong}
               type="button" // Evita que dispare el submit del formulario antes de tiempo

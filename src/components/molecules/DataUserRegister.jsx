@@ -20,11 +20,11 @@ export default function DataUserRegister({ data, manejoCambio, mode }) {
   const options = [
     {
       label: "Venezolano",
-      value: "V-",
+      value: "V",
     },
     {
       label: "Extranjero",
-      value: "E-",
+      value: "E",
     },
   ];
   return (

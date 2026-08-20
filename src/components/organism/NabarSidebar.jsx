@@ -113,21 +113,21 @@ export const menuLink = {
       href: "/dashboard/Administrador/promociones",
     },
   ],
-  SuperAdmin: [
+  sudo: [
     {
       icon: faHome,
       label: "Mi Inicio",
-      href: "/dashboard/SuperAdmin",
+      href: "/dashboard/sudo",
     },
     {
       icon: faUsers,
       label: "Gestión de Usuarios",
-      href: "/dashboard/SuperAdmin/gestionUsuarios",
+      href: "/dashboard/sudo/gestionUsuarios",
     },
     {
       icon: faBuilding,
       label: "Instituciones",
-      href: "/dashboard/SuperAdmin/instituciones",
+      href: "/dashboard/sudo/instituciones",
     },
   ],
 };

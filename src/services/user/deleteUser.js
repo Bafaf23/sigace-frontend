@@ -8,7 +8,7 @@ import axios from "axios";
 export async function deleteUser(userId, roleId) {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/deleteUser/${userId}/${roleId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/${roleId}`,
       {
         withCredentials: true,
         headers: {
