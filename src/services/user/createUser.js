@@ -8,7 +8,7 @@ import axios from "axios";
 export async function createUser(data) {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/createUser`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users`,
       data,
       {
         withCredentials: true,

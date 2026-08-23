@@ -6,7 +6,7 @@ import Plans from "@/components/organism/Plans";
 
 export default function Home() {
   return (
-    <main className="min-h-full flex flex-col">
+    <main>
       <Header />
       <Hero />
       <About />

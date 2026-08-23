@@ -8,7 +8,7 @@ import axios from "axios";
 export async function createSchool(school) {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/schools/createSchool`,
+      `${process.env.NEXT_PUBLIC_API_URL}/schools`,
       school,
       {
         withCredentials: true,

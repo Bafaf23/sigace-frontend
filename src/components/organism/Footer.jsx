@@ -1,98 +1,72 @@
 import Icon from "@/components/atom/Icon";
-import Label from "@/components/atom/Label";
-import SigaceLogo from "@/components/atom/SigaceLogo";
+import SchoPackLogo from "@/components/atom/SchoPackLogo";
 import {
-  faInstagramSquare,
   faLinkedin,
   faInstagram,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 
-export default function Footer() {
-  const developer = [
+const DEVELOPER = {
+  name: "Bryant Facenda",
+  socials: [
     {
-      development: "Bryant Facenda",
-      social: [
-        {
-          name: "Instagram",
-          url: "https://www.instagram.com/bafaf03",
-          icon: faInstagramSquare,
-          className: "text-pink-500 bg-purple-500/50",
-        },
-        {
-          name: "Linkedin",
-          url: "https://www.linkedin.com/in/bryant-facenda-a078ab279/",
-          icon: faLinkedin,
-          className: "text-cyan-500 bg-blue-600/30",
-        },
-        {
-          name: "Whatsapp",
-          url: "https://w.app/p945hj",
-          icon: faWhatsapp,
-          className: "text-green-500 bg-green-500/40",
-        },
-      ],
+      name: "Instagram",
+      url: "https://www.instagram.com/bafaf03",
+      icon: faInstagram,
+      hoverBg: "hover:bg-pink-500/20 hover:text-pink-600",
     },
-  ];
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/bryant-facenda-a078ab279/",
+      icon: faLinkedin,
+      hoverBg: "hover:bg-sky-500/20 hover:text-sky-600",
+    },
+    {
+      name: "WhatsApp",
+      url: "https://w.app/p945hj",
+      icon: faWhatsapp,
+      hoverBg: "hover:bg-emerald-500/20 hover:text-emerald-600",
+    },
+  ],
+};
 
+export default function Footer() {
   return (
-    <footer className="flex flex-col gap-2 bg-indigo-900 px-4 py-3">
-      <div className="flex flex-col items-center gap-2 md:flex-row">
-        <SigaceLogo className="text-slate-100" />
-        <hr className="hidden h-10 border border-amber-500 md:block" />
-        <div className="flex items-center gap-2 ">
-          <p className=" text-gray-400 ">Impulsando el Futuro</p>
-        </div>
-      </div>
-      <div className="flex flex-col items-end">
-        <p className="z-10 text-2xl text-gray-300/50 italic">
-          &quot;Un ser sin estudios es un ser incompleto.&quot;
+    <footer className="w-full bg-zinc-300 px-6 py-8">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+        {/* Identidad y Lema */}
+        <SchoPackLogo className="text-slate-900" />
+
+        {/* Derechos de Autor */}
+        <p className="text-center text-xs text-slate-600">
+          Desarrollado por{" "}
+          <span className="font-semibold text-slate-900">{DEVELOPER.name}</span>{" "}
+          — Todos los derechos reservados © {new Date().getFullYear()}
         </p>
-        <Label
-          label={"Simón Bolívar"}
-          className="bg-amber-500/50 text-amber-500"
-        ></Label>
-      </div>
-      <div className="flex flex-col items-center gap-2 justify-center">
-        <p className="text-[13px] text-gray-400 italic text-center">
-          Desarrollado por: {developer.map((d) => d.development).join(", ")} —
-          todos los derechos reservados © {new Date().getFullYear()}
-        </p>
-        <div>
-          <Link
-            href="https://instagram.com/bafaf03"
-            target="_blank"
-            aria-label="Instagram"
-            className="inline-flex"
-          >
-            <Icon
-              icon={faInstagram}
-              className=" text-slate-100 rounded-2xl w-10 h-10 p-1 hover:bg-pink-600/50 transition-all text-2xl"
-            />
-          </Link>
-          <Link
-            href="https://linkedin.com"
-            target="_blank"
-            aria-label="LinkedIn"
-            className="inline-flex"
-          >
-            <Icon
-              icon={faLinkedin}
-              className=" text-slate-100 rounded-2xl w-10 h-10 p-1 hover:bg-blue-600/50 transition-all text-2xl"
-            />
-          </Link>
-          <Link
-            href="https://wa.link/urfdhq"
-            target="_blank"
-            aria-label="WhatsApp"
-            className="inline-flex"
-          >
-            <Icon
-              icon={faWhatsapp}
-              className=" text-slate-100 rounded-2xl w-10 h-10 p-1 hover:bg-green-600/50 transition-all text-2xl"
-            />
-          </Link>
+
+        <Link
+          href={"/legal"}
+          className="text-sm text-slate-800 hover:text-salte-600 hover:underline"
+          target="_black"
+        >
+          Terminos y condiciones
+        </Link>
+
+        {/* Redes Sociales Dinámicas */}
+        <div className="flex items-center gap-2">
+          {DEVELOPER.socials.map((social) => (
+            <Link
+              key={social.name}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.name}
+              className={`flex h-10 w-10 items-center justify-center rounded-xl text-slate-600 transition-all ${social.hoverBg}`}
+            >
+              <Icon icon={social.icon} className="text-xl" />
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

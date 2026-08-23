@@ -20,7 +20,7 @@ export default function Search({ search, setSearch, placeholder, onSearch }) {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 w-full sm:max-w-md">
       <Input
         type="text"
         placeholder={placeholder}

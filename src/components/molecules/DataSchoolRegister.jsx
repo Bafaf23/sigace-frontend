@@ -20,7 +20,7 @@ export default function DataSchoolRegister({ data, manejoCambio }) {
         <Selector
           label={"Elija una institucion"}
           options={schools.map((school) => ({
-            label: school.name,
+            label: school.school_name,
             value: school.SIG,
           }))}
           name={"SIG"}

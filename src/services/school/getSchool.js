@@ -7,7 +7,7 @@ import axios from "axios";
 export async function getSchools() {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/schools/getAllSchools`,
+      `${process.env.NEXT_PUBLIC_API_URL}/schools`,
       {
         withCredentials: true,
         headers: {
@@ -30,7 +30,7 @@ export async function getSchools() {
 export async function getRoles() {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/schools/getRoles`,
+      `${process.env.NEXT_PUBLIC_API_URL}/schools/roles/roles`,
       {
         withCredentials: true,
         headers: {
