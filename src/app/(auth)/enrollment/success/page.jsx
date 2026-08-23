@@ -1,7 +1,7 @@
 "use client";
 
 import Success from "@/components/organism/Success";
-import Loading from "./loading";
+import Loading from "@/app/loading";
 
 function buildDni(type, number) {
   if (!number) return "";

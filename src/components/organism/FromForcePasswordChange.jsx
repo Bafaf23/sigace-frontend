@@ -2,7 +2,7 @@
 import Button from "../atom/Button";
 import Icon from "../atom/Icon";
 import InputPass from "../atom/InputPass";
-import Loading from "@/app/(auth)/force-password-change/loading";
+import Loading from "@/app/loading";
 import { changePassword } from "@/services/auth/changePassw";
 import { validate, patterns } from "@/services/regex/regex";
 import { faInfoCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
