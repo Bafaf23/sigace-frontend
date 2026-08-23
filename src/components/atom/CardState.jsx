@@ -17,7 +17,7 @@ export default function CardState({ title, info, icon, className }) {
   return (
     <div>
       <div
-        className={`${className ?? ""} rounded-2xl border border-gray-200 bg-white p-6 backdrop-blur-sm transition-colors hover:border-cyan-500/50`}
+        className={`${className} rounded-2xl border border-gray-200 bg-white p-6 backdrop-blur-sm transition-colors hover:border-cyan-500/50`}
       >
         <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-500/40 text-cyan-500">
           <Icon icon={icon} className={"text-xl"} />

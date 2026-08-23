@@ -25,9 +25,10 @@ export default function Button({
   type = "button",
   isCollapsed,
 }) {
+  /* group flex items-center gap-2 rounded-xl bg-cyan-600 px-8 py-3 font-bold text-white shadow-lg shadow-cyan-500/20 transition-all hover:bg-cyan-500 */
   return (
     <button
-      className={`${classNameBtn}`}
+      className={`${classNameBtn} `}
       onClick={onClick}
       type={type}
       disabled={disabled}

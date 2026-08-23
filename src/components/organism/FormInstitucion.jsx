@@ -5,6 +5,12 @@ import { useState } from "react";
 import { createSchool } from "@/services/school/createSchool";
 import { updateSchool } from "@/services/school/updateSchool";
 import toast from "react-hot-toast";
+import Banner from "../atom/Banner";
+import {
+  faArrowsAltV,
+  faCheck,
+  faInfo,
+} from "@fortawesome/free-solid-svg-icons";
 export default function FormInstitucion({
   institution,
   onSuccess,
@@ -15,7 +21,7 @@ export default function FormInstitucion({
   const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState({
     SIG: institution?.SIG || "",
-    name: institution?.name || "",
+    name: institution?.school_name || "",
     address: institution?.address || "",
     phone: institution?.phone || "",
     company_name: institution?.company_name || "",
@@ -74,6 +80,11 @@ export default function FormInstitucion({
 
   return (
     <form className="space-y-6 p-2" onSubmit={handleSubmit}>
+      <Banner
+        titel="Subdominio Automatico"
+        message="EL subdominio se creara de forma automatica."
+        icon={faInfo}
+      />
       {currentPage === 1 && (
         <div className="space-y-3">
           <Selector
@@ -89,12 +100,12 @@ export default function FormInstitucion({
           <div className="grid grid-cols-1 gap-2">
             {formData.type === "Pública" ? (
               <Input
-                name="name"
+                name="school_name"
                 label="Nombre de la institucion"
                 placeholder="Institucion de Educacion"
-                value={formData.name}
+                value={formData.school_name}
                 onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
+                  setFormData({ ...formData, school_name: e.target.value })
                 }
               />
             ) : (
@@ -157,19 +168,6 @@ export default function FormInstitucion({
               </div>
             )}
           </div>
-
-          <Selector
-            name="director"
-            label="Quien es el Director del lal Escuela"
-            value={formData.director_id}
-            onChange={(e) =>
-              setFormData({ ...formData, director_id: e.target.value })
-            }
-            options={directores.map((director) => ({
-              value: director.id,
-              label: `(${director.document}) ${director.name} ${director.last_name}`,
-            }))}
-          />
         </div>
       )}
 
@@ -249,8 +247,10 @@ export default function FormInstitucion({
         </button>
         {isLastStep ? (
           <Button
+            icon={faCheck}
             type="submit"
-            classNameBtn="px-4 py-2 bg-emerald-600 text-white rounded font-bold"
+            disabled={loading}
+            classNameBtn="px-4 py-2 bg-emerald-600 text-white rounded font-bold cursor-pointe"
           >
             Guardar
           </Button>

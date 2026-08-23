@@ -27,7 +27,7 @@ export default function About() {
 
   return (
     <section id="nosotros" className="px-4 py-24">
-      <div className="mx-auto max-w-9xl">
+      <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-16 lg:flex-row">
           {/* Lado Izquierdo: Imagen o Composición Visual */}
           <div className="relative flex-1">
@@ -64,10 +64,11 @@ export default function About() {
               Transformando la Gestión Escolar a una nueva experiencia digital
             </h3>
             <p className="mb-10 text-lg text-gray-400">
-              SIGACE nace como una solución moderna para superar las barreras
-              del registro manual. Nuestra misión es empoderar a la institución
-              con herramientas digitales que garanticen la transparencia y la
-              rapidez en el manejo de expedientes académicos.
+              SchoPack nace como una solución moderna para superar las barreras
+              del registro manual de notas y matricula estudiantil. Nuestra
+              misión es empoderar a la institución con herramientas digitales
+              que garanticen la transparencia y la rapidez en el manejo de
+              expedientes académicos.
             </p>
 
             {/* Listado de Valores (Moléculas) */}

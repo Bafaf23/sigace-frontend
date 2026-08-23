@@ -21,26 +21,45 @@ import {
   faCode,
   faInstitution,
   faLocationDot,
+  faNetworkWired,
   faPhone,
   faIdCard,
   faTag,
   faBuilding,
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function InstitucionesPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [users, setUsers] = useState([]);
   const [editingInstitution, setEditingInstitution] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [appliedFilter, setAppliedFilter] = useState("");
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   useEffect(() => {
-    getSchools().then((data) => setInstitutions(data.data));
-    getUsers().then((data) => setUsers(data.data));
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const [schoolsRes, usersRes] = await Promise.all([
+          getSchools(),
+          getUsers(),
+        ]);
+
+        setInstitutions(schoolsRes.data);
+        setUsers(usersRes.data);
+      } catch (error) {
+        console.error("Error al cargar datos del panel:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const fechSchool = () => {
@@ -69,7 +88,7 @@ export default function InstitucionesPage() {
   const handleSearch = () => {
     setAppliedFilter(search);
   };
-
+  const BASE_DOMAIN = process.env.NEXT_PUBLIC_BASE_DOMAIN;
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between md:p-3 lg:justify-between">
@@ -137,6 +156,7 @@ export default function InstitucionesPage() {
           { name: "Tipo", icon: faTag },
           { name: "RIF/DEA", icon: faIdCard },
           { name: "CDCEE", icon: faIdCard },
+          { name: "Subdominio", icon: faNetworkWired },
           { name: "Acciones", icon: faEllipsis },
         ]}
         renderTableRows={(institution) => (
@@ -151,17 +171,15 @@ export default function InstitucionesPage() {
               </div>
               <div>
                 <span
-                  className="inline-flex items-center max-w-40 px-2 py-0.5 rounded-full text-xs font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-800/60"
+                  className={`inline-flex items-center max-w-40 px-2 py-0.5 rounded-full text-xs font-semibold ${institution.is_active ? "bg-green-50 text-green-700 border border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800/60" : "bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60"} `}
                   title={
-                    institution.director
-                      ? `${institution.director.name} ${institution.director.last_name}`
+                    institution.is_active
+                      ? `${institution.is_active}`
                       : "Sin asignar"
                   }
                 >
                   <span className="truncate">
-                    {institution.director
-                      ? `${institution.director.name} ${institution.director.last_name}`
-                      : "Sin asignar"}
+                    {institution.is_active ? `Activa` : "Inactiva"}
                   </span>
                 </span>
               </div>
@@ -174,6 +192,20 @@ export default function InstitucionesPage() {
                 title={institution.school_name}
               >
                 {institution.school_name}
+              </span>
+              <span
+                className="inline-flex  max-w-40 px-2 py-0.5 rounded-full text-xs font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-800/60"
+                title={
+                  institution.director
+                    ? `${institution.director.name} ${institution.director.last_name}`
+                    : "Sin asignar"
+                }
+              >
+                <span className="truncate">
+                  {institution.director
+                    ? `${institution.director.name} ${institution.director.last_name}`
+                    : "Sin asignar"}
+                </span>
               </span>
             </td>
 
@@ -251,6 +283,16 @@ export default function InstitucionesPage() {
               <span className="font-medium text-slate-800">
                 {institution.cdcee?.name || "N/A"}
               </span>
+            </td>
+            {/* SuBdominio */}
+            <td className="px-4 py-4 max-w-[120px] whitespace-nowrap truncate">
+              <Link
+                href={`https://${institution.subdomain}.${BASE_DOMAIN}`}
+                target="_blank"
+                className="font-mono text-slate-800 hover:underline"
+              >
+                {`${institution.subdomain}.${BASE_DOMAIN}`}
+              </Link>
             </td>
 
             {/* ACCIONES */}

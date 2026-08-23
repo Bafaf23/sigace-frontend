@@ -104,7 +104,7 @@ export default function UsuariosPage() {
         <Button
           onClick={() => setIsOpen(true)}
           icon={faPlus}
-          classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2  shadow-lg shadow-indigo-500/20"
+          classNameBtn="bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all p-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full md:w-auto whitespace-nowrap shadow-lg shadow-indigo-500/20"
         >
           Crear Usuario
         </Button>

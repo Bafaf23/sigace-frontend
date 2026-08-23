@@ -2,7 +2,7 @@
 
 import Button from "../atom/Button";
 import ItemProfile from "../atom/ItemProfile";
-import SigaceLogo from "../atom/SigaceLogo";
+import SigaceLogo from "../atom/SchoPackLogo";
 import VersionTag from "../atom/VersionTag";
 import NavLink from "../molecules/NavLink";
 import { useAuth } from "@/context/AuthContext";

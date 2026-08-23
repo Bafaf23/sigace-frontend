@@ -10,8 +10,8 @@ config.autoAddCss = false;
 
 export const metadata = {
   title: {
-    template: "Sigace | %s",
-    default: "Sigace - Gestión Académica",
+    template: "SchoPack | %s",
+    default: "SchoPack",
   },
   description: "Sistema de control de Estudios para Liceos",
 };
