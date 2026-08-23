@@ -228,7 +228,7 @@ export default function InstitucionesPage() {
             </td>
 
             {/* DIRECCIÓN */}
-            <td className="px-4 py-4 max-w-[220px]">
+            <td className="px-4 py-4 max-w-55">
               <span
                 className="font-medium text-slate-800 text-sm line-clamp-2"
                 title={institution.address}
@@ -238,7 +238,7 @@ export default function InstitucionesPage() {
             </td>
 
             {/* CONTACTO */}
-            <td className="px-4 py-4 max-w-[180px]">
+            <td className="px-4 py-4 max-w-45">
               <div className="flex flex-col">
                 <span className="font-medium text-slate-800 whitespace-nowrap">
                   {institution.phone}
@@ -279,13 +279,13 @@ export default function InstitucionesPage() {
             </td>
 
             {/* CDCEE */}
-            <td className="px-4 py-4 max-w-[120px] whitespace-nowrap truncate">
+            <td className="px-4 py-4 max-w-30 whitespace-nowrap truncate">
               <span className="font-medium text-slate-800">
                 {institution.cdcee?.name || "N/A"}
               </span>
             </td>
             {/* SuBdominio */}
-            <td className="px-4 py-4 max-w-[120px] whitespace-nowrap truncate">
+            <td className="px-4 py-4 max-w-30 whitespace-nowrap truncate">
               <Link
                 href={`https://${institution.subdomain}.${BASE_DOMAIN}`}
                 target="_blank"
