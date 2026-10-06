@@ -30,7 +30,7 @@ const options = [
 
 export default function Header() {
   return (
-    <header className="absolute top-4 left-0 w-full px-5 md:translate-x-10 z-50 md:w-[45%]">
+    <header className="absolute top-4 left-0 w-full px-5 md:translate-x-10 z-50 md:w-[48%]">
       <div className="flex items-center justify-between gap-4 bg-white border border-slate-200 px-5 py-2.5 rounded-full dark:bg-zinc-800 dark:border-zinc-700 shadow-sm">
         {/* Logo */}
         <SchoPackLogo className="text-slate-600 dark:text-zinc-100" />
@@ -50,7 +50,13 @@ export default function Header() {
         </nav>
 
         {/* Acción Principal */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
+          <Link
+            href="consult"
+            className="bg-emerald-500 rounded-full px-5 py-3 font-semibold text-white text-sm hover:bg-emerald-600 active:scale-95 transition-all shadow-sm"
+          >
+            Consulta
+          </Link>
           <Link
             href="/login"
             className="bg-orange-500 rounded-full px-5 py-3 font-semibold text-white text-sm hover:bg-orange-600 active:scale-95 transition-all shadow-sm"

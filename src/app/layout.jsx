@@ -6,7 +6,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
 export const metadata = {
-  title: "SIGACE — Iniciando",
+  title: "SIGACE | a un click",
   description:
     "Plataforma para inscripción, notas y reportes académicos en instituciones educativas.",
 };

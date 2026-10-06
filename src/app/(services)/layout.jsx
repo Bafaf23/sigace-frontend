@@ -5,7 +5,6 @@ export default function AuthLayout({ children }) {
   return (
     <section className="flex flex-col flex-1 items-center justify-center min-h-screen p-4 gap-6">
       {children}
-
       {/* Footer / Enlace secundario */}
       <Link
         href="/legal"

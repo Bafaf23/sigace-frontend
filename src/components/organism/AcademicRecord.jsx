@@ -44,8 +44,6 @@ export default function RecordAcademico({ periodStudent, idStudent }) {
       });
   }, [period, idStudent]);
 
-  console.log(subjectsList);
-
   if (!periodStudent || periodStudent.length === 0) {
     return (
       <div className="w-full text-center p-8 bg-white dark:bg-zinc-800 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-sm transition-colors">
