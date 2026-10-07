@@ -155,9 +155,12 @@ export default function ControlSecciones() {
   const isGlobalLoading = sectionsLoading || studentsLoading;
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out">
+    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-4">
-        <HeaderDashbord titelPage={"Control de Secciones"} />
+        <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+          Control de Secciones
+        </h2>
+
         <div className="p-3 hidden md:block">
           <Button
             onClick={() => setIsOpen(true)}
@@ -170,7 +173,7 @@ export default function ControlSecciones() {
       </div>
 
       <Modal
-        titel="Crea una nueva sección"
+        title="Crea una nueva sección"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
@@ -183,15 +186,13 @@ export default function ControlSecciones() {
         />
       </Modal>
 
-      <section className="p-4">
-        <Banner
-          icon={faInfo}
-          titel="Información de interés"
-          message="En este módulo puedes crear y gestionar las secciones de tu institución, así como realizar el proceso de inscripción y asignación de los estudiantes."
-        />
-      </section>
+      <Banner
+        icon={faInfo}
+        title="Información de interés"
+        message="En este módulo puedes crear y gestionar las secciones de tu institución, así como realizar el proceso de inscripción y asignación de los estudiantes."
+      />
 
-      <div className="md:hidden p-3 w-full">
+      <div className="md:hidden w-full">
         <Button
           onClick={() => setIsOpen(true)}
           icon={faPlus}
@@ -202,9 +203,7 @@ export default function ControlSecciones() {
       </div>
 
       {isGlobalLoading ? (
-        <div className="p-3">
-          <SkeletonCard />
-        </div>
+        <SkeletonCard />
       ) : (
         <CardGridSetion
           dataSet={sections}

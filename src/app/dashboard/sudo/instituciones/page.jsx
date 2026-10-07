@@ -113,11 +113,13 @@ export default function InstitucionesPage() {
   return (
     <div className="space-y-5">
       <Modal
-        titel="Agregar nueva institución"
+        maxWidth="max-w-8xl"
+        title="Agregar nueva institución"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
         <FormInstitucion
+          isEdit={false}
           cdde={cdee}
           onSuccess={() => {
             setIsOpen(false);

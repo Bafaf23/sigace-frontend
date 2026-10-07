@@ -97,15 +97,15 @@ export default function GestionEstudiantesPage() {
   };
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out">
-      {/* Header */}
-      <div className="mb-4 flex flex-col items-center justify-between gap-4 p-1 sm:flex-row">
-        <HeaderDashbord titelPage="Gestión de Estudiantes" />
-      </div>
+    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
+      <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+        Gestion de Estudiantes
+      </h2>
 
       {/* Modales */}
       <Modal
-        titel="Crear Estudiante"
+        maxWidth="max-w-3xl"
+        title="Crear Estudiante"
         isOpen={isOpent}
         onClose={() => setIsOpent(false)}
       >
@@ -143,16 +143,14 @@ export default function GestionEstudiantesPage() {
         onCancel={() => setIsOpentC(false)}
       />
 
-      <div className="p-2">
-        <Banner
-          icon={faInfo}
-          titel="Más información"
-          message="Para conocer la ficha detallada del estudiante, haz clic sobre el número de matrícula."
-        />
-      </div>
+      <Banner
+        icon={faInfo}
+        titel="Más información"
+        message="Para conocer la ficha detallada del estudiante, haz clic sobre el número de matrícula."
+      />
 
       {/* Filtros y Métricas Rápidas */}
-      <section className="p-2">
+      <section>
         <div className="mb-4 flex flex-col items-stretch justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white/70 p-4 shadow-sm backdrop-blur-md sm:flex-row sm:items-center dark:border-zinc-700/50 dark:bg-zinc-900/60">
           <div className="w-full sm:max-w-md">
             <Search
@@ -186,11 +184,9 @@ export default function GestionEstudiantesPage() {
 
       {/* Tabla y Renderizado de Datos */}
       {dataLoading ? (
-        <div className="p-3">
-          <SkeletonCard />
-        </div>
+        <SkeletonCard />
       ) : (
-        <div className="p-2">
+        <div>
           <TableInsti
             titelTable={[
               { name: "Número de Matrícula", icon: faIdCard },

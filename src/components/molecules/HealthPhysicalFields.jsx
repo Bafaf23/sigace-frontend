@@ -22,7 +22,7 @@ const HealthPhysicalFields = ({ datos, manejarCambio }) => {
       </h4>
       <Banner
         icon={faHeadSideCough}
-        titel="¿No padecesde alguna condición médica?"
+        title="¿No padecesde alguna condición médica?"
         message="Si no padeces ninguna condición o alergia médica, deja los campos en blanco."
       />
       <div className="grid grid-cols-2 gap-2">

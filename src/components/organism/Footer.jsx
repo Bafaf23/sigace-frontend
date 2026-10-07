@@ -12,7 +12,7 @@ const DEVELOPER = {
   socials: [
     {
       name: "Instagram",
-      url: "https://www.instagram.com/bafaf03",
+      url: "https://www.instagram.com/sigace.ed",
       icon: faInstagram,
       hoverBg: "hover:bg-pink-500/20 hover:text-pink-600",
     },

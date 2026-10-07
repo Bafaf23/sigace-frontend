@@ -12,6 +12,7 @@ export default function FormInstitucion({
   institution,
   onSuccess,
   isEdit = false,
+  cdde,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +33,7 @@ export default function FormInstitucion({
     state: institution?.state || "Miranda",
     director_id: director.id || "",
     city: institution?.city || "",
-    code_DEA: institution?.code_DEA || "",
+    DEA_CODE: institution?.code_DEA || "",
   });
 
   const isPublic = formData.type === "Publica";
@@ -48,21 +49,21 @@ export default function FormInstitucion({
       // Limpia los campos si cambia a pública
       ...(newType === "Publica"
         ? { RIF: "", company_name: "" }
-        : { DEA_CODE: "" }),
+        : { code_DEA: "" }),
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData);
     if (
       !formData.name ||
       !formData.address ||
       !formData.phone ||
       !formData.email ||
       !formData.type ||
-      (isPublic && !formData.DEA_CODE) ||
-      (!isPublic && (!formData.RIF || !formData.company_name))
+      (formData.type === "Publica" && !formData.DEA_CODE) ||
+      (formData.type === "Privada" && (!formData.RIF || !formData.company_name))
     ) {
       toast.error(
         "Por favor completa los campos obligatorios correspondientes",
@@ -136,12 +137,12 @@ export default function FormInstitucion({
             </div>
             <div>
               <Input
-                name="code_DEA"
+                name="DEA_CODE"
                 label="Código DEA"
                 placeholder={"Ej: OD00001234"}
-                readOnly={true}
-                value={formData.code_DEA}
-                onChange={(e) => handleChange("code_DEA", e.target.value)}
+                readOnly={isEdit}
+                value={formData.DEA_CODE}
+                onChange={(e) => handleChange("DEA_CODE", e.target.value)}
               />
             </div>
           </div>
@@ -173,13 +174,26 @@ export default function FormInstitucion({
           </div>
 
           <div>
-            <Input
-              name="ccedeName"
-              label="Centro de Desarrollo Estudiantil (CDCE)"
-              value={formData.cdceName}
-              readOnly={true}
-              onChange={(e) => handleChange("company_name", e.target.value)}
-            />
+            {isEdit == true ? (
+              <Input
+                name="ccedeName"
+                label="Centro de Desarrollo Estudiantil (CDCE)"
+                value={formData.cdceName}
+                readOnly={true}
+                onChange={(e) => handleChange("cdceName", e.target.value)}
+              />
+            ) : (
+              <Selector
+                name="cdceName"
+                label="Centro de Desarrollo Estudiantil (CDCE)"
+                value={formData.cdceId}
+                onChange={(e) => handleTypeChange(e.target.value)}
+                options={cdde.map((item) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
+              />
+            )}
           </div>
 
           <div>

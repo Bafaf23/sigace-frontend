@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import Icon from "@/components/atom/Icon";
+import Banner from "@/components/atom/Banner";
 import SkeletonCard from "@/components/atom/SkeletonCard";
 import ListSubjects from "@/components/molecules/ListSubjects";
 import HeaderGestionMaterias from "@/components/organism/HeaderGestionMaterias";
 import { getSubjects } from "@/services/subject/getSujects";
-import { faInfo, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faInfo } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useState, startTransition } from "react";
-import Banner from "@/components/atom/Banner";
 
 export default function MateriasPage() {
   const [dataSubjects, setDataSubjects] = useState([]);
@@ -46,24 +45,20 @@ export default function MateriasPage() {
   }, [loadSubjects]);
 
   return (
-    <div>
+    <div className="space-y-3">
       {/* Actualización silenciosa premium al crear materia */}
       <HeaderGestionMaterias onSubjectCreated={() => loadSubjects(true)} />
-
       {/* Banner Informativo con Estilo Premium Glassmorphism */}
-      <div className="p-4">
-        <Banner
-          titel="Sobre las asignaturas"
-          icon={faInfo}
-          message=" Las asignaturas registradas se asignarán automáticamente al Liceo  bajo tu gestión adminstrativa"
-        />
-      </div>
+
+      <Banner
+        title="Sobre las asignaturas"
+        icon={faInfo}
+        message=" Las asignaturas registradas se asignarán automáticamente al Liceo  bajo tu gestión adminstrativa"
+      />
 
       {/* Renderizado Condicional de Datos */}
       {loading ? (
-        <div className="p-4">
-          <SkeletonCard />
-        </div>
+        <SkeletonCard />
       ) : (
         <ListSubjects
           dataSubjects={dataSubjects}

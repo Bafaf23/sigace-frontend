@@ -76,7 +76,7 @@ export default function UsuariosPage() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        titel="Crear Usuario"
+        title="Crear Usuario"
       >
         <FormRegister
           mode="create"
