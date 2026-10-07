@@ -92,14 +92,12 @@ export default function LapsoPage() {
   const canCreateMoreLapses = validLapsesCount < 3;
 
   return (
-    <div className="">
-      {/* Encabezado e Interfaz Centralizada */}
-      <section className="flex flex-col gap-3 sm:flex-row sm:justify-between items-center mb-4 p-1 -z-10">
-        <HeaderDashbord titelPage="Configuración de Lapsos" />
-      </section>
-
+    <div className="space-y-3">
+      <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+        Configuracion de Momentos academicos
+      </h2>
       {/* Panel Superior Informativo y Controles Operativos */}
-      <section className="p-3 -z-20">
+      <section className="-z-20">
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center bg-slate-500/5 backdrop-blur-md border border-slate-500/10 p-4 rounded-2xl">
           <div className="flex items-center gap-3">
             <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
@@ -158,7 +156,7 @@ export default function LapsoPage() {
       </section>
       {/* Formulario Modal: Registro de Nuevo Lapso */}
       <Modal
-        titel="Crear Nuevo Lapso / Momento"
+        title="Crear Nuevo Lapso / Momento"
         isOpen={isModalCreateLapseOpen}
         onClose={() => setIsModalCreateLapseOpen(false)}
       >
@@ -198,7 +196,7 @@ export default function LapsoPage() {
       {/* Formulario Modal: Configuración inicial de Año Escolar */}
       <Modal
         isOpen={isModalOpen}
-        titel="Iniciar un Periodo Académico"
+        title="Iniciar un Periodo Académico"
         onClose={() => setIsModalOpen(false)}
       >
         <FormAcademicPeriod
@@ -256,7 +254,7 @@ export default function LapsoPage() {
         variant="danger"
       />
       {/* Grilla Central de Visualización de Estados */}
-      <section className="p-3">
+      <section>
         {validLapsesCount > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {lapses.map((lapso) => (

@@ -1,7 +1,7 @@
 "use client";
 
-import Icon from "../atom/Icon";
 import CardLoand from "../atom/CardLoand";
+import Icon from "../atom/Icon";
 import {
   faLongArrowDown,
   faLayerGroup,
@@ -9,7 +9,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListAcademicLoand({ academicLoads = [] }) {
-  // Normalización ultra segura de la estructura
   const rawData = Array.isArray(academicLoads)
     ? academicLoads
     : Array.isArray(academicLoads?.data)
@@ -36,7 +35,7 @@ export default function ListAcademicLoand({ academicLoads = [] }) {
   }
 
   return (
-    <div className="space-y-8 p-1">
+    <div className="space-y-8">
       {rawData.map((group, groupIndex) => {
         const section = group?.section || {};
         const loads = Array.isArray(group?.academicLoad)

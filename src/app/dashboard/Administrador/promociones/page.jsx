@@ -1,11 +1,12 @@
 "use client";
 
+import Banner from "@/components/atom/Banner";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import TableInsti from "@/components/molecules/TableInsti";
-import Banner from "@/components/atom/Banner";
 import { useAuth } from "@/context/AuthContext";
+import { approved } from "@/services/enrollment/Approved";
 import { getApproved } from "@/services/enrollment/getApproved";
 import {
   faCheck,
@@ -16,7 +17,6 @@ import {
   faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { approved } from "@/services/enrollment/Approved";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
@@ -86,18 +86,18 @@ export default function PromocionesPage() {
   };
 
   return (
-    <div className=" transition-colors">
-      <HeaderDashbord titelPage="Promoción" />
+    <section className="transition-colors space-y-3">
+      <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+        Promociones
+      </h2>
 
-      <div className="p-4 space-y-4">
-        <section>
-          <Banner
-            icon={faInfo}
-            titel="Nota Informativa"
-            message="En este módulo estarán listados todos los estudiantes que cumplen con el mínimo aprobatorio para ser promovidos al siguiente año superior."
-          />
-        </section>
+      <Banner
+        icon={faInfo}
+        titel="Nota Informativa"
+        message="En este módulo estarán listados todos los estudiantes que cumplen con el mínimo aprobatorio para ser promovidos al siguiente año superior."
+      />
 
+      <div className="space-y-4">
         <div className="flex justify-end">
           <Button
             onClick={() => handlePromotion()}
@@ -182,6 +182,6 @@ export default function PromocionesPage() {
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

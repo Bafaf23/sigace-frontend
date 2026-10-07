@@ -26,7 +26,7 @@ export default function CardGridSetion({
 
   if (validDataSet.length === 0)
     return (
-      <div className="p-3">
+      <div>
         <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-12 text-center dark:border-zinc-500 dark:bg-zinc-800">
           <Icon
             icon={faBook}
@@ -43,7 +43,7 @@ export default function CardGridSetion({
     );
 
   return (
-    <div className="grid gap-5 p-4 md:grid-cols-1 lg:grid-cols-2">
+    <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
       {validDataSet.map((section, index) => {
         const teacherName = section?.guide
           ? `${section.guide?.name || ""} ${section.guide?.last_name || ""}`.trim()

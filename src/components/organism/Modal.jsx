@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 export default function Modal({
   isOpen,
   onClose,
-  titel,
+  title,
   children,
   maxWidth = "max-w-lg",
 }) {
@@ -59,20 +59,20 @@ export default function Modal({
       {/* CONTENEDOR DE LA VENTANA (Modal Shell) */}
       <div
         ref={modalRef}
-        className={`relative w-full ${maxWidth} transform overflow-hidden rounded-3xl bg-white p-6 shadow-2xl transition-all dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 animate-in fade-in zoom-in-95 duration-200`}
+        className={`relative w-full ${maxWidth} transform overflow-hidden rounded-3xl bg-white p-6 shadow-2xl transition-all dark:bg-zinc-950 border border-slate-100 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-200`}
       >
         {/* CABECERA (Header) */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/60">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-900">
           <h3
-            id="modal-titel"
-            className="text-xl font-black text-slate-800 dark:text-slate-100 tracking-tight capitalize"
+            id="modal-title"
+            className="text-xl font-black text-slate-800 dark:text-zinc-200 tracking-tight capitalize"
           >
-            {titel}
+            {title}
           </h3>
           <Button
             icon={faTimes}
             // MEJORA: Asegurar que el botón tenga type="button" interno en tu Atomo para que no intente hacer submit si el modal está dentro de un <form>
-            classNameBtn="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            classNameBtn="text-slate-400 hover:text-zinc-600 dark:hover:text-zinc-600 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             onClick={onClose}
             aria-label="Cerrar modal"
           />
@@ -80,7 +80,7 @@ export default function Modal({
 
         {/* CUERPO DEL CONTENIDO (Children) */}
         {/* MEJORA: Se agrega 'pr-2' para que la barra de scroll vertical (cuando aparezca) no pise el texto de tus formularios o reportes */}
-        <div className="mt-4 overflow-y-auto max-h-[calc(100vh-12rem)] pr-2 scrollbar-thin">
+        <div className="mt-4 overflow-y-auto  pr-2 scrollbar-thin">
           {children}
         </div>
       </div>

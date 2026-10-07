@@ -20,7 +20,7 @@ export default function Logo({ className = "text-slate-500" }) {
           SIGA<span className={`text-cyan-500`}>CE</span>
         </h1>
         <p className="text-[10px] font-medium tracking-[0.2em] text-zinc-500 uppercase">
-          Iniciando
+          a un click
         </p>
       </div>
     </div>

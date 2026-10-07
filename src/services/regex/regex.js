@@ -1,13 +1,13 @@
 /**
  * Patrones de validación para el formulario de registro de usuarios.
  * @typedef {Object} patterns
- * @property {RegExp} email - Patrón de validación para el correo electrónico.
- * @property {RegExp} password - Patrón de validación para la contraseña.
- * @property {RegExp} name - Patrón de validación para el nombre.
- * @property {RegExp} lastName - Patrón de validación para el apellido.
- * @property {RegExp} dni - Patrón de validación para el número de documento.
- * @property {RegExp} phone - Patrón de validación para el teléfono.
- * @property {RegExp} address - Patrón de validación para la dirección.
+ * @property {titelp} email - Patrón de validación para el correo electrónico.
+ * @property {titelp} password - Patrón de validación para la contraseña.
+ * @property {titelp} name - Patrón de validación para el nombre.
+ * @property {titelp} lastName - Patrón de validación para el apellido.
+ * @property {titelp} dni - Patrón de validación para el número de documento.
+ * @property {titelp} phone - Patrón de validación para el teléfono.
+ * @property {titelp} address - Patrón de validación para la dirección.
  */
 export const patterns = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -23,7 +23,7 @@ export const patterns = {
 
 /**
  * Valida un valor contra un patrón de validación.
- * @param {RegExp} pattern - Patrón de validación.
+ * @param {titelp} pattern - Patrón de validación.
  * @param {string} value - Valor a validar.
  * @returns {boolean} true si el valor es válido, false en caso contrario.
  */

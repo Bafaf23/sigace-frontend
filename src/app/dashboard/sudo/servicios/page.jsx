@@ -80,6 +80,7 @@ export default function ServiciosPage() {
         titelTable={[
           { name: "Id", icon: faKey },
           { name: "Nombre", icon: faIdCardClip },
+          { name: "Tipo", icon: faFile },
           { name: "Descripcion", icon: faFile },
           { name: "Precio", icon: faDollar },
           { name: "Acciones", icon: faEllipsis },
@@ -97,6 +98,11 @@ export default function ServiciosPage() {
             <td className="px-6 py-4">
               <div className="flex flex-col transition-colors dark:text-zinc-300">
                 <span className="font-medium">{service.name}</span>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex flex-col text-sm transition-colors text-slate-500 dark:text-zinc-300">
+                <span className="font-medium">{service.type}</span>
               </div>
             </td>
             <td className="px-6 py-4">

@@ -26,7 +26,7 @@ export default function Pagination({ pagination, onPageChange, loading }) {
       <p className="text-xs font-semibold text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800/80 p-3 rounded-xl border border-slate-200 dark:border-zinc-700/60 whitespace-nowrap text-center sm:text-left">
         Mostrando:{" "}
         <span className="text-slate-900 dark:text-zinc-100 font-bold">
-          {pagination.page}
+          {pagination?.page}
         </span>{" "}
         de {pagination.totalPage}
       </p>

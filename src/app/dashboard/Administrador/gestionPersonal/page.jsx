@@ -90,14 +90,16 @@ export default function GestionPersonalPage() {
     return <AccessDenied />;
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out">
+    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 p-1">
-        <HeaderDashbord titelPage="Gestión de Personal" />
+        <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+          Gestion de Personal
+        </h2>
       </div>
 
       {/* Modal de Registro */}
       <Modal
-        titel="Registrar Nuevo Docente"
+        title="Registrar Nuevo Docente"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
@@ -109,16 +111,15 @@ export default function GestionPersonalPage() {
           }}
         />
       </Modal>
-      <section className="p-4">
-        <Banner
-          icon={faInfo}
-          titel="¿Necesitas actualizar el estatus de un docente?"
-          message="Para modificar la disponibilidad o el estado activo/inactivo de la nómina, por favor contacta a soporte técnico"
-        />
-      </section>
+
+      <Banner
+        icon={faInfo}
+        titel="¿Necesitas actualizar el estatus de un docente?"
+        message="Para modificar la disponibilidad o el estado activo/inactivo de la nómina, por favor contacta a soporte técnico"
+      />
 
       {/* Barra de Filtros y Búsquedas */}
-      <div className="p-3 flex justify-between flex-col md:flex-row gap-5 w-full">
+      <div className="flex justify-between flex-col md:flex-row gap-5 w-full">
         <div className="max-w-md">
           <Search
             placeholder="Buscar por cédula o nombre..."
@@ -140,11 +141,9 @@ export default function GestionPersonalPage() {
 
       {/* Área de Datos: Tabla e Historial Reactivo */}
       {dataLoading ? (
-        <div className="p-3">
-          <SkeletonCard />
-        </div>
+        <SkeletonCard />
       ) : (
-        <div className="p-3">
+        <div>
           <TableInsti
             titelTable={[
               { name: "Cédula", icon: faIdCard },
@@ -154,7 +153,6 @@ export default function GestionPersonalPage() {
               { name: "Estatus", icon: faInfoCircle },
             ]}
             data={filteredUsers}
-            // 🖥️ Vista de Escritorio (Estructura de Filas)
             renderTableRows={(user) => (
               <tr
                 key={user.id}
@@ -199,7 +197,6 @@ export default function GestionPersonalPage() {
                 </td>
               </tr>
             )}
-            // 📱 Vista Móvil (Tarjetas Flexibles)
             renderMovilCard={(user) => (
               <div
                 key={`card-user-${user.id}`}

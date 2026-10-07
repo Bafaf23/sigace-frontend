@@ -72,10 +72,12 @@ export default function CargaAcademicaPage() {
   }, [loadCatalogData]);
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out p-2">
+    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
       {/* Encabezado Principal y Botón de Escritorio */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <HeaderDashbord titelPage="Gestión de Carga Académica" />
+        <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+          Carga Academica
+        </h2>
         <div className="hidden md:block">
           <Button
             onClick={() => setIsOpen(true)}
@@ -91,7 +93,7 @@ export default function CargaAcademicaPage() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        titel="Nueva Asignación de Carga Académica"
+        title="Nueva Asignación de Carga Académica"
       >
         <FormAcadLoand
           subjects={subjects}
@@ -106,7 +108,7 @@ export default function CargaAcademicaPage() {
       </Modal>
 
       {/* Botón Móvil con Ajuste UI Premium */}
-      <div className="p-3 md:hidden">
+      <div className="md:hidden">
         <Button
           onClick={() => setIsOpen(true)}
           icon={faPlus}
@@ -118,19 +120,15 @@ export default function CargaAcademicaPage() {
 
       {/* Control del Estado de Carga (Skeleton vs Lista Estructurada) */}
       {loading ? (
-        <div className="p-3">
-          <SkeletonCard />
-        </div>
+        <SkeletonCard />
       ) : (
-        <div className="mt-5">
-          <ListAcademicLoand
-            academicLoads={academicLoads}
-            subjects={subjects}
-            teachers={teachers}
-            sections={sections}
-            onRefresh={() => loadCatalogData(true)}
-          />
-        </div>
+        <ListAcademicLoand
+          academicLoads={academicLoads}
+          subjects={subjects}
+          teachers={teachers}
+          sections={sections}
+          onRefresh={() => loadCatalogData(true)}
+        />
       )}
     </div>
   );

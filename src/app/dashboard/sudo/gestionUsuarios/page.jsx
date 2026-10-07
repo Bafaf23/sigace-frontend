@@ -33,19 +33,19 @@ export default function UsuariosPage() {
   const [editingUser, setEditingUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState({});
-  const [page, setPage] = useState(3);
+  const [page, setPage] = useState(1);
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    getUsers({ page }).then((data) => {
+    getUsers({ page, search: appliedFilter }).then((data) => {
       setUsers(data.data);
       setPagination(data?.pagination);
     });
-  }, [page]);
+  }, [page, appliedFilter]);
 
   const fetchUsers = () => {
     setloading(true);
-    getUsers({ page }).then((data) => {
+    getUsers({ page, search: appliedFilter }).then((data) => {
       if (data && data.data) {
         setUsers(data?.data);
         setPagination(data?.pagination);
@@ -67,14 +67,6 @@ export default function UsuariosPage() {
     }
   }, [search]);
 
-  const filteredUsers = users.filter((user) => {
-    const cedulaStr = String(user?.document || "");
-    const nameStr = String(user?.name || "");
-    const completeTerm = `${cedulaStr} ${nameStr}`.toLowerCase();
-
-    return completeTerm.includes(appliedFilter.toLowerCase().trim());
-  });
-
   const handleSearch = () => {
     setAppliedFilter(search);
   };
@@ -84,7 +76,7 @@ export default function UsuariosPage() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        titel="Crear Usuario"
+        title="Crear Usuario"
       >
         <FormRegister
           mode="create"
@@ -109,14 +101,16 @@ export default function UsuariosPage() {
           setSearch={setSearch}
           search={search}
           onSearch={handleSearch}
-          placeholder="Cedula o Nombre..."
+          placeholder="Cedula"
         />
         <div className="flex gap-5 items-center">
-          <Pagination
-            pagination={pagination}
-            onPageChange={handlePageChange}
-            loading={loading}
-          />
+          {pagination && (
+            <Pagination
+              loading={loading}
+              pagination={pagination}
+              onPageChange={handlePageChange}
+            />
+          )}
           <Button
             onClick={() => setIsOpen(true)}
             icon={faPlus}
@@ -128,10 +122,12 @@ export default function UsuariosPage() {
       </div>
 
       <TableInsti
+        loading={loading}
         titelTable={[
           { name: "Id", icon: faUserTag },
           { name: "Cedula", icon: faIdCard },
           { name: "Nombre y Apellido", icon: faUser },
+          { name: "Escuela", icon: faBuilding },
           { name: "Acciones", icon: faEllipsis },
         ]}
         data={users}
@@ -159,8 +155,15 @@ export default function UsuariosPage() {
                   {user.last_name}
                 </span>
               </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex items-center gap-2 group-hover:text-cyan-600 transition-colors">
+                <span className="text-slate-500  dark:text-zinc-100 ">
+                  {user.school ? user.school.name : "SIGACE"}
+                </span>
+              </div>
               <span className="text-md text-slate-400  dark:text-zinc-500  capitalize">
-                {user.role}
+                {user.role} - {user.school?.SIG || "SIGACE"}
               </span>
             </td>
 

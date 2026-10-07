@@ -42,6 +42,12 @@ export default function sudoPage() {
           colorInfo="text-green-500"
           message="Total de usuarios activos en el sistema."
         />
+        <CardState
+          title="Servicios"
+          info={dataMetric?.totalServices}
+          colorInfo="text-orange-500"
+          message="Total de servicios activos en el sistema."
+        />
       </section>
     </div>
   );

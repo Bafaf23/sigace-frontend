@@ -7,8 +7,8 @@ import axios from "axios";
  */
 export async function updateSchool(school) {
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/schools/updateSchool`,
+    const response = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}/schools/`,
       school,
       {
         withCredentials: true,

@@ -2,20 +2,21 @@
 import Banner from "@/components/atom/Banner";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
-import HeaderDashbord from "@/components/molecules/HeaderDashbord";
+import ToggleSimple from "@/components/atom/ToggleSimple";
 import Search from "@/components/molecules/Serch";
 import TableInsti from "@/components/molecules/TableInsti";
 import FormInstitucion from "@/components/organism/FormInstitucion";
 import Modal from "@/components/organism/Modal";
-import { deleteSchool } from "@/services/school/deleteSchool";
 import { getCDDE } from "@/services/school/getCDDE";
 import { getSchools } from "@/services/school/getSchool";
+import { getSchoolBySIG } from "@/services/school/getSchoolBySIG";
+import { updateSchool } from "@/services/school/updateSchool";
 import { getUsers } from "@/services/user/getUsers";
 import {
   faPlus,
-  faEdit,
-  faTrash,
   faInfo,
+  faCheckCircle,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCode,
@@ -26,35 +27,33 @@ import {
   faIdCard,
   faTag,
   faBuilding,
-  faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function InstitucionesPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [users, setUsers] = useState(false);
   const [institutions, setInstitutions] = useState([]);
-  const [users, setUsers] = useState([]);
   const [editingInstitution, setEditingInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [appliedFilter, setAppliedFilter] = useState("");
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [cdee, setCdde] = useState(null);
+  const [directives, setDirectives] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
 
-        const [schoolsRes, usersRes, cddeRes] = await Promise.all([
+        const [schoolsRes, cddeRes] = await Promise.all([
           getSchools(),
-          getUsers(),
           getCDDE(),
         ]);
 
         setInstitutions(schoolsRes.data);
-        setUsers(usersRes.data);
         setCdde(cddeRes.data);
       } catch (error) {
         console.error("Error al cargar datos del panel:", error);
@@ -66,21 +65,13 @@ export default function InstitucionesPage() {
     fetchData();
   }, []);
 
-  const fechSchool = () => {
+  const fetchSchool = () => {
     getSchools().then((data) => {
       if (data.data) {
         setInstitutions(data.data);
       }
     });
   };
-
-  const filteredInstitutions = institutions?.filter((institution) => {
-    const SIG = String(institution?.SIG || "");
-    const nameStr = String(institution?.name || "");
-    const completeTerm = `${SIG} ${nameStr}`.toLowerCase();
-
-    return completeTerm.includes(appliedFilter.toLowerCase().trim());
-  });
 
   useEffect(() => {
     if (search.trim() === "") {
@@ -89,23 +80,50 @@ export default function InstitucionesPage() {
     }
   }, [search]);
 
+  const handleStatus = async (editingInstitution) => {
+    const updatedStatus = !editingInstitution.is_active;
+
+    const updatedInstitution = {
+      ...editingInstitution,
+      is_active: updatedStatus,
+    };
+
+    await updateSchool(updatedInstitution).then((data) => {
+      if (data && data.success == true) {
+        fetchSchool();
+      }
+    });
+  };
+
   const handleSearch = () => {
     setAppliedFilter(search);
   };
+
+  const handleEdit = async (institution) => {
+    if (!institution.SIG) return;
+    const res = await getSchoolBySIG(institution.SIG);
+    const detalis = res.school ?? res;
+
+    setEditingInstitution(detalis);
+    setIsOpenEdit(true);
+  };
+
   const BASE_DOMAIN = process.env.NEXT_PUBLIC_BASE_DOMAIN;
 
   return (
     <div className="space-y-5">
       <Modal
-        titel="Agregar nueva institución"
+        maxWidth="max-w-8xl"
+        title="Agregar nueva institución"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
         <FormInstitucion
+          isEdit={false}
           cdde={cdee}
           onSuccess={() => {
             setIsOpen(false);
-            fechSchool();
+            fetchSchool();
           }}
         />
       </Modal>
@@ -116,8 +134,8 @@ export default function InstitucionesPage() {
 
       <Banner
         icon={faInfo}
-        titel="Instituciones Públicas"
-        message="Las instituciones de tipo pública  tienen como razón social el nombre del Ministerio del Poder Popular para la Educación y el RIF del mismo."
+        titel="Más información"
+        message="Aquí puedes gestionar todas las instituciones registradas en el sistema. Puedes crear nuevas instituciones, editar la información existente y activar o desactivar su estado según sea necesario. Utiliza la barra de búsqueda para filtrar por SIG, nombre o subdominio de la institución. Para ampliar la información de una institución, haz clic en su SIG para acceder a su perfil detallado."
       />
 
       <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
@@ -138,23 +156,17 @@ export default function InstitucionesPage() {
       </div>
 
       <TableInsti
+        data={institutions}
         loading={loading}
         titelTable={[
           { name: "SIG", icon: faCode },
           { name: "Institucion", icon: faInstitution },
-          { name: "Razon Social", icon: faBuilding },
-          { name: "Direccion", icon: faLocationDot },
-          { name: "Contacto", icon: faPhone },
           { name: "Tipo", icon: faTag },
-          { name: "RIF/DEA", icon: faIdCard },
-          { name: "CDCEE", icon: faIdCard },
           { name: "Subdominio", icon: faNetworkWired },
-          { name: "Acciones", icon: faEllipsis },
+          { name: "Estatus", icon: faCheckCircle },
+          { icon: faGear },
         ]}
         renderTableRows={(institution) => {
-          const schoolDirector = institution.user_schools?.find(
-            (item) => item.user?.role?.name === "director",
-          );
           return (
             <tr
               key={institution.SIG}
@@ -163,21 +175,14 @@ export default function InstitucionesPage() {
               {/* SIG Y DIRECTOR */}
               <td className="px-4 py-4 whitespace-nowrap">
                 <div className="flex flex-col group-hover:text-cyan-600 transition-colors dark:text-zinc-200">
-                  <span className="font-medium">{institution.SIG}</span>
-                </div>
-                <div>
-                  <span
-                    className={`inline-flex items-center max-w-40 px-2 py-0.5 rounded-full text-xs font-semibold ${institution.is_active ? "bg-green-50 text-green-700 border border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800/60" : "bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60"} `}
-                    titel={
-                      institution.is_active
-                        ? `${institution.is_active}`
-                        : "Sin asignar"
-                    }
+                  <Button
+                    classNameBtn="text-left p-0 hover:underline cursor-pointer"
+                    onClick={() => {
+                      handleEdit(institution);
+                    }}
                   >
-                    <span className="truncate">
-                      {institution.is_active ? `Activa` : "Inactiva"}
-                    </span>
-                  </span>
+                    <span className="font-medium">{institution.SIG}</span>
+                  </Button>
                 </div>
               </td>
 
@@ -185,64 +190,10 @@ export default function InstitucionesPage() {
               <td className="px-4 py-4 max-w-50">
                 <span
                   className="font-medium text-slate-800 line-clamp-2 dark:text-zinc-200"
-                  titel={institution.school_name}
+                  titel={institution.name}
                 >
-                  {institution.school_name}
+                  {institution.name}
                 </span>
-                <span
-                  className="inline-flex  max-w-40 px-2 py-0.5 rounded-full text-xs font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-800/60"
-                  titel={
-                    schoolDirector
-                      ? `${schoolDirector.user.name} ${schoolDirector.user.last_name}`
-                      : "Sin asignar"
-                  }
-                >
-                  <span className="truncate">
-                    {schoolDirector
-                      ? `${schoolDirector.user.name} ${schoolDirector.user.last_name}`
-                      : "Sin asignar"}
-                  </span>
-                </span>
-              </td>
-
-              {/* RAZÓN SOCIAL */}
-              <td className="px-4 py-4 max-w-45 dark:text-zinc-200">
-                <span
-                  className={`font-medium uppercase line-clamp-1 ${
-                    institution.type === "Pública" ||
-                    institution.type === "Publica"
-                      ? "text-green-500"
-                      : "text-orange-500"
-                  }`}
-                  titel={institution.company_name}
-                >
-                  {institution.type === "Pública" ||
-                  institution.type === "Publica"
-                    ? "MPPE"
-                    : institution.company_name}
-                </span>
-              </td>
-
-              {/* DIRECCIÓN */}
-              <td className="px-4 py-4 max-w-55">
-                <span
-                  className="font-medium text-slate-800 text-sm line-clamp-2 dark:text-zinc-200"
-                  titel={institution.address}
-                >
-                  {institution.address}
-                </span>
-              </td>
-
-              {/* CONTACTO */}
-              <td className="px-4 py-4 max-w-45">
-                <div className="flex flex-col">
-                  <span className="font-medium text-slate-800 whitespace-nowrap dark:text-zinc-200">
-                    {institution.phone}
-                  </span>
-                  <span className="font-medium text-slate-500 text-xs break-all dark:text-zinc-200">
-                    {institution.email}
-                  </span>
-                </div>
               </td>
 
               {/* TIPO */}
@@ -259,27 +210,6 @@ export default function InstitucionesPage() {
                 </span>
               </td>
 
-              {/* RIF / DEA */}
-              <td className="px-4 py-4 whitespace-nowrap">
-                <div className="flex flex-col">
-                  <span className="font-medium text-slate-800 text-sm font-mono dark:text-zinc-200">
-                    {institution.type === "Pública" ||
-                    institution.type === "Publica"
-                      ? "G-200000090"
-                      : institution.RIF}
-                  </span>
-                  <span className="font-medium text-slate-500 text-xs font-mono dark:text-zinc-200">
-                    {institution.DEA_CODE}
-                  </span>
-                </div>
-              </td>
-
-              {/* CDCEE */}
-              <td className="px-4 py-4 max-w-30 whitespace-nowrap truncate">
-                <span className="font-medium text-slate-800 dark:text-zinc-200">
-                  {institution.cdcee?.name || "N/A"}
-                </span>
-              </td>
               {/* SuBdominio */}
               <td className="px-4 py-4 max-w-30 whitespace-nowrap truncate">
                 <Link
@@ -291,29 +221,30 @@ export default function InstitucionesPage() {
                 </Link>
               </td>
 
+              {/* ESTATUS */}
+              <td className="px-4 py-4 whitespace-nowrap">
+                <div>
+                  <span
+                    className={`inline-flex items-center max-w-40 px-2 py-0.5 rounded-full text-xs font-semibold ${institution.is_active ? "bg-green-50 text-green-700 border border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800/60" : "bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60"} `}
+                    titel={
+                      institution.is_active
+                        ? `${institution.is_active}`
+                        : "Sin asignar"
+                    }
+                  >
+                    <span className="truncate">
+                      {institution.is_active ? `Activa` : "Inactiva"}
+                    </span>
+                  </span>
+                </div>
+              </td>
+
               {/* ACCIONES */}
               <td className="px-4 py-4 whitespace-nowrap">
                 <div className="flex items-center gap-2">
-                  <Button
-                    icon={faEdit}
-                    classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 dark:text-zinc-200 transition-all hover:bg-indigo-50 hover:text-indigo-600"
-                    onClick={() => {
-                      setEditingInstitution(institution);
-                      setIsOpenEdit(true);
-                    }}
-                  />
-                  <Button
-                    icon={faTrash}
-                    classNameBtn="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-red-50 hover:text-red-600 dark:text-zinc-200"
-                    onClick={() => {
-                      deleteSchool(institution.SIG).then((data) => {
-                        if (data?.ok) {
-                          setInstitutions((prev) =>
-                            prev.filter((item) => item.SIG !== institution.SIG),
-                          );
-                        }
-                      });
-                    }}
+                  <ToggleSimple
+                    value={institution.is_active}
+                    onChange={() => handleStatus(institution)}
                   />
                 </div>
               </td>
@@ -406,18 +337,19 @@ export default function InstitucionesPage() {
             </div>
           </div>
         )}
-        data={filteredInstitutions}
       />
 
       <Modal
+        maxWidth="max-w-8xl"
         isOpen={isOpenEdit}
         onClose={() => setIsOpenEdit(false)}
-        titel="Editar Institución"
+        title={`Edita la informacion de ${editingInstitution?.name}`}
       >
         <FormInstitucion
           isEdit={true}
           institution={editingInstitution}
           onSuccess={() => setIsOpenEdit(false)}
+          directives={directives}
         />
       </Modal>
     </div>
