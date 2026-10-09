@@ -37,7 +37,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 md:justify-start">
-            <a
+            <Link
               href={WA_LINK}
               target="_blank"
               rel="noopener noreferrer"
@@ -45,7 +45,7 @@ export default function Hero() {
             >
               <Icon icon={faUserPlus} className="text-xl" />
               Contactar con ventas
-            </a>
+            </Link>
             <Link
               href="#planes"
               className="flex items-center gap-2 rounded-xl border border-zinc-200  px-8 py-3 font-bold text-zinc-100 shadow-sm transition-all hover:border-zinc-300 hover:bg-zinc-300/50"
