@@ -58,7 +58,6 @@ export default function TeachersPage() {
   // --- EXTRACCIÓN SEGURA DEL LISTADO DE CARGAS ---
   const list = loadAcademic?.load_academics || [];
 
-  // --- CÁLCULO DE TOTALES Y MATRICES ---
   const totalMaterias = list.length;
 
   const totalSecciones = new Set(
@@ -86,10 +85,10 @@ export default function TeachersPage() {
   ].join(", ");
 
   return (
-    <div className="animate-in fade-in duration-500">
+    <div className="space-y-3">
       <HeaderDashbord user={user} />
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-3">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Materias */}
         <div className="col-span-1">
           <InfoCard

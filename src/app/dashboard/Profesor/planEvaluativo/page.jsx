@@ -151,42 +151,11 @@ export default function PlanEvaluativo() {
   };
 
   return (
-    <div className="p-2">
-      <div className="flex flex-col items-start justify-between md:flex-row">
-        <HeaderDashbord titelPage={"Plan Evaluativo"} />
-        <div className="p-3">
-          {porcentajeTotal < 100 && (
-            <Button
-              classNameBtn="bg-indigo-500 p-2 rounded-md text-slate-50 font-bold cursor-pointer flex items-center gap-1"
-              icon={faPlus}
-              onClick={() => {
-                setEvaluation({});
-                setIsModalOpen(true);
-              }}
-            >
-              {"Añadir Evaluación"}
-            </Button>
-          )}
-
-          <Modal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            titel="Plan Evaluativo"
-            maxWidth="max-w-2xl"
-          >
-            <FormCargaPV
-              idLoadAcademic={selectedSubject?.id_load_academic}
-              idLapseActive={activeLapse?.id}
-              onSuccess={(newEvalu) => {
-                handleEvaluationCreated(newEvalu);
-                setIsModalOpen(false);
-              }}
-            />
-          </Modal>
-        </div>
-      </div>
-
-      <div className=" flex flex-col gap-5  font-bold text-gray-500/60">
+    <>
+      <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+        Evaluaciones
+      </h2>
+      <div className="flex flex-col gap-5 font-bold text-gray-500/60">
         <div className="flex flex-col justify-between md:flex-row md:items-center lg:flex-row">
           {subjects.length > 1 && (
             <div className="p-2">
@@ -214,7 +183,7 @@ export default function PlanEvaluativo() {
           )}
         </div>
 
-        <div className="p-2 grid grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {/* Tarjeta: Materia */}
           <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all">
             <div className="p-2 bg-cyan-50 dark:bg-cyan-950/40 rounded-lg text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
@@ -276,7 +245,36 @@ export default function PlanEvaluativo() {
             </div>
           </div>
         </div>
+        <div className="w-full flex justify-end">
+          {porcentajeTotal < 100 && (
+            <Button
+              classNameBtn="bg-cyan-500 py-3 px-4 rounded-xl text-slate-50 font-bold cursor-pointer hover:bg-cyan-700 flex items-center gap-1"
+              icon={faPlus}
+              onClick={() => {
+                setEvaluation({});
+                setIsModalOpen(true);
+              }}
+            >
+              Nueva actividad
+            </Button>
+          )}
 
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title="Añade una nueva actividad"
+            maxWidth="max-w-4xl"
+          >
+            <FormCargaPV
+              idLoadAcademic={selectedSubject?.id_load_academic}
+              idLapseActive={activeLapse?.id}
+              onSuccess={(newEvalu) => {
+                handleEvaluationCreated(newEvalu);
+                setIsModalOpen(false);
+              }}
+            />
+          </Modal>
+        </div>
         <TableInsti
           data={evaluations}
           titelTable={[
@@ -406,6 +404,6 @@ export default function PlanEvaluativo() {
         cancelLabel="Cancelar"
         variant="danger"
       />
-    </div>
+    </>
   );
 }
