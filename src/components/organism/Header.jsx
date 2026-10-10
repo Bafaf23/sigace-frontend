@@ -30,7 +30,7 @@ const options = [
 
 export default function Header() {
   return (
-    <header className="absolute top-4 left-0 w-full px-5 md:translate-x-10 z-50 md:w-[48%]">
+    <header className="absolute top-4 left-0 w-full px-5 lg:translate-x-10 z-50 md:w-fiit lg:w-[50%]">
       <div className="flex items-center justify-between gap-4 bg-white border border-slate-200 px-5 py-2.5 rounded-full dark:bg-zinc-800 dark:border-zinc-700 shadow-sm">
         {/* Logo */}
         <SchoPackLogo className="text-slate-600 dark:text-zinc-100" />
