@@ -15,11 +15,11 @@ export default function Logo({ className = "text-slate-500" }) {
       </div>
       <div className="flex flex-col">
         <h1
-          className={`${className} text-3xl leading-none font-bold tracking-tight`}
+          className={`${className} text-xl lg:text-2xl leading-none font-bold tracking-tight`}
         >
           SIGA<span className={`text-cyan-500`}>CE</span>
         </h1>
-        <p className="text-[10px] font-medium tracking-[0.2em] text-zinc-500 uppercase">
+        <p className="lg:text-[10px] text-[8px] font-medium tracking-[0.2em] text-zinc-500 uppercase">
           a un click
         </p>
       </div>

@@ -1,5 +1,5 @@
-import Label from "../atom/Label";
 import Icon from "@/components/atom/Icon";
+import Label from "@/components/atom/Label";
 import {
   faGraduationCap,
   faTable,
@@ -34,10 +34,9 @@ export default function About() {
         <div className="flex flex-col items-center gap-16 lg:flex-row">
           {/* Lado Derecho: Contenido */}
           <div className="flex-1">
-            <Label
-              label="Sobre el Proyecto"
-              className="bg-[#EDAB1F]/70 dark:text-orange-300 text-orange-600"
-            />
+            <Label className="bg-[#EDAB1F]/70 dark:text-orange-300 text-orange-600">
+              Sobre el Proyecto
+            </Label>
             <h3 className="mb-6 text-3xl font-black text-[#ED781F] md:text-4xl">
               Un sueño, las bases del mañana.
             </h3>

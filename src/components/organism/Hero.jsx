@@ -19,14 +19,12 @@ export default function Hero() {
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-12 px-4 md:flex-row">
         <div className="z-10 text-center md:text-left">
           <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
-            <Label
-              label={"Gestión Inteligente"}
-              className="bg-cyan-600/90 text-cyan-300"
-            ></Label>
-            <Label
-              label={"La comodidad de trabajar en equipo"}
-              className="bg-[#1FED92]/90 text-[#0f6e43]"
-            ></Label>
+            <Label className="bg-cyan-600/90 text-cyan-300">
+              Gestión Inteligente
+            </Label>
+            <Label className="bg-[#1FED92]/90 text-[#0f6e43]">
+              La comodidad de trabajar en equipo
+            </Label>
           </div>
           <h1 className="mb-3 text-3xl leading-tight font-black text-white md:text-4xl">
             Optimiza al maximo la administracion
@@ -37,7 +35,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 md:justify-start">
-            <Link
+            <a
               href={WA_LINK}
               target="_blank"
               rel="noopener noreferrer"
@@ -45,7 +43,7 @@ export default function Hero() {
             >
               <Icon icon={faUserPlus} className="text-xl" />
               Contactar con ventas
-            </Link>
+            </a>
             <Link
               href="#planes"
               className="flex items-center gap-2 rounded-xl border border-zinc-200  px-8 py-3 font-bold text-zinc-100 shadow-sm transition-all hover:border-zinc-300 hover:bg-zinc-300/50"
