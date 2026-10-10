@@ -213,92 +213,91 @@ export default function CargarNotas() {
   if (!user || role !== "profesor") {
     return <AccessDenied />;
   }
-  console.log(subjects);
+
   return (
-    <>
-      <HeaderDashbord titelPage={"Cargar notas"} />
-
-      <div className="flex flex-col gap-5 p-3 font-bold text-gray-500/60">
-        <div className="flex flex-col justify-between md:flex-row md:items-center lg:flex-row gap-4 w-full">
-          {subjects.length > 0 && (
-            <div className="max-w-xs">
-              <Selector
-                options={subjects.map((item) => ({
-                  value: item.id.toString(),
-                  label: `${item.subject?.name ?? ""} - ${item.section?.year?.name ?? ""} "${item.section?.name ?? ""}"`,
-                }))}
-                name="materia"
-                label="Asignatura"
-                value={selectedSubject?.id?.toString() ?? ""}
-                onChange={(e) => {
-                  const selectedId = Number(e.target.value);
-                  const subject = subjects.find((s) => s.id === selectedId);
-                  if (subject) setSelectedSubject(subject);
-                }}
-              />
-            </div>
-          )}
-
-          {activeLapse && selectedSubject && (
-            <div>
-              <Button
-                classNameBtn={
-                  "bg-indigo-500 p-3 rounded-lg text-slate-50 font-bold cursor-pointer flex items-center gap-1 w-full"
-                }
-                icon={faPlus}
-                disabled={!activeLapse || !selectedSubject}
-                onClick={() => setIsModalOpen(true)}
-              >
-                {"Nueva Calificacion"}
-              </Button>
-
-              <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                titel="Cargar Calificaciones"
-              >
-                <FormCargaNotas
-                  listaEstudiantesSinNotas={EstudiantesDisponibles}
-                  activities={
-                    activities.find((a) => a.id_lapse === activeLapse?.id)
-                      ?.list ?? []
-                  }
-                  onSave={() => {
-                    setRefreshNotas((prev) => !prev);
-                    setIsModalOpen(false);
-                  }}
-                  onCancel={() => setIsModalOpen(false)}
-                />
-              </Modal>
-            </div>
-          )}
-        </div>
-
-        {loadingNotes ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 border-dashed bg-slate-100/50 p-6 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-900/50">
-            <Icon
-              icon={faInfoCircle}
-              className="text-2xl text-slate-500 animate-pulse"
+    <div className="flex flex-col gap-5 font-bold">
+      <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
+        Calificaciones
+      </h2>
+      <div className="flex flex-col justify-between md:flex-row md:items-center lg:flex-row gap-4 w-full">
+        {subjects.length > 0 && (
+          <div className="max-w-xs">
+            <Selector
+              options={subjects.map((item) => ({
+                value: item.id.toString(),
+                label: `${item.subject?.name ?? ""} - ${item.section?.year?.name ?? ""} "${item.section?.name ?? ""}"`,
+              }))}
+              name="materia"
+              label="Asignatura"
+              value={selectedSubject?.id?.toString() ?? ""}
+              onChange={(e) => {
+                const selectedId = Number(e.target.value);
+                const subject = subjects.find((s) => s.id === selectedId);
+                if (subject) setSelectedSubject(subject);
+              }}
             />
-            Cargando notas...
           </div>
-        ) : (
-          lapses.map((lapso) => {
-            return (
-              <TablaNotas
-                key={lapso.id}
-                data={lapso}
-                students={EstudiantesDisponibles}
+        )}
+
+        {activeLapse && selectedSubject && (
+          <div>
+            <Button
+              classNameBtn={
+                "bg-orange-500 px-5 py-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center gap-1 w-full"
+              }
+              icon={faPlus}
+              disabled={!activeLapse || !selectedSubject}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Carga individual
+            </Button>
+
+            <Modal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              title="Cargar Calificaciones"
+            >
+              <FormCargaNotas
+                listaEstudiantesSinNotas={EstudiantesDisponibles}
                 activities={
-                  activities.find((a) => a.id_lapse === lapso.id)?.list ?? []
+                  activities.find((a) => a.id_lapse === activeLapse?.id)
+                    ?.list ?? []
                 }
-                notes={notesData}
-                onSaveGrade={handleSaveGrade}
+                onSave={() => {
+                  setRefreshNotas((prev) => !prev);
+                  setIsModalOpen(false);
+                }}
+                onCancel={() => setIsModalOpen(false)}
               />
-            );
-          })
+            </Modal>
+          </div>
         )}
       </div>
-    </>
+
+      {loadingNotes ? (
+        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 border-dashed bg-slate-100/50 p-6 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-900/50">
+          <Icon
+            icon={faInfoCircle}
+            className="text-2xl text-slate-500 animate-pulse"
+          />
+          Cargando notas...
+        </div>
+      ) : (
+        lapses.map((lapso) => {
+          return (
+            <TablaNotas
+              key={lapso.id}
+              data={lapso}
+              students={EstudiantesDisponibles}
+              activities={
+                activities.find((a) => a.id_lapse === lapso.id)?.list ?? []
+              }
+              notes={notesData}
+              onSaveGrade={handleSaveGrade}
+            />
+          );
+        })
+      )}
+    </div>
   );
 }
