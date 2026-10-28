@@ -33,8 +33,8 @@ const DEVELOPER = {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-zinc-300 dark:bg-zinc-950 px-6 py-8">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+    <footer className="w-full bg-zinc-300 dark:bg-zinc-950 px-6 py-8 rounded-t-3xl">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 md:flex-row">
         {/* Identidad y Lema */}
         <SchoPackLogo className="text-slate-900 dark:text-zinc-300" />
 
