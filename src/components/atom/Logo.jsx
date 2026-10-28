@@ -20,7 +20,7 @@ export default function Logo({ className = "text-slate-500" }) {
           className="object-contain"
         />
       </div>
-      <div className="flex flex-col font-arturo">
+      <div className="flex flex-col">
         <h1
           className={`${className} text-xl lg:text-2xl leading-none font-bold tracking-tight`}
         >
