@@ -140,7 +140,7 @@ export default function PromocionesPage() {
                 >
                   <td className="px-6 py-4">
                     <Link
-                      href={`/dashboard/Administrador/gestionEstudiantes/${student.id_student}`}
+                      href={`/dashboard/administrador/gestionEstudiantes/${student.id_student}`}
                       className="font-bold text-orange-600 dark:text-orange-400 text-xs border border-orange-500/20 rounded-lg px-2.5 py-1 bg-orange-50 dark:bg-orange-500/10 hover:underline inline-block transition-colors"
                     >
                       {student.tuition_number}
