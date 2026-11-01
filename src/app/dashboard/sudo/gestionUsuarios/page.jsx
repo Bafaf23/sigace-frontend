@@ -92,7 +92,7 @@ export default function UsuariosPage() {
       </h2>
       <Banner
         icon={faInfo}
-        titel="Usuarios Nuevos"
+        title="Usuarios Nuevos"
         message="Al crear un nuevo usuario sus credenciales de inicio de session se enviaran por correo electrónico de forma automática."
       />
 
@@ -103,22 +103,21 @@ export default function UsuariosPage() {
           onSearch={handleSearch}
           placeholder="Cedula"
         />
-        <div className="flex gap-5 items-center">
-          {pagination && (
-            <Pagination
-              loading={loading}
-              pagination={pagination}
-              onPageChange={handlePageChange}
-            />
-          )}
-          <Button
-            onClick={() => setIsOpen(true)}
-            icon={faPlus}
-            classNameBtn="bg-[#ED781F] hover:bg-orange-500 active:scale-95 transition-all p-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full md:w-auto whitespace-nowrap shadow-lg shadow-[#ED781F]/20"
-          >
-            Crear Usuario
-          </Button>
-        </div>
+
+        {pagination && (
+          <Pagination
+            loading={loading}
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        )}
+        <Button
+          onClick={() => setIsOpen(true)}
+          icon={faPlus}
+          classNameBtn="bg-[#ED781F] hover:bg-orange-500 active:scale-95 transition-all p-3 rounded-xl text-slate-50 w-full md:w-auto"
+        >
+          Crear Usuario
+        </Button>
       </div>
 
       <TableInsti
@@ -197,12 +196,12 @@ export default function UsuariosPage() {
         renderMovilCard={(user) => (
           <div
             key={`card-${user.id}`}
-            className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
           >
             {/* Encabezado de la Card */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3 dark:border-slate-800">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3 dark:border-zinc-800">
               <div>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block dark:text-zinc-300">
                   {user.document}
                 </span>
                 <h3 className="text-lg font-bold text-slate-800 dark:text-white">
@@ -219,36 +218,28 @@ export default function UsuariosPage() {
             {/* Detalles en filas */}
             <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
               <div className="flex items-start gap-2">
-                <Icon icon={faBuilding} className="mt-0.5 text-slate-400" />
+                <Icon
+                  icon={faBuilding}
+                  className="mt-0.5 text-slate-400 dark:text-zinc-500"
+                />
                 <div>
-                  <span className="font-medium block text-xs text-slate-400">
+                  <span className="font-medium block text-xs text-slate-400 dark:text-zinc-500">
                     Institución
                   </span>
                   {user.school ? (
                     <div>
-                      <span className=" font-semibold text-slate-700">
+                      <span className=" font-semibold text-slate-700 dark:text-white">
                         {user.school.name}
                       </span>
-                      <span className="text-slate-500 group-hover:text-cyan-600 transition-colors ml-3">
+                      <span className="text-slate-500 group-hover:text-cyan-600 transition-colors ml-3 dark:text-zinc-300">
                         {user.school.SIG}
                       </span>
                     </div>
                   ) : (
-                    <span className=" font-semibold text-slate-700">
+                    <span className=" font-semibold text-slate-700 dark:text-white">
                       SIGACE
                     </span>
                   )}
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <Icon icon={faPhone} className="mt-0.5 text-slate-400" />
-                <div>
-                  <span className="font-medium block text-xs text-slate-400">
-                    Contacto
-                  </span>
-                  <p>{user.phone}</p>
-                  <p className="text-xs text-slate-400">{user.email}</p>
                 </div>
               </div>
             </div>

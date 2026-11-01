@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }) {
     <AuthProvider>
       <div className="flex flex-1 gap-2 dark:bg-zinc-950">
         <NavbarSidebar />
-        <div className="flex h-screen w-full min-w-0 flex-col">
+        <div className="flex h-dvh  w-full flex-col pb-24 md:pb-0">
           <div className="flex h-full w-full flex-col overflow-y-auto scroll-smooth p-4">
             {children}
           </div>

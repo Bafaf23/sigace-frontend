@@ -40,7 +40,7 @@ export default function TableInsti({
       {/* lista de instituciones mobile */}
       <div className="grid grid-cols-1 gap-4 md:hidden">
         {data.length === 0 ? (
-          <div className="p-3">
+          <div>
             <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-zinc-700/70 bg-slate-50 dark:bg-zinc-900/50 p-12 text-center">
               <Icon
                 icon={faBook}

@@ -28,7 +28,7 @@ export default function sudoPage() {
 
   return (
     <div>
-      <HeaderDashbord user={user} />
+      <HeaderDashbord user={user} nameI="Panel de Control" />
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
         <CardState
           title="Instituciones"
