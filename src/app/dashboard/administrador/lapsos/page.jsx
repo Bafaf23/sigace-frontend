@@ -88,21 +88,15 @@ export default function LapsoPage() {
     fetchLapses();
   }, [user, fetchPeriod, fetchLapses]);
 
-  const validLapsesCount = Array.isArray(lapses) ? lapses.length : 0;
-  const canCreateMoreLapses = validLapsesCount < 3;
-
   return (
     <div className="space-y-3">
       <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
-        Configuracion de Momentos academicos
+        Momentos academicos
       </h2>
       {/* Panel Superior Informativo y Controles Operativos */}
       <section className="-z-20">
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center bg-slate-500/5 backdrop-blur-md border border-slate-500/10 p-4 rounded-2xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center bg-slate-500/ bg-white dark:bg-zinc-800 border border-slate-500/10 p-4 rounded-2xl">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-              Año Escolar:
-            </span>
             <div className="flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-cyan-400 bg-cyan-500/10 border border-indigo-500/20 rounded-xl p-2 px-3 shadow-sm">
               <Calendar className="w-3.5 h-3.5 text-cyan-500" />
               <span className="text-lg">
@@ -116,7 +110,7 @@ export default function LapsoPage() {
             {period?.is_active ? (
               <Button
                 icon={faCheck}
-                classNameBtn="bg-rose-600 hover:bg-rose-700 text-slate-50 font-semibold p-2.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-rose-500/10"
+                classNameBtn="bg-rose-600 hover:bg-rose-700 text-slate-50"
                 onClick={() => setIsModalEndPeriodOpen(true)}
               >
                 Finalizar periodo
@@ -124,7 +118,7 @@ export default function LapsoPage() {
             ) : (
               <Button
                 icon={faCalendar}
-                classNameBtn="bg-indigo-600 hover:bg-indigo-700 text-slate-50 font-semibold p-2.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-indigo-500/10"
+                classNameBtn="bg-indigo-600 hover:bg-indigo-700 text-white"
                 onClick={() => setIsModalOpen(true)}
               >
                 Iniciar periodo
@@ -132,20 +126,20 @@ export default function LapsoPage() {
             )}
 
             {/* Inyección de Botón Crear Lapso amarrado al validador de tope de 3 */}
-            {period?.is_active && canCreateMoreLapses && (
+            {period?.is_active && (
               <Button
                 icon={faCalendar}
-                classNameBtn="bg-indigo-600 hover:bg-indigo-700 text-slate-50 font-semibold p-2.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-indigo-500/10"
+                classNameBtn="bg-indigo-600 hover:bg-indigo-700 text-white"
                 onClick={() => setIsModalCreateLapseOpen(true)}
               >
-                Crear Lapso
+                Crear Momento
               </Button>
             )}
 
             {period?.school && (
               <Button
                 icon={faUserPlus}
-                classNameBtn={`text-slate-50  font-semibold p-2.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md  ${period?.school?.is_enrollment_open ? "bg-rose-600 hover:bg-rose-700" : "bg-green-600 hover:bg-green-700 shadow-green-500/10"}`}
+                classNameBtn={`text-white ${period?.school?.is_enrollment_open ? "bg-rose-600 hover:bg-rose-700" : "bg-green-600 hover:bg-green-700"}`}
                 onClick={async () => await enrollmentState()}
               >
                 {`${period?.school?.is_enrollment_open ? "Cerrar Inscripciones" : "Abrir Inscripciones"}`}
@@ -154,6 +148,7 @@ export default function LapsoPage() {
           </div>
         </div>
       </section>
+
       {/* Formulario Modal: Registro de Nuevo Lapso */}
       <Modal
         title="Crear Nuevo Lapso / Momento"
@@ -255,7 +250,7 @@ export default function LapsoPage() {
       />
       {/* Grilla Central de Visualización de Estados */}
       <section>
-        {validLapsesCount > 0 ? (
+        {lapses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {lapses.map((lapso) => (
               <CardLapse

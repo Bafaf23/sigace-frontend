@@ -93,8 +93,8 @@ export default function PromocionesPage() {
 
       <Banner
         icon={faInfo}
-        titel="Nota Informativa"
-        message="En este módulo estarán listados todos los estudiantes que cumplen con el mínimo aprobatorio para ser promovidos al siguiente año superior."
+        title="Nota Informativa"
+        message="En este módulo estarán listados todos los estudiantes que cumplen con el mínimo aprobatorio para ser promovidos al siguiente año superior. Ten encuenta que esta acciion es irreversible y no se podrá deshacer, por lo que se recomienda revisar cuidadosamente la lista de estudiantes antes de proceder con la promoción."
       />
 
       <div className="space-y-4">
@@ -103,7 +103,7 @@ export default function PromocionesPage() {
             onClick={() => handlePromotion()}
             icon={faGraduationCap}
             disabled={loading || students.data.length === 0}
-            classNameBtn="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-600 text-white font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-orange-500/10 text-sm cursor-pointer disabled:cursor-not-allowed dark:bg-orange-500 dark:hover:bg-orange-600"
+            classNameBtn="bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-600 text-white disabled:cursor-not-allowed dark:bg-orange-500 dark:hover:bg-orange-600"
           >
             Promover Estudiantes ({students.count})
           </Button>
@@ -113,11 +113,11 @@ export default function PromocionesPage() {
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <p className="text-orange-600 dark:text-orange-400 font-medium animate-pulse text-sm">
-                Cargando estudiantes aptos...
+                Cargando estudiantes...
               </p>
             </div>
           ) : students.data.length === 0 ? (
-            <div className="text-slate-500 dark:text-zinc-400 text-center py-12 px-4 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-200 dark:border-zinc-800 border-dashed">
+            <div className="text-slate-500 dark:text-zinc-400 text-center py-12 px-4 bg-zinc-200/30 dark:bg-zinc-900 rounded-2xl border-3 border-slate-200 dark:border-zinc-800 border-dashed">
               <p className="text-sm max-w-lg mx-auto">
                 No hay estudiantes aptos para promoción en este periodo. Una vez
                 finalizado el periodo académico este módulo estará activo.

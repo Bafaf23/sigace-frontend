@@ -145,13 +145,13 @@ export default function GestionEstudiantesPage() {
 
       <Banner
         icon={faInfo}
-        titel="Más información"
+        title="Más información"
         message="Para conocer la ficha detallada del estudiante, haz clic sobre el número de matrícula."
       />
 
       {/* Filtros y Métricas Rápidas */}
       <section>
-        <div className="mb-4 flex flex-col items-stretch justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white/70 p-4 shadow-sm backdrop-blur-md sm:flex-row sm:items-center dark:border-zinc-700/50 dark:bg-zinc-900/60">
+        <div className="mb-4 flex flex-col items-stretch justify-between gap-4 rounded-2xl backdrop-blur-md sm:flex-row sm:items-center dark:border-zinc-700/50">
           <div className="w-full sm:max-w-md">
             <Search
               placeholder="Numero de matrícula"
@@ -162,21 +162,23 @@ export default function GestionEstudiantesPage() {
           </div>
 
           <div className="flex w-full flex-col items-stretch justify-end gap-3 sm:w-auto sm:flex-row sm:items-center">
-            {pagination && (
-              <Pagination
-                pagination={pagination}
-                onPageChange={handlePageChange}
-                loading={dataLoading}
-              />
-            )}
-            <div className="w-full sm:w-auto">
-              <Button
-                onClick={() => setIsOpent(true)}
-                icon={faAdd}
-                classNameBtn="bg-orange-600 hover:bg-orange-500 active:bg-orange-700 transition-colors p-3 rounded-xl text-white font-semibold cursor-pointer flex items-center justify-center gap-2 text-sm shadow-sm shadow-orange-500/20 w-full whitespace-nowrap"
-              >
-                Crear Estudiante
-              </Button>
+            <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
+              {pagination && (
+                <Pagination
+                  pagination={pagination}
+                  onPageChange={handlePageChange}
+                  loading={dataLoading}
+                />
+              )}
+              <div className="w-full sm:w-auto">
+                <Button
+                  onClick={() => setIsOpent(true)}
+                  icon={faAdd}
+                  classNameBtn="bg-orange-600 hover:bg-orange-500 text-white"
+                >
+                  Crear Estudiante
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -254,7 +256,7 @@ export default function GestionEstudiantesPage() {
                         <Button
                           icon={faClipboardList}
                           titel="Descargar Planilla de Inscripción"
-                          classNameBtn="p-1.5 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700 transition-colors"
+                          classNameBtn=" bg-cyan-600 hover:bg-cyan-700 text-white"
                         />
                       </Link>
                     )}
@@ -262,7 +264,7 @@ export default function GestionEstudiantesPage() {
                       icon={faFileCircleCheck}
                       onClick={() => setIsOpentC(true)}
                       titel="Constacia de Estudio"
-                      classNameBtn="p-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                      classNameBtn=" bg-orange-500 text-white hover:bg-orange-600"
                     />
                   </div>
                 </td>
@@ -290,10 +292,9 @@ export default function GestionEstudiantesPage() {
                     >
                       <Button
                         titel="Descargar Planilla de inscripcion"
-                        classNameBtn="text-cyan-600 p-1.5 hover:bg-cyan-500/10 rounded-xl border border-cyan-500/10"
-                      >
-                        <Icon icon={faClipboardList} className="h-3.5 w-3.5" />
-                      </Button>
+                        classNameBtn="text-cyan-600 hover:bg-cyan-500/10 border border-cyan-500/10"
+                        icon={faClipboardList}
+                      ></Button>
                     </Link>
                   )}
                 </div>
@@ -302,11 +303,6 @@ export default function GestionEstudiantesPage() {
                   <p>
                     <span className="text-slate-400">C.I:</span>{" "}
                     {student.user?.id_card}
-                  </p>
-
-                  <p className="col-span-2 truncate">
-                    <span className="text-slate-400">Email:</span>{" "}
-                    {student.user?.email || "N/A"}
                   </p>
                 </div>
 

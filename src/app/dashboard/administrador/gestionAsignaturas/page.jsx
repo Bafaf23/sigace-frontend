@@ -48,7 +48,6 @@ export default function MateriasPage() {
     <div className="space-y-3">
       {/* Actualización silenciosa premium al crear materia */}
       <HeaderGestionMaterias onSubjectCreated={() => loadSubjects(true)} />
-      {/* Banner Informativo con Estilo Premium Glassmorphism */}
 
       <Banner
         title="Sobre las asignaturas"

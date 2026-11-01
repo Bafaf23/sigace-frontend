@@ -5,7 +5,11 @@ import InputPass from "@/components/atom/InputPass";
 import Links from "@/components/atom/Links";
 import { useRemember } from "@/context/RememberContext";
 import { login } from "@/services/auth/login";
-import { faDeleteLeft, faKey } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowAltCircleDown,
+  faKey,
+  faarrowRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -149,9 +153,9 @@ export default function FromLogin({ schoolName }) {
           <div className="flex justify-between mt-8 items-center">
             {hasRememberedUser ? (
               <Button
-                classNameBtn="text-sm text-orange-400 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 underline cursor-pointer"
+                classNameBtn="text-sm text-orange-400 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 cursor-pointer"
                 onClick={forgetUser}
-                icon={faDeleteLeft}
+                icon={faArrowAltCircleDown}
               >
                 {"Cambiar de Cuenta"}
               </Button>
@@ -184,7 +188,7 @@ export default function FromLogin({ schoolName }) {
             ></Links>
           </div>
           <Button
-            classNameBtn="w-full mt-8 bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-500 text-white py-4 rounded-2xl font-bold transition-all flex justify-center items-center gap-2 shadow-md dark:shadow-none"
+            classNameBtn=" bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-500 text-white py-4 w-full flex justify-center items-center gap-2 shadow-md dark:shadow-none"
             icon={faKey}
             type="submit"
             disabled={loading}

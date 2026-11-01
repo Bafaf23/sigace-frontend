@@ -155,17 +155,17 @@ export default function ControlSecciones() {
   const isGlobalLoading = sectionsLoading || studentsLoading;
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
-      <div className="flex flex-col md:flex-row md:justify-between items-center mb-4">
+    <div className="space-y-3">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
           Control de Secciones
         </h2>
 
-        <div className="p-3 hidden md:block">
+        <div className="hidden md:block">
           <Button
             onClick={() => setIsOpen(true)}
             icon={faPlus}
-            classNameBtn="bg-indigo-600 hover:bg-indigo-700 transition-all p-2.5 rounded-xl text-slate-50 font-semibold cursor-pointer flex items-center gap-2 text-sm shadow-md shadow-indigo-500/10"
+            classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
           >
             Crear sección
           </Button>
@@ -192,11 +192,11 @@ export default function ControlSecciones() {
         message="En este módulo puedes crear y gestionar las secciones de tu institución, así como realizar el proceso de inscripción y asignación de los estudiantes."
       />
 
-      <div className="md:hidden w-full">
+      <div className="md:hidden w-full justify-end flex">
         <Button
           onClick={() => setIsOpen(true)}
           icon={faPlus}
-          classNameBtn="bg-indigo-600 active:scale-95 transition-transform p-4 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full shadow-lg shadow-indigo-500/20"
+          classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
         >
           Crear sección
         </Button>
