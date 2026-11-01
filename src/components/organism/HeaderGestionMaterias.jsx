@@ -17,7 +17,7 @@ export default function HeaderGestionMaterias({ onSubjectCreated }) {
       <Button
         onClick={() => setIsOpent(true)}
         icon={faAdd}
-        classNameBtn="bg-indigo-600 hover:bg-indigo-700 transition-all p-2.5 rounded-xl text-slate-50 font-semibold cursor-pointer flex items-center gap-2 text-sm shadow-md shadow-indigo-500/1"
+        classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
       >
         Crear Asignatura
       </Button>

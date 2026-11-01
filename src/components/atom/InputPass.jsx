@@ -41,9 +41,7 @@ export default function InputPass({
         onClick={() => {
           setShowPassword(!showPassword);
         }}
-        classNameIcon={
-          "absolute right-4 top-[45px] text-slate-400 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-400 transition-colors"
-        }
+        classNameBtn="absolute right-2 top-8 text-slate-400 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-400 transition-colors"
         icon={showPassword ? faEyeSlash : faEye}
         type={"button"}
       />

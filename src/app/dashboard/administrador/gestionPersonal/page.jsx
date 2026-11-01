@@ -91,7 +91,7 @@ export default function GestionPersonalPage() {
 
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 p-1">
+      <div className="flex flex-col sm:flex-row justify-between md:items-center gap-4 mb-4 p-1">
         <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
           Gestion de Personal
         </h2>
@@ -114,7 +114,7 @@ export default function GestionPersonalPage() {
 
       <Banner
         icon={faInfo}
-        titel="¿Necesitas actualizar el estatus de un docente?"
+        title="¿Necesitas actualizar el estatus de un docente?"
         message="Para modificar la disponibilidad o el estado activo/inactivo de la nómina, por favor contacta a soporte técnico"
       />
 
@@ -205,7 +205,7 @@ export default function GestionPersonalPage() {
                 <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block tracking-wider">
-                      C.I. {user.document}
+                      C.I. {user.id_card}
                     </span>
                     <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
                       {user.name} {user.last_name}

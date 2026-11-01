@@ -41,7 +41,7 @@ export default function Search({ search, setSearch, placeholder, onSearch }) {
         type="button"
         onClick={handleSearchSubmit}
         icon={faSearch}
-        classNameBtn="bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors whitespace-nowrap shadow-sm dark:shadow-cyan-950/20"
+        classNameBtn="bg-cyan-600 hover:bg-cyan-500 text-white font-medium  rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm dark:shadow-cyan-950/20"
       >
         Buscar
       </Button>

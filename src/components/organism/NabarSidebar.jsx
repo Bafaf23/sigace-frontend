@@ -102,7 +102,7 @@ export const menuLink = {
     },
     {
       icon: faCalendarCheck,
-      label: "Configuración de Lapsos",
+      label: "Configuración Momentos",
       href: "/dashboard/administrador/lapsos",
     },
     {
@@ -148,14 +148,12 @@ export default function NavbarSidebar() {
 
   return (
     <aside
-      className={`hidden p-3 transition-all duration-300 md:hidden md:flex-col lg:flex w-1/5`}
+      className={`hidden p-3 transition-all duration-300 md:hidden md:flex-col lg:flex w-1/5 dark:bg-zinc-900 rounded-r-2xl`}
     >
       <div
-        className={`mb-8 flex items-center border-b border-gray-200 pb-3 dark:border-zinc-500`}
+        className={`mb-8 flex items-center border-b border-gray-300/30 pb-3 dark:border-zinc-800`}
       >
-        <div className="truncate">
-          <SigaceLogo className={"text-slate-900 dark:text-slate-400"} />
-        </div>
+        <SigaceLogo className={"text-slate-900 dark:text-slate-400"} />
       </div>
 
       <nav className={`flex grow flex-col space-y-2`}>
@@ -172,11 +170,11 @@ export default function NavbarSidebar() {
 
       {/* Cerrar sesion */}
 
-      <div className="mt-auto border-t border-slate-400/30 pt-4 dark:border-zinc-500">
+      <div className="mt-auto border-t border-slate-300/30 pt-4 dark:border-zinc-800">
         <Button
           icon={faSignOutAlt}
           onClick={() => handleLogout()}
-          classNameBtn={`flex items-center gap-3 w-full text-gray-600/70 p-2 hover:bg-red-500/50 hover:text-red-900 rounded-lg transition-all text-md dark:text-zinc-200 dark:hover:bg-red-300/50 dark:hover:text-red-600`}
+          classNameBtn={`flex items-center gap-3 w-full text-gray-600/70 p-2 hover:bg-red-500/50 hover:text-red-900 rounded-lg transition-all text-md dark:text-zinc-500 dark:hover:bg-red-600/20 dark:hover:text-red-500`}
         >
           {"Cerrar Sesion"}
         </Button>

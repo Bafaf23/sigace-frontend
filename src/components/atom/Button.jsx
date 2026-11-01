@@ -41,7 +41,7 @@ export default function Button({
   return (
     <button
       type={type}
-      className={`${classNameBtn} ${
+      className={`${classNameBtn} transition-all px-4 py-2.5 rounded-xl font-semibold cursor-pointer flex items-center justify-center gap-1 ${
         disabled ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
       }`}
       onClick={handleClick}
@@ -49,9 +49,9 @@ export default function Button({
       titel={titel}
       {...props}
     >
-      {icon && <Icon icon={icon} className={classNameIcon} />}
+      {icon && <Icon icon={icon} />}
       {!isCollapsed && children && (
-        <span className="whitespace-nowrap">{children}</span>
+        <span className="font-bold whitespace-nowrap">{children}</span>
       )}
     </button>
   );

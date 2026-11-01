@@ -37,7 +37,7 @@ export default function CardLapse({
     <div
       className={`relative overflow-hidden rounded-3xl border p-6 transition-all duration-300 ${
         isCurrent
-          ? "bg-gradient-to-br from-orange-500/10 via-transparent to-transparent border-orange-500/50 shadow-xl shadow-orange-500/5 dark:from-orange-500/10 dark:border-orange-500/40 dark:bg-zinc-900"
+          ? "bg-white border-orange-500/50 shadow-xl shadow-orange-500/5 dark:from-orange-500/10 dark:border-orange-500/40 dark:bg-zinc-900"
           : isPast
             ? "bg-slate-50/50 border-slate-200 dark:bg-zinc-900/40 dark:border-zinc-800/80 opacity-75"
             : "bg-white border-slate-200 dark:bg-zinc-900 dark:border-zinc-800"

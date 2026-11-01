@@ -23,11 +23,11 @@ export default function NavLink({
   active = false,
 }) {
   const baseStyles =
-    "text-md flex w-full items-center gap-3 rounded-lg p-2 font-medium text-gray-600 transition-all outline-none focus-visible:ring-2 focus-visible:ring-orange-500";
+    "text-md flex w-full items-center gap-3 rounded-lg p-2 transition-all outline-none";
 
   const activeStyles = active
-    ? "bg-orange-500/10 font-bold text-orange-600 dark:bg-orange-500/20 dark:text-orange-400"
-    : "hover:text-gray-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-300";
+    ? "dark:bg-orange-500/10 dark:text-orange-400 dark:bg-orange-500/20 dark:text-orange-400 font-bold bg-cyan-500/20 text-cyan-600"
+    : "hover:text-gray-900 hover:bg-zinc-200/50 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 text-gray-600 dark:text-zinc-300 font-medium";
 
   return (
     <Link
@@ -37,7 +37,7 @@ export default function NavLink({
     >
       <Icon
         icon={icon}
-        className={`shrink-0 transition-colors ${active ? "text-orange-600 dark:text-orange-400" : ""} ${classNameIcon}`.trim()}
+        className={`shrink-0 transition-colors ${active ? "text-cyan-600 dark:text-orange-400" : ""} ${classNameIcon}`.trim()}
       />
       <span className="whitespace-nowrap">{label}</span>
     </Link>
