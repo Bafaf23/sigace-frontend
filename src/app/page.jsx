@@ -60,16 +60,16 @@ export default function Home() {
       </div>
       <About />
       <section className="w-full max-w-5xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl relative overflow-hidden shadow-md border border-slate-100 flex flex-col md:block p-6 md:p-8">
+        <div className="bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded-2xl relative overflow-hidden shadow-md border border-slate-100 flex flex-col md:block p-6 md:p-8">
           {/* Contenido de texto */}
           <div className="relative z-10 space-y-2 mb-6 md:mb-0 md:pr-48 lg:pr-56">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-800">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-800 dark:text-zinc-200">
               ¿No tienes página web?
             </h2>
-            <p className="text-slate-600 text-base md:text-lg font-semibold">
+            <p className="text-slate-600 text-base md:text-lg font-semibold dark:text-zinc-300">
               Nosotros la hacemos por ti.
             </p>
-            <p className="text-slate-500 text-sm md:text-base font-normal max-w-xl mb-5">
+            <p className="text-slate-500 text-sm md:text-base font-normal max-w-xl mb-5 dark:text-zinc-300">
               Si eres uno de{" "}
               <span className="font-semibold text-emerald-600">
                 nuestros primeros 10 clientes
@@ -103,16 +103,16 @@ export default function Home() {
       </section>
       <Plans />
       <section className="w-full max-w-5xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl relative overflow-hidden shadow-md border border-slate-100 p-6 md:p-8 flex flex-col md:block">
+        <div className="bg-white dark:border-zinc-700 dark:bg-zinc-800 rounded-2xl relative overflow-hidden shadow-md border border-slate-100 p-6 md:p-8 flex flex-col md:block">
           {/* Contenido de texto: alineado dinámicamente */}
           <div className="relative z-10 space-y-2 md:pl-48 lg:pl-56 flex flex-col items-start md:items-end text-left md:text-right">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-800">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-800 dark:text-zinc-200">
               ¿Eres cliente de otro sistema?
             </h2>
-            <p className="text-slate-600 text-base md:text-lg font-semibold">
+            <p className="text-slate-600 text-base md:text-lg font-semibold dark:text-zinc-300">
               Trae tu data con nosotros fácil.
             </p>
-            <p className="text-slate-500 text-sm md:text-base font-normal max-w-xl mb-3">
+            <p className="text-slate-500 text-sm md:text-base font-normal max-w-xl mb-3 dark:text-zinc-300">
               Si tienes datos en otro{" "}
               <span className="font-semibold text-orange-600">
                 sistema de gestión
@@ -123,7 +123,7 @@ export default function Home() {
               href={WA_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-orange-600 px-7 py-2.5 rounded-xl text-base md:text-lg text-white font-bold transition-colors hover:bg-orange-700 shadow-sm inline-block"
+              className="bg-orange-600 px-7 py-2.5 rounded-xl text-base md:text-lg text-white font-bold transition-colors hover:bg-orange-700 shadow-sm inline-block mb-3 md:mb-0"
             >
               Contratar servicio
             </Link>
