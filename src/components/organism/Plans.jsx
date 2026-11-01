@@ -128,7 +128,7 @@ export default function Plans() {
           {services.map((service) => (
             <div
               key={service.name}
-              className={`relative p-6 flex flex-col justify-between rounded-3xl border-2 bg-white transition-all hover:-translate-y-1 overflow-hidden ${service.class}`}
+              className={`relative p-6 flex flex-col justify-between rounded-3xl border-2 dark:bg-zinc-900 bg-white transition-all hover:-translate-y-1 overflow-hidden ${service.class}`}
             >
               {service.type === "MPPE" ? (
                 <div className="absolute -bottom-6 -right-6 h-45 w-45 pointer-events-none select-none z-0">
