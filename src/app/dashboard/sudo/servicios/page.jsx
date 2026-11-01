@@ -70,7 +70,7 @@ export default function ServiciosPage() {
     <section className="space-y-5">
       <h2 className="text-3xl dark:text-zinc-200 font-extrabold">Servicios</h2>
       <Banner
-        titel="Servicios disponibles"
+        title="Servicios disponibles"
         icon={faStar}
         message="En estas seccion apareceran todos los servicios que ofresemos y opciones para modificar los mismos."
       />

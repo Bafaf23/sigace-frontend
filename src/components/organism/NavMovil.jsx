@@ -10,20 +10,18 @@ export default function NavMovil() {
   const { user } = useAuth();
   const pathname = usePathname();
 
-  // 1. Extracción segura del rol (Soporta user directo o anidado user.user)
   const rawRole = user?.user?.role || user?.role;
   const role = rawRole === "director" ? "administrador" : rawRole;
 
-  // 2. Obtener enlaces de forma segura con fallback a un array vacío
   const currentLinks = menuLink[role] || [];
 
-  // 3. Guard Clause: Si no hay usuario o no hay links, no renderizar
   if (!user || currentLinks.length === 0) {
     return null;
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 p-2 md:hidden">
+  
+    <nav className="fixed bottom-0 left-0 w-full z-50 p-2 md:hidden">
       <div className="flex items-center justify-around gap-1 rounded-2xl border border-zinc-200 bg-white/90 p-2 backdrop-blur-md shadow-lg dark:border-zinc-800 dark:bg-zinc-900/90">
         {currentLinks.map((link, index) => {
           const isActive = pathname === link.href;
