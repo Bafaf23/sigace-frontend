@@ -118,21 +118,14 @@ export default function ProfileClient() {
             </div>
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
-                Nombres
+                Nombres y Apellidos
               </span>
               <p className="text-base font-medium text-slate-800 dark:text-zinc-200 capitalize">
-                {displayOrUnset(user?.name)}
+                {displayOrUnset(user?.name)} {displayOrUnset(user?.last_name)}
               </p>
             </div>
-            <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
-                Apellidos
-              </span>
-              <p className="text-base font-medium text-slate-800 dark:text-zinc-200 capitalize">
-                {displayOrUnset(user?.last_name)}
-              </p>
-            </div>
-            <div className="space-y-1 sm:col-span-2">
+
+            <div className="space-y-1 sm:col-span-1">
               <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
                 Teléfono de Contacto
               </span>
@@ -194,7 +187,7 @@ export default function ProfileClient() {
                   Centro Educativo
                 </span>
                 <p className="text-sm font-medium text-slate-700 dark:text-zinc-200">
-                  {displayOrUnset(user?.school?.name).toUpperCase()}
+                  {displayOrUnset(user?.school?.school_name).toUpperCase()}
                 </p>
               </div>
 
