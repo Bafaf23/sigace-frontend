@@ -72,7 +72,7 @@ export default function Modal({
           <Button
             icon={faTimes}
             // MEJORA: Asegurar que el botón tenga type="button" interno en tu Atomo para que no intente hacer submit si el modal está dentro de un <form>
-            classNameBtn="text-slate-400 hover:text-zinc-600 dark:hover:text-zinc-600 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            classNameBtn="text-slate-400 hover:text-zinc-600 dark:hover:text-zinc-600 transition-colors"
             onClick={onClose}
             aria-label="Cerrar modal"
           />

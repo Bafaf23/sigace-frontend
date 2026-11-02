@@ -131,10 +131,13 @@ export default function FormSection({ onSuccess }) {
             onChange={(e) => handleUpdate("capacity", e.target.value)}
           />
         </div>
-        <div className="p-4 bg-gray-100 rounded-lg border border-gray-200 col-span-2">
+        <div className="p-4 bg-gray-100 dark:bg-zinc-700 dark:border-zinc-600 rounded-lg border border-gray-200 col-span-2">
           <div className="flex items-center gap-2">
-            <Icon icon={faInfoCircle} className="text-gray-500 text-xl" />
-            <p className="text-sm text-gray-500">
+            <Icon
+              icon={faInfoCircle}
+              className="text-gray-500 dark:text-zinc-300 text-xl"
+            />
+            <p className="text-sm text-gray-500 dark:text-zinc-300">
               Se recomienda que la capacidad máxima sea de 35 Estudiantes por
               sección.
             </p>
@@ -147,8 +150,8 @@ export default function FormSection({ onSuccess }) {
           type="submit"
           disabled={loading}
           icon={loading ? faSpinner : faCheck} // Cambia el icono si está cargando
-          classNameBtn={`rounded-lg px-8 py-2 font-bold text-white transition-all 
-            ${loading ? "bg-slate-400 cursor-not-allowed" : "bg-indigo-600 hover:shadow-lg active:scale-95"}`}
+          classNameBtn={`font-bold text-white transition-all 
+            ${loading ? "bg-slate-400 cursor-not-allowed" : "bg-green-600"}`}
         >
           {loading ? "Cargando..." : "Crear Sección"}
         </Button>

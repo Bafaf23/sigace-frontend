@@ -1,5 +1,6 @@
 import Button from "../atom/Button";
 import Input from "../atom/Input";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 export default function FormCreateLapse({
   formDataLapse,
@@ -24,7 +25,7 @@ export default function FormCreateLapse({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label="Nombre del Lapso/Momento"
+          label="Nombre del Momento"
           type="text"
           name="nameLapse"
           placeholder="Momento 1"
@@ -54,10 +55,11 @@ export default function FormCreateLapse({
 
       <div className="flex justify-end mt-4">
         <Button
-          classNameBtn="bg-indigo-500 rounded-xl p-3 text-white font-bold cursor-pointer hover:bg-indigo-600 transition-colors"
+          icon={faSave}
+          classNameBtn="bg-green-500 w-full text-white font-bold  hover:bg-green-600"
           type="submit"
         >
-          Iniciar Lapso/Momento
+          Guardar
         </Button>
       </div>
     </form>

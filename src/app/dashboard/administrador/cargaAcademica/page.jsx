@@ -72,7 +72,7 @@ export default function CargaAcademicaPage() {
   }, [loadCatalogData]);
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out space-y-3">
+    <div className="space-y-3">
       {/* Encabezado Principal y Botón de Escritorio */}
       <div className="flex flex-col sm:flex-row justify-between md:items-center gap-4">
         <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
@@ -82,7 +82,7 @@ export default function CargaAcademicaPage() {
           <Button
             onClick={() => setIsOpen(true)}
             icon={faPlus}
-            classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
+            classNameBtn="bg-cyan-600 text-slate-100 hover:bg-cyan-700"
           >
             Asignar carga académica
           </Button>
@@ -91,6 +91,7 @@ export default function CargaAcademicaPage() {
 
       {/* Modal de Registro / Formulario Integrado */}
       <Modal
+        maxWidth="max-w-3xl"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title="Nueva Asignación de Carga Académica"
@@ -108,11 +109,11 @@ export default function CargaAcademicaPage() {
       </Modal>
 
       {/* Botón Móvil con Ajuste UI Premium */}
-      <div className="md:hidden flex justify-end">
+      <div className="md:hidden block flexjustify-end">
         <Button
           onClick={() => setIsOpen(true)}
           icon={faPlus}
-          classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
+          classNameBtn="bg-cyan-600 text-slate-100 hover:bg-cyan-700 w-full"
         >
           Asignar carga académica
         </Button>

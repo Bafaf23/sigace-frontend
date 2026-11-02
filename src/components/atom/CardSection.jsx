@@ -135,10 +135,10 @@ export default function CardSection({
           onSuccess={() => setIsOpenPre(false)}
         />
       </Modal>
-      <div className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900">
+      <div className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-800">
         {/* Encabezado */}
         <div>
-          <div className="flex items-center justify-between bg-linear-to-r from-cyan-600 to-cyan-700 p-4 text-white">
+          <div className="flex items-center justify-between bg-linear-to-r from-cyan-600 to-cyan-600/50 via-cyan-500/80 p-4 text-white">
             <div className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md">
                 <Icon icon={faUsers} className="text-white text-sm" />
@@ -156,7 +156,7 @@ export default function CardSection({
               className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider ${
                 isFull
                   ? "bg-rose-500/20 text-rose-200 border border-rose-400/30"
-                  : "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30"
+                  : "bg-emerald-500/20 text-white border border-emerald-400/30"
               }`}
             >
               {isFull ? "Cupo Lleno" : "Cupo disponible"}
@@ -166,22 +166,22 @@ export default function CardSection({
           {/* Cuerpo con Información */}
           <div className="space-y-4 p-4">
             {/* Docente Guía */}
-            <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
-              <div className="mt-0.5 rounded-lg bg-indigo-50 p-2 dark:bg-indigo-950/50">
+            <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3 dark:bg-zinc-600/50">
+              <div className="mt-0.5 rounded-lg bg-cyan-50 p-2 dark:bg-cyan-950/50">
                 <Icon
                   icon={faChalkboardUser}
-                  className="text-indigo-600 dark:text-indigo-400 text-sm"
+                  className="text-cyan-600 dark:text-cyan-400 text-sm"
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-300">
                   Docente Guía
                 </p>
                 <p className="truncate text-xs font-semibold text-slate-800 dark:text-slate-200">
                   {teacher || "No asignado"}
                 </p>
                 {idTeacher && (
-                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-zinc-400">
                     C.I: {idTeacher}
                   </p>
                 )}
@@ -190,7 +190,7 @@ export default function CardSection({
 
             {/* Barra de Capacidad */}
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-medium text-slate-600 dark:text-slate-400">
+              <div className="flex justify-between text-xs font-medium text-slate-600 dark:text-zinc-400">
                 <span>Capacidad de la Sección</span>
                 <span className="font-bold text-slate-800 dark:text-slate-200">
                   {currentStudents} / {maxCapacity} ({percentage}%)
@@ -226,7 +226,7 @@ export default function CardSection({
                   "lista",
                 )
               }
-              classNameBtn="flex items-center justify-center gap-1.5 rounded-xl bg-cyan-600 px-3 py-2 text-md font-semibold text-white shadow-sm transition-all hover:bg-cyan-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+              classNameBtn="bg-cyan-600 px-3 text-md  text-white hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loadingType === "lista" ? (
                 <span>Cargando...</span>
@@ -264,7 +264,7 @@ export default function CardSection({
                   "RFRE",
                 )
               }
-              classNameBtn="flex items-center justify-center gap-1.5 rounded-xl bg-green-600 px-3 py-2 text-md font-semibold text-white shadow-sm transition-all hover:bg-green-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+              classNameBtn="bg-green-600 text-md font-semibold text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loadingType === "RFRE" ? (
                 <span>Cargando...</span>

@@ -151,7 +151,7 @@ export default function LapsoPage() {
 
       {/* Formulario Modal: Registro de Nuevo Lapso */}
       <Modal
-        title="Crear Nuevo Lapso / Momento"
+        title="Crear Nuevo Momento"
         isOpen={isModalCreateLapseOpen}
         onClose={() => setIsModalCreateLapseOpen(false)}
       >
@@ -169,17 +169,17 @@ export default function LapsoPage() {
       <ConfirmAtionModal
         isOpen={isModalCreateLapseOpenConfir}
         onCancel={() => setIsModalCreateLapseOpenConfir(false)}
-        titel="Confirmar Registro de Lapso"
-        message={`¿Estás seguro de querer aperturar el lapso "${formDataLapse.nameLapse}"? Este cambio habilitará la planificación docente.`}
+        title="Confirmar Registro de Momento"
+        message={`¿Estás seguro de querer aperturar el momento "${formDataLapse.nameLapse}"? Este cambio habilitará la planificación docente.`}
         onConfirm={async () => {
           try {
             await createLapse(formDataLapse);
-            toast.success("Lapso registrado correctamente");
+            toast.success("Momento registrado correctamente");
             setFormDataLapse({ nameLapse: "", dateStart: "", dateEnd: "" });
             await fetchLapses();
           } catch (err) {
             toast.error(
-              err.response?.data?.message || "No se pudo registrar el lapso",
+              err.response?.data?.message || "No se pudo registrar el momento",
             );
           } finally {
             setIsModalCreateLapseOpenConfir(false);

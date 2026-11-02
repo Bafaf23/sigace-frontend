@@ -99,6 +99,7 @@ export default function GestionPersonalPage() {
 
       {/* Modal de Registro */}
       <Modal
+        maxWidth="max-w-2xl"
         title="Registrar Nuevo Docente"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -122,7 +123,7 @@ export default function GestionPersonalPage() {
       <div className="flex justify-between flex-col md:flex-row gap-5 w-full">
         <div className="max-w-md">
           <Search
-            placeholder="Buscar por cédula o nombre..."
+            placeholder="V30212333"
             search={search}
             setSearch={setSearch}
             onSearch={handleSearch}
@@ -132,7 +133,7 @@ export default function GestionPersonalPage() {
           <Button
             onClick={() => setIsOpen(true)}
             icon={faAdd}
-            classNameBtn="bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all p-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center justify-center gap-2 w-full md:w-auto whitespace-nowrap shadow-lg shadow-indigo-500/20"
+            classNameBtn="bg-orange-600 hover:bg-orange-700 text-white font-bold w-full"
           >
             Registrar Docente
           </Button>
@@ -156,18 +157,18 @@ export default function GestionPersonalPage() {
             renderTableRows={(user) => (
               <tr
                 key={user.id}
-                className="transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-900/30 group border-b border-slate-100 dark:border-slate-800"
+                className="transition-colors hover:bg-slate-50/50 dark:hover:bg-zinc-800/30  group border-b border-slate-100 dark:border-zinc-800"
               >
-                <td className="px-6 py-4 font-medium text-slate-700 dark:text-slate-300 text-sm">
+                <td className="px-6 py-4 font-medium text-slate-700 dark:text-slate-300 text-sm flex flex-col">
                   {user.id_card}
+                  <span className="text-xs text-slate-400 font-mono mt-0.5">
+                    {user.id || "-"}
+                  </span>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-col">
-                    <span className="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors text-sm">
+                    <span className="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-orange-400 transition-colors text-sm">
                       {user.name} {user.last_name}
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono mt-0.5">
-                      {user.id || "-"}
                     </span>
                   </div>
                 </td>
@@ -200,31 +201,31 @@ export default function GestionPersonalPage() {
             renderMovilCard={(user) => (
               <div
                 key={`card-user-${user.id}`}
-                className="rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm mb-3 border-dashed"
+                className="rounded-2xl border border-slate-100 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 shadow-sm mb-3 border-dashed"
               >
-                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-zinc-700 pb-2 mb-3">
                   <div>
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block tracking-wider">
+                    <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 block tracking-wider">
                       C.I. {user.id_card}
                     </span>
                     <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
                       {user.name} {user.last_name}
                     </h3>
                   </div>
-                  <span className="text-xs bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono px-2 py-0.5 rounded-lg border border-indigo-500/10">
+                  <span className="text-xs bg-orange-500/10 text-orange-600 dark:text-orange-400  px-2 py-0.5 rounded-lg border border-orange-500/10">
                     {user.id}
                   </span>
                 </div>
                 <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
                   <div className="flex justify-between items-center pt-1 text-[11px]">
-                    <p>
-                      <strong className="text-slate-400 dark:text-slate-500">
+                    <p className="text-zinc-500 dark:text-zinc-300">
+                      <strong className="text-slate-400 dark:text-zinc-500">
                         Email:
                       </strong>{" "}
                       {user.email || "No registrado"}
                     </p>
-                    <p>
-                      <strong className="text-slate-400 dark:text-slate-500">
+                    <p className="text-zinc-600 dark:text-zinc-300">
+                      <strong className="text-slate-400 dark:text-zinc-500">
                         Tlf:
                       </strong>{" "}
                       {user.phone || "No registrado"}
@@ -232,8 +233,8 @@ export default function GestionPersonalPage() {
                     <span
                       className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${
                         user.is_active
-                          ? "bg-emerald-500/10 text-emerald-600"
-                          : "bg-rose-500/10 text-rose-600"
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : "bg-rose-500/10 text-rose-600 dark:text-rose-400"
                       }`}
                     >
                       {user.is_active ? "Activo" : "Inactivo"}

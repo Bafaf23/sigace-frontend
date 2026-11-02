@@ -1,5 +1,6 @@
 import Button from "../atom/Button";
 import Input from "../atom/Input";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 export default function FormAcademicPeriod({
   formData,
@@ -55,10 +56,11 @@ export default function FormAcademicPeriod({
 
       <div className="flex justify-end mt-4">
         <Button
-          classNameBtn="bg-indigo-500 rounded-xl p-3 text-white font-bold cursor-pointer hover:bg-indigo-600 transition-colors"
+          icon={faSave}
+          classNameBtn="bg-green-500 text-white font-bold hover:bg-green-600"
           type="submit"
         >
-          Iniciar Periodo
+          Guardar
         </Button>
       </div>
     </form>
