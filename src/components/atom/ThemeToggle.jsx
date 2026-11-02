@@ -19,8 +19,7 @@ export default function ThemeToggle() {
         icon={faMoon}
         onClick={toggleTheme}
         aria-label="Cambiar a modo oscuro"
-        classNameBtn="p-1 rounded-full transition-all focus:outline-none"
-        classNameIcon={`h-5 w-5 transition-all duration-200 ${
+        classNameBtn={`p-1 rounded-full transition-all focus:outline-none h-5 w-5 transition-all duration-200 ${
           !isLight
             ? "rounded-full bg-orange-500/20 p-1.5 text-orange-400 border border-orange-500/30"
             : "text-slate-400 hover:text-slate-600 dark:text-zinc-500"
@@ -30,8 +29,7 @@ export default function ThemeToggle() {
         icon={faSun}
         onClick={toggleTheme}
         aria-label="Cambiar a modo claro"
-        classNameBtn="p-1 rounded-full transition-all focus:outline-none"
-        classNameIcon={`h-5 w-5 transition-all duration-200 ${
+        classNameBtn={`p-1 rounded-full transition-all focus:outline-none h-5 w-5 transition-all duration-200 ${
           isLight
             ? "rounded-full bg-white p-1.5 text-amber-500 shadow-xs border border-slate-200/80"
             : "text-zinc-500 hover:text-zinc-300"
