@@ -102,7 +102,7 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
           />
         )}
 
-        <div className="mt-8 flex justify-between border-t border-gray-100 pt-6">
+        <div className="mt-8 flex justify-between border-t border-gray-100 dark:border-zinc-800 pt-6">
           {/* Botón Anterior: solo se muestra si pasamos del paso 1 */}
           {passed === 1 ? (
             <div></div>
@@ -132,7 +132,7 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
               icon={faUserPlus}
               type="submit"
               disabled={loading}
-              classNameBtn="rounded-lg bg-green-600 px-8 py-2 font-bold text-white transition-all hover:bg-green-700 disabled:bg-slate-300 flex items-center gap-2 shadow-lg shadow-green-100"
+              classNameBtn="bg-green-600 font-bold text-white  hover:bg-green-700 disabled:bg-slate-300"
             >
               {loading ? "Procesando..." : "Registrar"}
             </Button>

@@ -51,13 +51,13 @@ export default function FormSubject({ onSuccess }) {
         />
       </div>
 
-      <div className="flex justify-end pt-4">
+      <div>
         <Button
           type="submit"
           disabled={loading}
           icon={loading ? faSpinner : faSave}
-          classNameBtn={`w-full md:w-auto rounded-xl px-10 py-3 font-bold text-white transition-all 
-          ${loading ? "bg-slate-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 active:scale-95 shadow-md"}`}
+          classNameBtn={`w-full md:w-auto font-bold text-white transition-all 
+          ${loading ? "bg-slate-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 active:scale-95 shadow-md"}`}
         >
           {loading ? "Guardando..." : "Registrar Asignatura"}
         </Button>

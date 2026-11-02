@@ -1,7 +1,7 @@
 "use client";
-import Loading from "@/app/loading";
 import Button from "../atom/Button";
 import Selector from "../atom/Selector";
+import Loading from "@/app/loading";
 import { createLoad } from "@/services/loadacadmic/createLoad";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -68,7 +68,7 @@ export default function FormAcadLoand({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <Selector
           label={"Seleciona una materia"}
           name="subjectId"
@@ -114,9 +114,9 @@ export default function FormAcadLoand({
       <Button
         type="submit"
         icon={faSave}
-        classNameBtn="bg-indigo-600 text-white p-2 rounded-lg mt-2"
+        classNameBtn="bg-green-600 text-white hover:bg-green-700 "
       >
-        Guardar Carga Académica
+        Guardar
       </Button>
     </form>
   );

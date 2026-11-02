@@ -165,7 +165,7 @@ export default function ControlSecciones() {
           <Button
             onClick={() => setIsOpen(true)}
             icon={faPlus}
-            classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
+            classNameBtn="bg-cyan-600 text-zinc-100 hover:bg-cyan-700"
           >
             Crear sección
           </Button>
@@ -173,6 +173,7 @@ export default function ControlSecciones() {
       </div>
 
       <Modal
+        maxWidth="max-w-2xl"
         title="Crea una nueva sección"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -196,7 +197,7 @@ export default function ControlSecciones() {
         <Button
           onClick={() => setIsOpen(true)}
           icon={faPlus}
-          classNameBtn="bg-indigo-600 text-slate-100 hover:bg-indigo-700"
+          classNameBtn="bg-cyan-600 text-zinc-100 hover:bg-cyan-700 w-full"
         >
           Crear sección
         </Button>
