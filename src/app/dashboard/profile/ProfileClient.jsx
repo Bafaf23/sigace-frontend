@@ -3,16 +3,26 @@
 import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
+import Input from "@/components/atom/Input";
 import ThemeToggle from "@/components/atom/ThemeToggle";
+import Modal from "@/components/organism/Modal";
 import { useAuth } from "@/context/AuthContext";
 import { getInfoProfile } from "@/services/user/getInfoProfile";
+import { faDropbox } from "@fortawesome/free-brands-svg-icons";
 import {
+  faAlignCenter,
+  faArrowLeftRotate,
+  faBible,
+  faBlind,
+  faBlog,
+  faBridgeLock,
+  faDownLong,
   faEdit,
-  faInfoCircle,
   faRightFromBracket,
-  faIdCard,
   faSchool,
-  faShieldAlt,
+  faTrash,
+  faTriangleExclamation,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 
@@ -23,6 +33,7 @@ function displayOrUnset(value) {
 
 export default function ProfileClient() {
   const [user, setUser] = useState({});
+  const [open, setOpen] = useState(false);
   const { handleLogout } = useAuth();
   const [loading, setLoading] = useState(false);
 
@@ -43,184 +54,179 @@ export default function ProfileClient() {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
   return (
-    <div className="mx-auto w-full max-w-5xl p-4 md:p-6 animate-fade-in">
+    <div className="flex flex-col space-y-4 h-full">
       {/* HEADER PRINCIPAL - ADAPTADO A ZINC / ORANGE */}
-      <header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 dark:bg-zinc-900/50 p-6 rounded-3xl border border-slate-200/80 dark:border-zinc-800">
-        <div className="flex items-center justify-between gap-4 w-full">
-          <div className="flex items-center gap-5">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-linear-to-tr from-orange-500 to-orange-600 shadow-md shadow-orange-500/20">
-              <span className="text-2xl font-extrabold tracking-tight text-white uppercase">
-                {user?.name ? user.name.charAt(0) : ""}
-                {user?.lastName
-                  ? user.lastName.charAt(0)
-                  : user?.last_name
-                    ? user.last_name.charAt(0)
-                    : ""}
-              </span>
+      <header className="flex flex-col gap-4 bg-zinc-50 dark:bg-zinc-900 p-6 rounded-3xl border border-slate-300/80 dark:border-zinc-800">
+        <div className="border-b border-slate-200 pb-4 dark:border-zinc-800/80 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
+            <Icon icon={faUser} className="text-orange-500 text-base" />
+            Información del Perfil
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button
+              icon={faEdit}
+              classNameBtn="bg-cyan-50 dark:bg-cyan-950/30 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/40 font-bold rounded-2xl p-4 flex items-center justify-center gap-2.5 border border-cyan-200/60 dark:border-cyan-900/30 transition-all shadow-xs"
+              onClick={() => setOpen(true)}
+            ></Button>
+            <ThemeToggle />
+          </div>
+        </div>
+
+        <Modal
+          title="Estamos trabajando para mejorar tu experiencia"
+          isOpen={open}
+          onClose={() => setOpen(false)}
+        >
+          <p className="text-slate-600 dark:text-zinc-400">
+            Pronto podrás editar tu perfil.
+          </p>
+        </Modal>
+
+        <div>
+          <div className="flex md:items-center  flex-col md:flex-row md:justify-between gap-4 w-full ">
+            <div className="flex items-center gap-3">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-cyan-500 dark:bg-orange-500">
+                <span className="text-3xl font-bold text-white uppercase">
+                  {user?.name ? user.name.charAt(0) : ""}
+                </span>
+              </div>
+
+              <div className="flex flex-col">
+                <h1 className="text-2xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-zinc-100 capitalize">
+                  {user?.name} {user?.last_name}
+                </h1>
+                <p className="font-medium text-cyan-600 dark:text-cyan-400 mt-0.5 flex items-center gap-2">
+                  <span className="bg-cyan-50 dark:bg-cyan-950/40 px-2.5 py-0.5 rounded-full capitalize text-xs border border-cyan-200/60 dark:border-cyan-800/40">
+                    {user?.role || "Usuario"}
+                  </span>
+                  <span className="text-xs dark:text-zinc-300 text-zinc-500">
+                    {user?.id_card || "Usuario"}
+                  </span>
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-2xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-zinc-100 capitalize">
-                {user?.name} {user?.last_name}
-              </h1>
-              <p className="text-sm font-medium text-cyan-600 dark:text-cyan-400 mt-0.5 flex items-center gap-2">
-                <span className="bg-cyan-50 dark:bg-cyan-950/40 px-2.5 py-0.5 rounded-full capitalize text-xs border border-cyan-200/60 dark:border-cyan-800/40">
-                  {user?.role || "Usuario"}
-                </span>
-                <span className="text-slate-300 dark:text-zinc-700 hidden md:block">
-                  •
-                </span>
-                <span className="text-slate-500 dark:text-zinc-400 text-xs hidden md:block">
-                  {user?.email}
-                </span>
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full xl:w-auto">
+              <Input
+                id="email"
+                label="Correo Electrónico"
+                value={user?.email || ""}
+                readOnly
+              />
+              <Input
+                id="phone"
+                label="Número de Teléfono"
+                value={user?.phone || "Sin teléfono registrado"}
+                readOnly
+              />
             </div>
           </div>
-          <ThemeToggle />
         </div>
       </header>
 
-      {/* CUERPO CENTRAL ASIMÉTRICO */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* INFORMACIÓN PERSONAL */}
-        <section className="lg:col-span-2 space-y-6 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-zinc-800/80">
-            <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
-              <Icon icon={faIdCard} className="text-cyan-500 text-base" />
-              Información Personal
+      {/* PANEL DERECHO: DATOS INSTITUCIONALES */}
+      <section className="flex flex-col justify-between space-y-6 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="space-y-6">
+          {/* Encabezado del Panel */}
+          <div className="border-b border-slate-100 pb-4 dark:border-zinc-800/80">
+            <h2 className="flex items-center gap-2 text-lg font-bold text-slate-800 dark:text-zinc-100">
+              <Icon icon={faSchool} className="text-base text-orange-500" />
+              Plantel Educativo
             </h2>
-            <button
-              type="button"
-              disabled
-              titel="Próximamente podrás editar tu perfil."
-              className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-xl bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-400 dark:bg-zinc-800/50 dark:text-zinc-500"
-            >
-              <Icon icon={faEdit} />
-              Editar
-            </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
-                Cédula o ID
-              </span>
-              <p className="text-base font-medium text-slate-800 dark:text-zinc-200">
-                {displayOrUnset(user?.id_card)}
-              </p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
-                Correo Electrónico
-              </span>
-              <p className="text-base font-medium text-slate-800 dark:text-zinc-200 break-all">
-                {displayOrUnset(user?.email)}
-              </p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
-                Nombres y Apellidos
-              </span>
-              <p className="text-base font-medium text-slate-800 dark:text-zinc-200 capitalize">
-                {displayOrUnset(user?.name)} {displayOrUnset(user?.last_name)}
-              </p>
-            </div>
-
-            <div className="space-y-1 sm:col-span-1">
-              <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider">
-                Teléfono de Contacto
-              </span>
-              <p className="text-base font-medium text-slate-800 dark:text-zinc-200">
-                {user?.phone ? user?.phone : "Sin teléfono registrado"}
-              </p>
-            </div>
-          </div>
-
-          {/* MENSAJE INFORMATIVO */}
-          <div className="flex gap-3 rounded-2xl bg-amber-50/60 p-4 text-xs text-amber-900/90 dark:bg-amber-950/20 dark:text-amber-300 border border-amber-200/50 dark:border-amber-900/30">
-            <Icon
-              icon={faInfoCircle}
-              className="text-amber-600 dark:text-amber-400 shrink-0 text-sm mt-0.5"
-            />
-            <p className="leading-relaxed">
-              Si detectas inconsistencias en tus datos de identidad oficiales,
-              por favor{" "}
-              {supportEmail ? (
-                <a
-                  href={`mailto:${supportEmail}`}
-                  className="font-bold underline text-amber-800 dark:text-amber-400 hover:text-amber-950"
-                >
-                  escribe a soporte técnico
-                </a>
-              ) : (
-                <span className="font-bold">
-                  contacta a la dirección del plantel
-                </span>
-              )}
-              .
-            </p>
-          </div>
-        </section>
-
-        {/* PANEL DERECHO: DATOS INSTITUCIONALES */}
-        <section className="space-y-6 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 flex flex-col justify-between">
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4 dark:border-zinc-800/80">
-              <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
-                <Icon icon={faSchool} className="text-orange-500 text-base" />
-                Institución
-              </h2>
-            </div>
-
-            <div className="space-y-4">
+          {/* Contenido Principal: Adaptable de 1 columna a 2 en pantallas medianas */}
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            {/* Datos del Plantel y Rol */}
+            <div className="flex flex-wrap items-center gap-4">
               {user?.role !== "Estudiante" && (
-                <div className="p-4 bg-orange-50/50 dark:bg-zinc-800/50 rounded-2xl border border-orange-200/60 dark:border-zinc-700/60">
-                  <span className="text-xs font-bold text-slate-400 dark:text-zinc-400 uppercase tracking-wider block mb-1">
-                    Código SIG Institucional
+                <div className="min-w-[140px] rounded-2xl border border-orange-200/60 bg-orange-50/50 p-4 dark:border-zinc-700/60 dark:bg-zinc-800/50">
+                  <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-400">
+                    Código SIG
                   </span>
-                  <span className="text-xl font-black text-orange-600 dark:text-orange-400 tracking-tight font-mono block">
+                  <span className="block font-mono text-xl font-black tracking-tight text-orange-600 dark:text-orange-400">
                     {displayOrUnset(user?.school?.SIG)}
                   </span>
                 </div>
               )}
-              <div className="space-y-1 px-1">
-                <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider block">
-                  Centro Educativo
-                </span>
-                <p className="text-sm font-medium text-slate-700 dark:text-zinc-200">
-                  {displayOrUnset(user?.school?.school_name).toUpperCase()}
-                </p>
-              </div>
 
-              <div className="space-y-1 px-1">
-                <span className="text-xs font-semibold text-slate-400 dark:text-zinc-400 uppercase tracking-wider block">
-                  Cargo Asignado
-                </span>
-                <p className="text-sm font-medium text-slate-700 dark:text-zinc-200 uppercase">
-                  {displayOrUnset(user?.role)}
-                </p>
+              <div className="space-y-3">
+                <div className="space-y-0.5 px-1">
+                  <span className="block text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-400">
+                    Nombre
+                  </span>
+                  <p className="text-sm font-medium text-slate-700 dark:text-zinc-200">
+                    {displayOrUnset(user?.school?.school_name).toUpperCase()}
+                  </p>
+                </div>
+
+                <div className="space-y-0.5 px-1">
+                  <span className="block text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-400">
+                    Rol
+                  </span>
+                  <p className="text-sm font-medium text-slate-700 dark:text-zinc-200 uppercase">
+                    {displayOrUnset(user?.role)}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* NOTA DE PRIVACIDAD INTEGRADA */}
-          <div className="pt-4 border-t border-slate-100 dark:border-zinc-800/80 text-[11px] text-slate-400 dark:text-zinc-400 space-y-2">
-            <p className="flex items-center gap-1.5 font-medium text-slate-500 dark:text-zinc-300">
-              <Icon
-                icon={faShieldAlt}
-                className="text-slate-400 dark:text-zinc-400"
-              />{" "}
-              Confidencialidad SIGACE
-            </p>
-            <p className="leading-normal">
-              El código SIG es un identificador crítico. No lo compartas bajo
-              ninguna circunstancia.
-            </p>
-            <p className="font-mono text-[10px] text-slate-400 dark:text-zinc-500 bg-slate-50 dark:bg-zinc-950/60 p-1.5 rounded-md text-center break-all border border-slate-100 dark:border-zinc-800/50">
-              ID: {user?.id}
-            </p>
+            {/* Sección de Descarga de Archivos */}
+            {user.role === "administrador" && (
+              <div className="flex flex-col items-start gap-3 border-t border-slate-100 pt-4 dark:border-zinc-800 lg:items-end lg:border-t-0 lg:pt-0">
+                <p className="text-slate-400 dark:text-zinc-400">
+                  Descarga la información asociada
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    icon={faUser}
+                    aria-label="Descargar listado de usuarios"
+                    classNameBtn="bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/60 font-bold"
+                  >
+                    Usuarios
+                  </Button>
+                  <Button
+                    icon={faBridgeLock}
+                    aria-label="Descargar de calificaciones"
+                    classNameBtn="bg-green-50 dark:bg-green-950/80 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/60 font-bold"
+                  >
+                    Calificaciones
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {user.role !== "Estudiante" && (
+        <section className="flex flex-1 flex-col space-y-1">
+          <div>
+            <h2 className="text-lg font-bold text-red-500 flex items-center gap-2">
+              <Icon icon={faTriangleExclamation} />
+              Danger zone
+            </h2>
+          </div>
+          <div>
+            <div className="space-y-2">
+              <div>
+                <h5 className="dark:text-zinc-300 text-zinc-600 font-semibold text-sm">
+                  Desactivar cuenta
+                </h5>
+                <p className="text-sm text-slate-500 dark:text-zinc-300">
+                  Al desactivar tu cuenta, cuantas con 30 días para reactivarla.
+                  Pasado este tiempo, tu cuenta será eliminada
+                </p>
+              </div>
+              <Button
+                icon={faTrash}
+                classNameBtn="bg-red-200 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 font-bold"
+              >
+                Desactivar cuenta
+              </Button>
+            </div>
           </div>
         </section>
-      </div>
+      )}
 
       <div className="mt-6 lg:hidden">
         <Button
