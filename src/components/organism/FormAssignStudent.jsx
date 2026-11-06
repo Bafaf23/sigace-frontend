@@ -74,7 +74,7 @@ export default function FormAssignStudent({
         }
       />
 
-      <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-600">
+      <div className="rounded-lg bg-blue-50 dark:bg-blue-600/10 p-4 text-sm text-blue-600">
         Se inscribirá automáticamente en la sección actual.
       </div>
 
@@ -82,7 +82,7 @@ export default function FormAssignStudent({
         icon={faUser}
         type="submit"
         disabled={loading || students.length === 0}
-        classNameBtn="w-full rounded-lg bg-indigo-600 py-2 font-bold text-white transition-all hover:bg-indigo-700 disabled:bg-slate-300"
+        classNameBtn="w-full bg-green-600 text-white transition-all hover:bg-green-700 disabled:bg-slate-300"
       >
         {loading ? "Registrando..." : "Confirmar Inscripción"}
       </Button>

@@ -29,11 +29,6 @@ const PersonalDataFields = ({ datos, manejarCambio, mode }) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h4 className="text-2xl font-extrabold text-amber-500 uppercase">
-          Tus datos personales
-        </h4>
-      </div>
       {/* Toggle para estudiantes de procedencia de otras escuelas */}
       <div>
         {/*  {mode !== "edit" && (
@@ -45,11 +40,7 @@ const PersonalDataFields = ({ datos, manejarCambio, mode }) => {
           />
         )} */}
       </div>
-      <Banner
-        icon={faIdCard}
-        titel="¿Sin Cedula de Identidad?"
-        message="Si aun no tienes cedula de identidad, puedes seleccionar 'CE' (Cédula de estudiantil) como tipo de documento y completar el campo con la cedula de tu representante."
-      />
+
       <div className="grid md:grid-cols-3 items-end gap-4">
         <div className="col-span-2 md:col-span-2">
           <SelectorInput

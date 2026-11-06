@@ -139,7 +139,7 @@ export default function ProfileClient() {
             {/* Datos del Plantel y Rol */}
             <div className="flex flex-wrap items-center gap-4">
               {user?.role !== "Estudiante" && (
-                <div className="min-w-[140px] rounded-2xl border border-orange-200/60 bg-orange-50/50 p-4 dark:border-zinc-700/60 dark:bg-zinc-800/50">
+                <div className="min-w-35 rounded-2xl border border-orange-200/60 bg-orange-50/50 p-4 dark:border-zinc-700/60 dark:bg-zinc-800/50">
                   <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-400">
                     Código SIG
                   </span>

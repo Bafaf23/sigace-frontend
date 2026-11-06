@@ -28,13 +28,6 @@ const LegalRepresentativeFields = ({ datos, manejarCambio }) => {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h4 className="font-extrabold text-amber-500 uppercase text-2xl">
-          Hey, ¡Casi terminamos!
-        </h4>
-        <p className="dark:text-zinc-300 text-slate-600 font-medium">Ahora necesitamos los datos del representante legal.</p>
-      </div>
-
       <div className="grid grid-cols-1 items-end gap-4">
         <SelectorInput
           id="repDniType"

@@ -4,7 +4,7 @@ import Loading from "@/app/loading";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import AcademicRecord from "@/components/organism/AcademicRecord";
-import FormInscrip from "@/components/organism/FromInscrip";
+import FormInscrip from "@/components/organism/FormIncrip";
 import Modal from "@/components/organism/Modal";
 import { getPeriodStudent } from "@/services/enrollment/getPeriodStudent";
 import { getRecordStudent } from "@/services/student/getRecordStudent";
@@ -63,7 +63,6 @@ export default function StudentRecords() {
           setStudent(dataRecord.data);
         }
 
-        // CORRECCIÓN 2: Guardar el array completo de inscripciones/períodos
         if (dataPeriodStudent?.data) {
           setPeriodStudent(
             Array.isArray(dataPeriodStudent.data)
@@ -139,9 +138,9 @@ export default function StudentRecords() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        titel="Editar Información del Estudiante"
+        title="Editar Información del Estudiante"
       >
-        <FormInscrip mode="edit" student={student} />
+        <FormInscrip mode="edit" student={student} SIG={user?.user?.SIG} />
       </Modal>
 
       {/* HEADER DEL ESTUDIANTE */}
