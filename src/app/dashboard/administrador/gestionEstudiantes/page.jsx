@@ -233,7 +233,7 @@ export default function GestionEstudiantesPage() {
                   <div className="flex items-center gap-2">
                     {student.enrollment && (
                       <Link
-                        href={`${process.env.NEXT_PUBLIC_API_URL}/reports/${student.id}/enrollment`}
+                        href={`${process.env.NEXT_PUBLIC_API_URL}/reports/${student.tuition_number}/enrollment`}
                         target="_blank"
                       >
                         <Button
@@ -270,7 +270,7 @@ export default function GestionEstudiantesPage() {
 
                   {student.enrollment && (
                     <Link
-                      href={`${process.env.NEXT_PUBLIC_API_URL}/reports/${student.id}/enrollment`}
+                      href={`${process.env.NEXT_PUBLIC_API_URL}/reports/${student.tuition_number}/enrollment`}
                       target="_blank"
                     >
                       <Button
