@@ -19,10 +19,10 @@ export default function FormRegister({ user, mode, onSuccess, role }) {
 
   const [data, setData] = useState({
     id: user?.id || "",
-    typeDocuement: user?.typeDocuement || "V",
+    documentType: user?.documentType || "V",
     document: user?.document || "",
     name: user?.name || "",
-    last_name: user?.last_name || "",
+    lastName: user?.lastName || "",
     email: user?.email || "",
     phone: user?.phone || "",
     SIG: user?.SIG || "",
