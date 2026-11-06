@@ -1,5 +1,4 @@
 import Input from "../atom/Input";
-
 import SelectorInput from "./SelectorInput";
 
 /**
@@ -38,7 +37,7 @@ export default function DataUserRegister({ data, manejoCambio, mode }) {
             options={options}
             id={"optionId"}
             placeholder={"3242343"}
-            valueSel={data.typeDocuement}
+            valueSel={data.documentType}
             valueInput={data.document}
             onChange={manejoCambio}
           />
@@ -56,8 +55,8 @@ export default function DataUserRegister({ data, manejoCambio, mode }) {
               label={"Apellido"}
               type={"text"}
               placeholder={"Sanchez"}
-              value={data.last_name}
-              name={"last_name"}
+              value={data.lastName}
+              name={"lastName"}
               onChange={manejoCambio}
             />
           </div>
