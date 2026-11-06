@@ -11,7 +11,7 @@ import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Pagination from "@/components/molecules/Pagination";
 import Search from "@/components/molecules/Serch";
 import TableInsti from "@/components/molecules/TableInsti";
-import FormInscrip from "@/components/organism/FromInscrip";
+import FormInscrip from "@/components/organism/FormIncrip";
 import Modal from "@/components/organism/Modal";
 import { useAuth } from "@/context/AuthContext";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -35,7 +35,6 @@ export default function GestionEstudiantesPage() {
   const [isOpentC, setIsOpentC] = useState(false);
   const [page, setPage] = useState(1);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null);
   const [students, setStudents] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [dataLoading, setDataLoading] = useState(true);
@@ -44,7 +43,6 @@ export default function GestionEstudiantesPage() {
 
   const debouncedSearch = useDebounce(search, 400);
 
-  // Definición centralizada y memorizada para cargar estudiantes
   const fetchStudentsData = useCallback(
     async (targetPage = page) => {},
     [page],
@@ -114,21 +112,6 @@ export default function GestionEstudiantesPage() {
           onSuccess={() => {
             fetchStudentsData(1);
             setIsOpent(false);
-          }}
-        />
-      </Modal>
-
-      <Modal
-        titel="Información del Estudiante"
-        isOpen={isOpenModal}
-        onClose={() => setIsOpenModal(false)}
-      >
-        <FormInscrip
-          mode="edit"
-          student={selectedStudent}
-          onSuccess={() => {
-            fetchStudentsData(page);
-            setIsOpenModal(false);
           }}
         />
       </Modal>

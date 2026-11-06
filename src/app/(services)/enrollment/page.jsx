@@ -1,4 +1,4 @@
-import FormInscrip from "@/components/organism/FromInscrip";
+import FormInscrip from "@/components/organism/FromInscripOnline";
 import { headers } from "next/headers";
 
 export const metadata = {

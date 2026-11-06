@@ -9,25 +9,15 @@ import HealthPhysicalFields from "../molecules/HealthPhysicalFields";
 import LegalRepresentativeFields from "../molecules/LegalRepresentativeFields";
 import LocationFields from "../molecules/LocationFields";
 import PersonalDataFields from "../molecules/PersonalDataFields";
-import Success from "./Success";
 import { createStudent } from "@/services/student/createStudent";
 import { updateStudent } from "@/services/student/updateStudent";
 import { faInfoCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function FormInscrip({
-  mode,
-  student,
-  onSuccess,
-  nameSchool,
-  SIG,
-}) {
+export default function FormInscrip({ mode, student, onSuccess }) {
   const [passed, setPassed] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [successData, setSuccessData] = useState(null);
 
   const [formData, setFormData] = useState({
     documentType: "V",
@@ -48,7 +38,6 @@ export default function FormInscrip({
     previousYear: student?.previous_year || "",
     previousSection: student?.previous_section || "",
 
-    SIG: SIG,
     role_id: 2,
 
     allergies: student?.allergies || "",
@@ -129,27 +118,27 @@ export default function FormInscrip({
     }
 
     setLoading(true);
-    let result;
+
     if (mode === "edit") {
-      result = await updateStudent(formData);
+      const result = await updateStudent(formData);
+      if (result?.success !== true) {
+        toast.error(result?.message);
+      } else {
+        toast.success(result.message);
+        onSuccess?.();
+      }
     } else {
-      result = await createStudent(formData);
+      const result = await createStudent(formData);
+      if (result?.success !== true) {
+        toast.error(result?.message);
+      } else {
+        toast.success(result.message);
+        onSuccess?.();
+      }
     }
 
-    if (result?.success !== true) {
-      toast.error(result?.message || "Ocurrió un error.");
-    } else {
-      toast.success(result.message);
-      setSuccessData(result.data);
-      onSuccess?.();
-    }
     setLoading(false);
   };
-
-  if (successData)
-    return (
-      <Success data={successData} school={{ name: nameSchool, SIG: SIG }} />
-    );
 
   return (
     <form
@@ -243,32 +232,13 @@ export default function FormInscrip({
       {/* PASO FINAL: Información de Cuenta (Solo en creación) */}
       {passed === totalSteps && mode !== "edit" && (
         <div className="space-y-6">
-          <div>
-            <h4 className="font-extrabold text-amber-500 uppercase text-2xl">
-              Una cosa más para terminar
-            </h4>
-            <p className="text-slate-600 dark:text-zinc-300 font-medium leading-relaxed">
-              Verifica la información suministrada. Si ves algún error, regresa
-              y corrígelo.
-            </p>
-          </div>
-
           <Banner
             icon={faStopCircle}
-            titel="Reglamento, términos y condiciones"
+            title="Reglamento, términos y condiciones"
             message="Al presionar el botón de inscribir, acepta los términos y condiciones del sistema (ScholPack) y el reglamento interno de la institución educativa en la que desea inscribir al estudiante. Se recomienda leer el reglamento y los términos y condiciones antes de continuar."
           />
 
           <div className="grid grid-cols-2 gap-3 items-end">
-            <div className="col-span-2">
-              <Input
-                label="Escuela que procesa el registro"
-                name="school"
-                value={`${nameSchool || ""} (${SIG || ""})`}
-                readOnly
-              />
-            </div>
-
             <Input
               label="Usuario para ingresar al sistema"
               name="email"
@@ -283,12 +253,6 @@ export default function FormInscrip({
               readOnly
             />
           </div>
-
-          <Banner
-            icon={faInfoCircle}
-            titel="Seguridad"
-            message="Proteja esta cuenta. No comparta su usuario ni contraseña con nadie. ScholPack no se hace responsable por el mal uso de la cuenta."
-          />
         </div>
       )}
 

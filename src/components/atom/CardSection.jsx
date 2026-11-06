@@ -110,7 +110,7 @@ export default function CardSection({
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        titel="Inscribir Estudiante"
+        title="Inscribir Estudiante"
       >
         <FormAssignStudent
           students={safeAvailable}

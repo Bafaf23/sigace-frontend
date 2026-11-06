@@ -17,14 +17,6 @@ import { faHeadSideCough } from "@fortawesome/free-solid-svg-icons";
 const HealthPhysicalFields = ({ datos, manejarCambio }) => {
   return (
     <div className="space-y-6 w-full">
-      <h4 className="font-extrabold text-amber-500 text-2xl uppercase">
-        Tus datos medicos y fisicos
-      </h4>
-      <Banner
-        icon={faHeadSideCough}
-        title="¿No padecesde alguna condición médica?"
-        message="Si no padeces ninguna condición o alergia médica, deja los campos en blanco."
-      />
       <div className="grid grid-cols-2 gap-2">
         <Input
           name={"allergies"}
