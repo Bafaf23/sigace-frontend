@@ -39,7 +39,7 @@ export default function Footer() {
         <SchoPackLogo className="text-slate-900 dark:text-zinc-300" />
 
         {/* Derechos de Autor */}
-        <p className="text-center text-xs text-slate-600 dark:text-zinc-300">
+        <p className="text-center text-slate-600 dark:text-zinc-300">
           Desarrollado por{" "}
           <span className="font-semibold text-slate-900 dark:text-zinc-100">
             {DEVELOPER.name}

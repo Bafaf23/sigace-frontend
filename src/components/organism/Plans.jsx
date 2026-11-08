@@ -147,7 +147,7 @@ export default function Plans() {
                     <Icon icon={service.icon} className="text-xl" />
                   </div>
                   <div className="w-full">
-                    <div className="flex gap-2 justify-between">
+                    <div className="flex gap-2 items-center justify-between">
                       <h5 className="text-lg font-bold text-slate-800 dark:text-zinc-100">
                         {service.name}
                       </h5>
