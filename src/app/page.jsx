@@ -5,39 +5,47 @@ import Footer from "@/components/organism/Footer";
 import Header from "@/components/organism/Header";
 import Hero from "@/components/organism/Hero";
 import Plans from "@/components/organism/Plans";
-import { faWikipediaW } from "@fortawesome/free-brands-svg-icons";
 import {
-  faAmericanSignLanguageInterpreting,
+  faOpenai,
+  faPhoenixFramework,
+  faWikipediaW,
+} from "@fortawesome/free-brands-svg-icons";
+import { faMagento } from "@fortawesome/free-brands-svg-icons/faMagento";
+import { faPhabricator } from "@fortawesome/free-brands-svg-icons/faPhabricator";
+import {
   faArrowRightArrowLeft,
-  faTrainSubway,
+  faMoneyBillWaveAlt,
+  faPhone,
+  faPhoneSquare,
+  faTimeline,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 const WA_LINK = "https://wa.link/urfdhq";
 const STATS_DATA = [
   {
-    id: "clients",
-    title: "Ellos confían",
-    info: "40+",
-    colorTitle: "text-[#1FED92]",
-    colorInfo: "text-[#ED781F]",
-    message: "Ellos confían en nosotros",
+    title: "Centralizacion",
+    icon: faUser,
+    colorTitle: "text-emerald-500",
+    colorIcon: "text-emerald-600",
+    message:
+      "Ten en solo lugar la informacion de cada usuario y consultala cuando quieras.",
   },
   {
-    id: "uptime",
-    title: "Disponibilidad",
-    info: "99%",
-    colorTitle: "text-[#529199]",
-    colorInfo: "text-indigo-600",
-    message: "El mejor respaldo y responsabilidad",
+    title: "Portabilidad",
+    icon: faPhoneSquare,
+    colorTitle: "text-indigo-500",
+    colorIcon: "text-indigo-600",
+    message: "Asigsible para todos los usuarios que tengan una cuenta activa.",
   },
   {
-    id: "local",
-    title: "Hecho en Venezuela",
-    info: "100%",
+    title: "Optimizacion",
+    icon: faTimeline,
     colorTitle: "text-amber-400",
-    colorInfo: "text-blue-500",
-    message: "Impulsando el talento nacional",
+    colorIcon: "text-amber-600",
+    message:
+      "Reduce los tiempos en la oficina, la planificacion y dedica más tiempo en el aula.",
   },
 ];
 
@@ -47,13 +55,13 @@ export default function Home() {
       <Header />
       <Hero />
       <div className="absolute z-50 bottom-3 hidden md:flex gap-4 justify-evenly md:px-10 w-full">
-        {STATS_DATA.map((item) => (
+        {STATS_DATA.map((item, index) => (
           <CardState
-            key={item.id}
+            key={index}
             title={item.title}
-            info={item.info}
-            colorInfo={item.colorInfo}
-            colorTitle={item.colorInfo}
+            icon={item.icon}
+            colorIcon={item.colorIcon}
+            colorTitle={item.colorTitle}
             message={item.message}
           />
         ))}

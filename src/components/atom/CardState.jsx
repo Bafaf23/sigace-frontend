@@ -12,6 +12,7 @@ import Icon from "./Icon";
  * @param {string} [props.colorTitle] - Clase de color para el título.
  * @param {string} [props.colorInfo] - Clase de color para la métrica (default: "text-cyan-500").
  * @param {string} [props.message] - Mensaje secundario o pie de tarjeta.
+ * @param {string} [props.colorIcon]- Clase de color par el icono (defualt: "text-[#529199]")
  * @returns {JSX.Element}
  */
 export default function CardState({
@@ -21,6 +22,7 @@ export default function CardState({
   className = "",
   colorTitle = "text-slate-800 dark:text-zinc-200",
   colorInfo = "text-cyan-500",
+  colorIcon = "text-[#529199]",
   message,
 }) {
   return (
@@ -33,7 +35,9 @@ export default function CardState({
           {title}
         </h2>
         {icon && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-500">
+          <div
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${colorIcon}`}
+          >
             <Icon icon={icon} className="text-xl" />
           </div>
         )}

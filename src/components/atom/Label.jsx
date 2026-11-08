@@ -10,7 +10,7 @@
 export default function Label({ children, className }) {
   return (
     <span
-      className={`inline-block rounded-full px-3 py-1 mb-4 text-xs font-bold tracking-widest uppercase ${className}`}
+      className={`shrink-0 rounded-full px-3 py-1 mb-4 text-xs font-bold tracking-widest uppercase ${className}`}
     >
       {children}
     </span>
