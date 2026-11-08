@@ -35,6 +35,7 @@ export default function About() {
     <section id="nosotros" className="px-5 py-20 lg:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          
           {/* Columna Izquierda: Historia y Problema */}
           <div className="lg:col-span-6">
             <div className="mb-6 space-y-2">
@@ -45,26 +46,17 @@ export default function About() {
                 Un sueño, las bases del mañana
               </h3>
               <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Una hoja de cálculo (
-                <span className="font-bold text-zinc-700 dark:text-zinc-200">
-                  .xls
-                </span>
-                ) fue el punto de partida para crear el software más completo
-                para la administración de un liceo.
+                Una hoja de cálculo (<span className="font-bold text-zinc-700 dark:text-zinc-200">.xls</span>) fue el punto de partida para crear el software más completo para la administración de un liceo.
               </p>
             </div>
 
             <article className="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-lg">
               <p>
-                Durante años, gestionar un liceo se ha reducido a hojas de Excel
-                y montañas de impresiones archivadas. Los sistemas actuales
-                tienen más de 20 años o son demasiado costosos, obligando a las
-                administraciones a hacer de tripas corazón.
+                Durante años, gestionar un liceo se ha reducido a hojas de Excel y montañas de impresiones archivadas. Los sistemas actuales tienen más de 20 años o son demasiado costosos, obligando a las administraciones a hacer de tripas corazón.
               </p>
 
               <p>
-                Soluciones hay muchas, pero pocas son confiables, eficaces y
-                resuelven el verdadero problema dentro de la institución.
+                Soluciones hay muchas, pero pocas son confiables, eficaces y resuelven el verdadero problema dentro de la institución.
               </p>
 
               <p className="font-bold italic text-orange-600 dark:text-amber-300">
