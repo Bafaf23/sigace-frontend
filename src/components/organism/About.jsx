@@ -1,12 +1,7 @@
 import Icon from "@/components/atom/Icon";
 import Label from "@/components/atom/Label";
 import {
-  faGraduationCap,
-  faTable,
-  faSchoolCircleExclamation,
-  faTree,
   faRecycle,
-  faHand,
   faHandshake,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";

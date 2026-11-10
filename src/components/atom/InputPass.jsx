@@ -24,6 +24,7 @@ export default function InputPass({
   name,
   onChange,
   value,
+  className,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -35,6 +36,7 @@ export default function InputPass({
         type={showPassword ? "text" : "password"}
         name={name}
         onChange={onChange}
+        className={className}
       />
 
       <Button
