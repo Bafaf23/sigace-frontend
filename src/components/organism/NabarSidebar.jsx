@@ -54,7 +54,7 @@ export const menuLink = {
     },
     {
       icon: faListCheck,
-      label: "Mis Notas",
+      label: "Mis Calificaciones",
       href: "/dashboard/estudiante/notas",
     },
     /* {

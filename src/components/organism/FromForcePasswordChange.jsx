@@ -98,13 +98,13 @@ export default function FromForcePasswordChange() {
   }
 
   return (
-    <div className="w-full px-10 md:py-0">
+    <div className="w-full">
       <div>
         <div className="mb-10">
-          <h2 className="text-3xl font-extrabold text-orange-500 mb-2">
+          <h2 className="text-2xl font-extrabold text-orange-500 mb-2">
             Actualización Obligatoria
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+          <p className="text-sm text-slate-500 dark:text-zinc-400 mb-6">
             Por seguridad, debes configurar tu contraseña definitiva para
             continuar.
           </p>
@@ -117,6 +117,7 @@ export default function FromForcePasswordChange() {
               onChange={handleChange}
               value={formData.newPassword}
               placeholder="••••••••"
+              className="bg-zinc-100"
             />
             <InputPass
               label="Confirmar Contraseña"
@@ -124,6 +125,7 @@ export default function FromForcePasswordChange() {
               value={formData.confirmNewPassword}
               onChange={handleChange}
               placeholder="••••••••"
+              className="bg-zinc-100"
             />
           </div>
 

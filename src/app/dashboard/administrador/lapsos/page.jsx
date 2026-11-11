@@ -87,7 +87,6 @@ export default function LapsoPage() {
     fetchPeriod();
     fetchLapses();
   }, [user, fetchPeriod, fetchLapses]);
-
   return (
     <div className="space-y-3">
       <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
@@ -208,7 +207,7 @@ export default function LapsoPage() {
       <ConfirmAtionModal
         isOpen={isModalConfirmPeriodOpen}
         onCancel={() => setIsModalConfirmPeriodOpen(false)}
-        titel="Iniciar período institucional"
+        titel="Iniciar período academico"
         message="¿Estás seguro de querer iniciar este año escolar? El proceso creará la matriz base de matrícula y es irreversible."
         onConfirm={async () => {
           try {
@@ -225,12 +224,11 @@ export default function LapsoPage() {
         }}
         variant="info"
       />
-
       {/* Confirmación Transicional: Cierre de Período */}
       <ConfirmAtionModal
         isOpen={isModalEndPeriodOpen}
         onCancel={() => setIsModalEndPeriodOpen(false)}
-        titel="Finalizar periodo lectivo"
+        titel="Finalizar periodo activo"
         message="¿Estás seguro de querer clausurar este año escolar? Este proceso consolidará las actas definitivas y no se podrán alterar notas."
         onConfirm={async () => {
           try {

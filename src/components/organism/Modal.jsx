@@ -59,7 +59,7 @@ export default function Modal({
       {/* CONTENEDOR DE LA VENTANA (Modal Shell) */}
       <div
         ref={modalRef}
-        className={`relative w-full ${maxWidth} transform overflow-hidden rounded-3xl bg-white p-6 shadow-2xl transition-all dark:bg-zinc-950 border border-slate-100 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-200`}
+        className={`relative w-full ${maxWidth} transform overflow-hidden rounded-3xl bg-white p-6 shadow-2xl transition-all dark:bg-zinc-800 border border-slate-100 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-200`}
       >
         {/* CABECERA (Header) */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-900">

@@ -24,7 +24,7 @@ export default function Input({
   id,
   value,
   onChange,
-  className,
+  className = "bg-zinc-100",
   readOnly = false,
 }) {
   return (
@@ -47,7 +47,7 @@ export default function Input({
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        className={`w-full rounded-xl border border-slate-200 bg-white px-4 py-3 transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-400 dark:focus:border-orange-500 dark:focus:ring-2 dark:focus:ring-orange-500/50 dark:focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${readOnly ? "cursor-not-allowed text-gray-400" : " text-slate-900 dark:text-zinc-100"} ${className}`}
+        className={`w-full rounded-xl border border-slate-200  px-4 py-3 transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-400 dark:focus:border-orange-500 dark:focus:ring-2 dark:focus:ring-orange-500/50 dark:focus:outline-none dark:border-zinc-500 dark:bg-zinc-600/80 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${readOnly ? "cursor-not-allowed text-gray-400" : " text-slate-900 dark:text-zinc-100"} ${className}`}
         readOnly={readOnly}
       />
     </div>

@@ -4,10 +4,10 @@ import axios from "axios";
  * End Academic Period
  * @returns {Promise<void>}
  */
-export const endAcademicPeriod = async () => {
+export const endAcademicPeriod = async (id) => {
   try {
     const response = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}/periods/endAcademicPeriod`,
+      `${process.env.NEXT_PUBLIC_API_URL}/periods/end`,
       {},
       {
         withCredentials: true, // Envía la cookie 'auth_token' al backend

@@ -185,12 +185,12 @@ export default function PlanEvaluativo() {
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {/* Tarjeta: Materia */}
-          <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all">
+          <div className="flex items-center gap-3 bg-white dark:bg-zinc-800 rounded-xl p-3 border border-slate-200/80 dark:border-zinc-700 shadow-sm transition-all">
             <div className="p-2 bg-cyan-50 dark:bg-cyan-950/40 rounded-lg text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
               <Icon icon={faBook} className="text-base" />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider">
                 Asignatura
               </span>
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 truncate italic">
@@ -202,12 +202,12 @@ export default function PlanEvaluativo() {
           </div>
 
           {/* Tarjeta: Periodo */}
-          <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all">
+          <div className="flex items-center gap-3 bg-white dark:bg-zinc-800 rounded-xl p-3 border border-slate-200/80 dark:border-zinc-700 shadow-sm transition-all">
             <div className="p-2 bg-cyan-50 dark:bg-cyan-950/40 rounded-lg text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
               <Icon icon={faClock} className="text-base" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider">
                 Periodo
               </span>
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
@@ -218,7 +218,7 @@ export default function PlanEvaluativo() {
           </div>
 
           {/* Tarjeta: Porcentaje Total */}
-          <div className="flex items-center gap-3 bg-white dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/50 shadow-sm transition-all col-span-2 lg:col-span-1">
+          <div className="flex items-center gap-3 bg-white dark:bg-zinc-800 rounded-xl p-3 border border-slate-200/80 dark:border-zinc-700 shadow-sm transition-all col-span-2 lg:col-span-1">
             <div
               className={`p-2 rounded-lg flex items-center justify-center transition-colors ${
                 porcentajeTotal === 100
@@ -229,7 +229,7 @@ export default function PlanEvaluativo() {
               <Icon icon={faCalendar} className="text-base" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider">
                 Porcentaje Total
               </span>
               <span
@@ -248,7 +248,7 @@ export default function PlanEvaluativo() {
         <div className="w-full flex justify-end">
           {porcentajeTotal < 100 && (
             <Button
-              classNameBtn="bg-cyan-500 py-3 px-4 rounded-xl text-slate-50 font-bold cursor-pointer hover:bg-cyan-700 flex items-center gap-1"
+              classNameBtn="bg-cyan-500 cursor-pointer hover:bg-cyan-700 text-white"
               icon={faPlus}
               onClick={() => {
                 setEvaluation({});
@@ -289,9 +289,9 @@ export default function PlanEvaluativo() {
           renderTableRows={(row) => (
             <tr
               key={row.id || row.id_evaluation}
-              className="transition-colors text-slate-500 hover:bg-slate-50/50"
+              className="transition-colors text-slate-500 dark:text-zinc-200 hover:bg-slate-50/50 dark:hover:bg-zinc-800"
             >
-              <td className="px-4 py-4 text-center font-medium text-cyan-600">
+              <td className="px-4 py-4 text-center font-medium text-cyan-600 dark:text-cyan-500">
                 {row.date ? new Date(row.date).toLocaleDateString() : ""}
               </td>
               <td className="px-4 py-4">{row.referent_teorical}</td>
@@ -303,7 +303,7 @@ export default function PlanEvaluativo() {
               </td>
               <td className="px-4 py-4 text-center flex gap-1 justify-center">
                 <Button
-                  classNameBtn="p-2 rounded-md text-slate-500 font-bold cursor-pointer flex items-center gap-1 hover:text-red-600 w-8 h-8"
+                  classNameBtn="text-slate-500 dark:text-zinc-100 font-bold cursor-pointer hover:text-red-600"
                   icon={faTrash}
                   onClick={() => {
                     setEvaluation(row);
