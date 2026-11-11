@@ -8,7 +8,7 @@ import axios from "axios";
 export async function getApproved(id_period) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/enrollments/approved?id_period=${id_period}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/enrollments/?id_period=${id_period}`,
       {
         withCredentials: true,
         headers: {

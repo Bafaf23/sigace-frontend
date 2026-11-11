@@ -75,24 +75,24 @@ export default function TarjetaMateriaNotas({ subject }) {
             return (
               <tr
                 key={eva.id}
-                className="transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-900/30 group border-b border-slate-100 dark:border-slate-800"
+                className="transition-colors hover:bg-slate-50/50 dark:hover:bg-zinc-800 group border-b border-slate-100 dark:border-zinc-800"
               >
                 {/* Actividad */}
                 <td className="px-6 py-4">
-                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-orange-400 transition-colors">
+                  <span className="text-sm font-bold text-slate-900 dark:text-zinc-100 group-hover:text-cyan-600 dark:group-hover:text-orange-400 transition-colors">
                     {eva.activity || "N/A"}
                   </span>
                 </td>
 
                 {/* Tema */}
                 <td className="px-6 py-4">
-                  <span className="text-xs text-slate-600 dark:text-slate-300">
+                  <span className="text-xs text-slate-600 dark:text-zinc-100">
                     {eva.referent_teorical || "N/A"}
                   </span>
                 </td>
 
                 {/* Porcentaje */}
-                <td className="px-6 py-4 font-mono font-bold text-slate-700 dark:text-slate-300">
+                <td className="px-6 py-4 font-mono font-bold text-slate-700 dark:text-zinc-100">
                   {eva.porcentage ? `${eva.porcentage}%` : "0%"}
                 </td>
 
@@ -114,7 +114,7 @@ export default function TarjetaMateriaNotas({ subject }) {
                 </td>
 
                 {/* Fecha de Carga */}
-                <td className="px-6 py-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <td className="px-6 py-4 text-xs font-medium text-slate-500 dark:text-zinc-100">
                   {eva.created_at
                     ? new Date(eva.created_at).toLocaleDateString("es-ES", {
                         day: "2-digit",
@@ -125,7 +125,7 @@ export default function TarjetaMateriaNotas({ subject }) {
                 </td>
 
                 {/* Última Actualización */}
-                <td className="px-6 py-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <td className="px-6 py-4 text-xs font-medium text-slate-500 dark:text-zinc-100">
                   {eva.updated_at
                     ? new Date(eva.updated_at).toLocaleDateString("es-ES", {
                         day: "2-digit",

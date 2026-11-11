@@ -1,12 +1,12 @@
 "use client";
 
 import Loading from "@/app/loading";
+import Banner from "@/components/atom/Banner";
 import Button from "@/components/atom/Button";
 import Icon from "@/components/atom/Icon";
 import Selector from "@/components/atom/Selector";
 import AccessDenied from "@/components/molecules/AccessDenied";
 import FormCargaNotas from "@/components/molecules/FromCargaNotas";
-import HeaderDashbord from "@/components/molecules/HeaderDashbord";
 import Modal from "@/components/organism/Modal";
 import TablaNotas from "@/components/organism/TablaNotas";
 import { useAuth } from "@/context/AuthContext";
@@ -16,7 +16,12 @@ import { getGradeAcrivity } from "@/services/grades/getGradeActivity";
 import { getLapses } from "@/services/lapse/getLapse";
 import { getStudentSection } from "@/services/section/getStudentSection";
 import { getLoadAcademic } from "@/services/teachers/getLoadAcademic";
-import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDownLong,
+  faInfoCircle,
+  faPlus,
+  faUpDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
@@ -186,10 +191,10 @@ export default function CargarNotas() {
   ]);
 
   // Handler para guardar o actualizar una nota individual desde la tabla
-  const handleSaveGrade = async ({ id_student, id_evaluation, grade }) => {
+  const handleSaveGrade = async ({ tuition_number, id_evaluation, grade }) => {
     try {
       const response = await createGrade({
-        id_student,
+        tuition_number,
         id_evaluation,
         grade,
       });
@@ -219,6 +224,11 @@ export default function CargarNotas() {
       <h2 className="text-3xl dark:text-zinc-200 font-extrabold">
         Calificaciones
       </h2>
+      <Banner
+        title="Carga las calificaciones"
+        icon={faUpDown}
+        message="Solo puedes cargar las calificaciones de los estudiantes de tu secciona signada. Si te equivocaste al cargar una calificación ponte en contacto con el departamento de control de estudio."
+      />
       <div className="flex flex-col justify-between md:flex-row md:items-center lg:flex-row gap-4 w-full">
         {subjects.length > 0 && (
           <div className="max-w-xs">
@@ -243,7 +253,7 @@ export default function CargarNotas() {
           <div>
             <Button
               classNameBtn={
-                "bg-orange-500 px-5 py-3 rounded-xl text-slate-50 font-bold cursor-pointer flex items-center gap-1 w-full"
+                "bg-orange-500 text-slate-50 font-bold cursor-pointer hidden"
               }
               icon={faPlus}
               disabled={!activeLapse || !selectedSubject}

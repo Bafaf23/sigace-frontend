@@ -33,7 +33,7 @@ export default function Selector({
         value={value || ""}
         id={id}
         onChange={onChange}
-        className="w-full rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-3 text-slate-700 dark:text-slate-50 ..."
+        className="w-full rounded-xl border border-slate-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 px-4 py-3 text-slate-700 dark:text-slate-50 ..."
         required
       >
         <option value="" disabled hidden>

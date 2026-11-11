@@ -49,10 +49,10 @@ export default function DashboardStudentPage() {
   if (dataLoading) return <Loading />;
 
   return (
-    <div className="animate-in fade-in duration-500 h-full">
-      <HeaderDashbord user={user} />
+    <div className="space-y-3">
+      <HeaderDashbord user={user} nameI={`Bienvenido ${user.user?.name}`} />
 
-      <section className="p-3 grid md:grid-cols-2 gap-3">
+      <section className="grid md:grid-cols-2 gap-3">
         <InfoCard
           label="Año"
           value={sectionData?.section.year.name ?? "No asignado"}

@@ -48,7 +48,7 @@ export default function SelectorInput({
           value={valueSel || ""}
           id={selectId}
           onChange={onChange}
-          className="w-fit rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-700 transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/50 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:placeholder:text-zinc-400 dark:focus:border-orange-500 dark:focus:ring-orange-500/50"
+          className="w-fit rounded-xl border border-slate-200 bg-zinc-100 px-4 py-3 text-slate-700 transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/50 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:placeholder:text-zinc-400 dark:focus:border-orange-500 dark:focus:ring-orange-500/50"
           required
         >
           {options.map((option) => (

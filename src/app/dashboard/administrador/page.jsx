@@ -60,7 +60,7 @@ export default function AdminPage() {
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         <InfoCard
           label="Total de estudiantes"
-          value={metrics.students}
+          value={metrics?.students || 0}
           icon={faUser}
           colorClass="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 backdrop-blur-md"
           description="Alumnos inscritos en el período"
@@ -68,7 +68,7 @@ export default function AdminPage() {
 
         <InfoCard
           label="Total de secciones"
-          value={metrics.sections}
+          value={metrics?.sections || 0}
           icon={faBook}
           colorClass="bg-blue-500/10 text-blue-600 dark:text-blue-400 backdrop-blur-md"
           description="Divisiones de aula activas"
@@ -76,7 +76,7 @@ export default function AdminPage() {
 
         <InfoCard
           label="Total de docentes"
-          value={metrics.teachers}
+          value={metrics?.teachers || 0}
           icon={faUserTie}
           colorClass="bg-purple-500/10 text-purple-600 dark:text-purple-400 backdrop-blur-md"
           description="Personal docente registrado"
@@ -84,7 +84,7 @@ export default function AdminPage() {
 
         <InfoCard
           label="Pensum académico"
-          value={metrics.subject}
+          value={metrics?.subject || 0}
           icon={faFilePen}
           colorClass="bg-amber-500/10 text-amber-600 dark:text-amber-400 backdrop-blur-md"
           description="Asignaturas base cargadas"

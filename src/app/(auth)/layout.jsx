@@ -55,11 +55,20 @@ export default function AuthLayout({ children }) {
           </p>
         </div>
         <div className="flex justify-center items-center">
-          <section className="max-w-md w-full bg-white dark:bg-zinc-700 p-12 rounded-2xl">
+          <section className="max-w-md w-full bg-white dark:bg-zinc-700 p-12 rounded-2xl dark:shadow-2xl shadow-white/20 shadow-xl">
             {children}
           </section>
         </div>
       </div>
+      <Toaster
+        position="top-right"
+        reverseOrder={true}
+        toastOptions={{
+          className:
+            "rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 shadow-lg font-medium transition-colors",
+          duration: 4000,
+        }}
+      />
     </RememberProvider>
   );
 }

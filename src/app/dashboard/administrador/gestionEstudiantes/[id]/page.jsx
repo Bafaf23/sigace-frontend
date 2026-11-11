@@ -140,7 +140,7 @@ export default function StudentRecords() {
         onClose={() => setIsOpen(false)}
         title="Editar Información del Estudiante"
       >
-        <FormInscrip mode="edit" student={student} SIG={user?.user?.SIG} />
+        <FormInscrip mode="edit" student={student} />
       </Modal>
 
       {/* HEADER DEL ESTUDIANTE */}

@@ -86,7 +86,7 @@ export default function TeachersPage() {
 
   return (
     <div className="space-y-3">
-      <HeaderDashbord user={user} />
+      <HeaderDashbord user={user} nameI={`Bienvenido(a), ${user.user?.name}`} />
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Materias */}
