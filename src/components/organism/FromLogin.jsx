@@ -44,12 +44,6 @@ export default function FromLogin({ schoolName }) {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-  const getGreeting = () => {
-    const hora = new Date().getHours();
-    if (hora >= 5 && hora < 12) return "Buenos días";
-    if (hora >= 12 && hora < 18) return "Buenas tardes";
-    return "Buenas noches";
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,31 +88,25 @@ export default function FromLogin({ schoolName }) {
   };
 
   return (
-    <div className="h-full">
+    <div>
       <div className="mb-10">
+        <div className="font-bold text-slate-800 dark:text-zinc-400 uppercase text-center">
+          {schoolName ? schoolName : "Sistema adminstrativo sudo"}
+        </div>
         {hasRememberedUser ? (
-          <h1 className="mb-2 text-2xl uppercase font-extrabold text-transparent bg-clip-text bg-linear-to-r from-amber-600 via-orange-600 to-cyan-500 ">
-            ¡{getGreeting()}!,{" "}
-            <span className="capitalize text-slate-900 dark:text-zinc-100">
+          <h1 className="mb-2 text-2xl uppercase font-extrabold text-zinc-900 ">
+            <span className="capitalize text-slate-700 dark:text-zinc-100">
               {hasRememberedUser ? rememberUser.name : ""}
             </span>
           </h1>
         ) : (
-          <h1 className="mb-2 text-2xl font-extrabold uppercase text-transparent bg-clip-text bg-linear-to-r from-amber-600 via-orange-600 to-cyan-500 ">
-            ¡{getGreeting()}!
+          <h1 className="mb-2 text-2xl text-center font-extrabold uppercase text-zinc-900 dark:text-white">
+            Inicia sesion en tu cuenta
           </h1>
         )}
-
-        <p className="text-sm font-medium text-slate-600 dark:text-zinc-300 tracking-wide">
-          Ingresa al sistema de{" "}
-          <span className="font-bold text-slate-800 dark:text-zinc-100 uppercase">
-            {schoolName ? schoolName : "ADMIN SUDO"}
-          </span>{" "}
-          para continuar.
-        </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {hasRememberedUser ? (
           <InputPass
             label="Contraseña"
@@ -129,7 +117,7 @@ export default function FromLogin({ schoolName }) {
             onChange={handleChange}
           />
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-5">
             <Input
               label="Correo Electrónico"
               name="email"

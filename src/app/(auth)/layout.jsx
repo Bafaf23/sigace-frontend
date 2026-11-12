@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 export default function AuthLayout({ children }) {
   return (
     <RememberProvider>
-      <div className="min-h-dvh overflow-hidden relative">
+      <div className="min-h-dvh w-full overflow-hidden relative">
         <div className="absolute inset-0 bg-black/30 dark:bg-transparent transition-colors z-10" />
         {/* Fondo para Modo Claro */}
         <Image
@@ -30,8 +30,8 @@ export default function AuthLayout({ children }) {
           priority
         />
       </div>
-      <div className="grid md:grid-cols-2 grid-cols-1 absolute w-full h-full p-12 z-20">
-        <div className="flex-col justify-between h-full text-white md:flex hidden ">
+      <div className="grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 absolute w-full h-full z-20">
+        <div className="flex-col justify-between h-full text-white lg:flex md:hidden hidden p-12">
           <div className="flex items-center gap-2">
             <Link
               href={"/"}
@@ -54,8 +54,9 @@ export default function AuthLayout({ children }) {
             © {new Date().getFullYear()} SIGACE. Todos los derechos reservados.
           </p>
         </div>
-        <div className="flex justify-center items-center">
-          <section className="max-w-md w-full bg-white dark:bg-zinc-700 p-12 rounded-2xl dark:shadow-2xl shadow-white/20 shadow-xl">
+
+        <div className="flex md:justify-center md:items-center w-full h-full">
+          <section className="max-w-xl w-full bg-white border border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 md:p-16 p-10 md:rounded-3xl dark:shadow-2xl shadow-xl flex justify-center items-center">
             {children}
           </section>
         </div>
