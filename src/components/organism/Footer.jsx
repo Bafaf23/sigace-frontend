@@ -5,6 +5,7 @@ import {
   faInstagram,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
+import { faLocation, faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 const socials = [
@@ -42,6 +43,9 @@ export default function Footer() {
             <p className="text-sm text-slate-600 dark:text-zinc-400">
               Sistema de Gestión Académica y Control de Estudios.
             </p>
+            <p className="text-sm text-slate-600 dark:text-zinc-400">
+              <Icon icon={faLocationArrow} /> El hatillo, Miranda Venezuela.
+            </p>
           </div>
 
           {/* Columnas de Navegación */}
@@ -57,11 +61,14 @@ export default function Footer() {
               >
                 Inicio
               </Link>
+              <h2 className="text-slate-900 dark:text-zinc-100 font-semibold text-sm uppercase tracking-wider">
+                Soporte
+              </h2>
               <Link
-                href="/soporte"
+                href="mailto:bryantffacen@gmail.com"
                 className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
               >
-                Soporte
+                bryantffacen@gmail.com
               </Link>
             </div>
 
@@ -71,19 +78,19 @@ export default function Footer() {
                 Legal
               </h2>
               <Link
-                href="/legal/aviso-legal"
+                href="/legal"
                 className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
               >
                 Aviso legal
               </Link>
               <Link
-                href="/legal/terminos"
+                href="/legal"
                 className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
               >
                 Términos y condiciones
               </Link>
               <Link
-                href="/legal/privacidad"
+                href="/legal"
                 className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
               >
                 Privacidad
@@ -102,6 +109,7 @@ export default function Footer() {
             <div className="space-x-1">
               {socials.map((social) => (
                 <Link
+                  key={social.name}
                   href={social.url}
                   target="_black"
                   className={`text-lg p-1 rounded-2xl ${social.hoverBg}`}
