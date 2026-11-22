@@ -75,7 +75,7 @@ export default function Home() {
               ¿No tienes página web?
             </h2>
             <p className="text-slate-600 text-base md:text-lg font-semibold dark:text-zinc-300">
-              Nosotros la hacemos por ti.
+              Nosotros la hacemos por ti. Y es 100% tuya
             </p>
             <p className="text-slate-500 text-sm md:text-base font-normal max-w-xl mb-5 dark:text-zinc-300">
               Si eres uno de{" "}
