@@ -115,7 +115,7 @@ export default function Footer() {
             Desarrollado por {""}
             <Link
               href="https://www.instagram.com/bafaf03/"
-              className="font-bold text-zinc-100 hover:underline"
+              className="font-bold dark:text-zinc-100 text-zinc-900 hover:underline"
             >
               Bryant Facenda
             </Link>
